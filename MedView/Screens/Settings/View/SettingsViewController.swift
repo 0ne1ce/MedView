@@ -25,6 +25,6 @@ final class SettingsViewController: UIViewController, SettingsDisplayLogic {
     
     // MARK: - Private functions
     private func configure() {
-        view.backgroundColor = UIColor().hexToRGB(hex: Constants.backgroundLightHex)
+        
     }
 }

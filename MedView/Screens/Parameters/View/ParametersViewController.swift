@@ -13,7 +13,6 @@ final class ParametersViewController: UIViewController, ParametersDisplayLogic {
     var interactor: (ParametersBuisnessLogic & ParametersDataStore)?
     var router: ParametersRouterProtocol?
     var parametersView: ParametersView = ParametersView()
-    let parametersNavigation: ParametersNavigationBarView = ParametersNavigationBarView()
 
     // MARK: - Lifecycle
     override func loadView() {
@@ -38,28 +37,18 @@ final class ParametersViewController: UIViewController, ParametersDisplayLogic {
     // MARK: - Private functions
     private func configure() {
         interactor?.configureNavigationBar()
-        configureUI()
-    }
-    
-    private func configureUI() {
-        view.addSubview(parametersNavigation)
-        
-        parametersNavigation.pinTop(to: view.topAnchor)
-        parametersNavigation.setHeight(Constants.CustomNavigationBarView.navigationBarHeight)
-        parametersNavigation.pinLeft(to: view.leadingAnchor)
-        parametersNavigation.pinRight(to: view.trailingAnchor)
-        
         configureTableView()
     }
     
     private func configureTableView() {
         parametersView.tableView.register(ParameterCell.self, forCellReuseIdentifier: ParameterCell.id)
+        parametersView.tableView.register(AddParamterCell.self, forCellReuseIdentifier: AddParamterCell.id)
         parametersView.tableView.delegate = self
         parametersView.tableView.dataSource = self
     }
     
     private func configureButtonTarget() {
-        parametersNavigation.settingsButtonTarget(target: self, action: #selector(settingsButtonPressed))
+        parametersView.parametersNavigation.settingsButtonTarget(target: self, action: #selector(settingsButtonPressed))
     }
     
     private func triggerSelectionFeedback() {
@@ -73,7 +62,7 @@ final class ParametersViewController: UIViewController, ParametersDisplayLogic {
         if (viewModel.isSettingsButtonHidden == false) {
             configureButtonTarget()
         }
-        parametersNavigation.configure(with: viewModel)
+        parametersView.parametersNavigation.configure(with: viewModel)
     }
     
     // MARK: - Actions
@@ -84,22 +73,34 @@ final class ParametersViewController: UIViewController, ParametersDisplayLogic {
 
 extension ParametersViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return parametersView.images.count
+        return parametersView.images.count + Constants.ParametersView.AddParamterCellCount
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = parametersView.tableView.dequeueReusableCell(withIdentifier: ParameterCell.id, for: indexPath) as? ParameterCell else {
-            fatalError("The TableView could not dequeue a ParameterCell in ParametersViewController")
+        if indexPath.row < parametersView.images.count {
+            guard let cell = parametersView.tableView.dequeueReusableCell(withIdentifier: ParameterCell.id, for: indexPath) as? ParameterCell else {
+                fatalError("The TableView could not dequeue a ParameterCell in ParametersViewController")
+            }
+            
+            let image = parametersView.images[indexPath.row]
+            let label = parametersView.parameters[indexPath.row]
+            cell.configure(with: image, and: label)
+            
+            return cell
         }
-        let image = parametersView.images[indexPath.row]
-        let label = parametersView.parameters[indexPath.row]
-        cell.configure(with: image, and: label)
-        
-        return cell
+        else {
+            let cell = parametersView.tableView.dequeueReusableCell(withIdentifier: AddParamterCell.id, for: indexPath)
+            
+            guard cell is AddParamterCell else {
+                return cell
+            }
+            
+            return cell
+        }
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 60
+        return Constants.ParametersView.heightForRow
     }
     
     

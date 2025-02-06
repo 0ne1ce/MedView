@@ -34,6 +34,7 @@ final class ParametersView: UIView {
     ]
     let tableView: UITableView = UITableView()
     let parametersLabel: UILabel = UILabel()
+    let parametersNavigation: ParametersNavigationBarView = ParametersNavigationBarView()
     
     // MARK: - Initialization
     init() {
@@ -48,8 +49,18 @@ final class ParametersView: UIView {
     // MARK: - Prvate functions
     private func configureUI() {
         backgroundColor = UIColor().hexToRGB(hex: Constants.backgroundLightHex)
+        configureNavigationBar()
         configureTableView()
         configureParametersLabel()
+    }
+    
+    private func configureNavigationBar() {
+        addSubview(parametersNavigation)
+        
+        parametersNavigation.pinTop(to: self.topAnchor)
+        parametersNavigation.setHeight(Constants.CustomNavigationBarView.navigationBarHeight)
+        parametersNavigation.pinLeft(to: self.leadingAnchor)
+        parametersNavigation.pinRight(to: self.trailingAnchor)
     }
     
     private func configureTableView() {

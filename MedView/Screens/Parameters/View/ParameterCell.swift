@@ -11,11 +11,8 @@ import UIKit
 final class ParameterCell: UITableViewCell {
     // MARK: - Variables
     static let id = "ParameterCell"
-    
     private let icon: UIImageView = UIImageView()
-    
     private let parametersLabel: UILabel = UILabel()
-    
     private let wrap: UIView = UIView()
     
     // MARK: - Initialization
@@ -31,6 +28,12 @@ final class ParameterCell: UITableViewCell {
     // MARK: - Private functions
     private func configureUI() {
         backgroundColor = .clear
+        configureWrap()
+        configureImage()
+        configureLabel()
+    }
+    
+    private func configureWrap() {
         self.contentView.addSubview(wrap)
         wrap.backgroundColor = .white
         wrap.layer.cornerRadius = Constants.ParametersView.parameterWrapRadius
@@ -39,9 +42,6 @@ final class ParameterCell: UITableViewCell {
         wrap.pinBottom(to: self.contentView.bottomAnchor, Constants.ParametersView.parameterWrapOffsetV)
         wrap.pinLeft(to: self.contentView.leadingAnchor, Constants.ParametersView.parameterWrapOffsetH)
         wrap.pinRight(to: self.contentView.trailingAnchor, Constants.ParametersView.parameterWrapOffsetH)
-        
-        configureImage()
-        configureLabel()
     }
     
     private func configureImage() {

@@ -30,6 +30,7 @@ enum Constants {
         static let mintColorStringLength: Int = 4
         
         static let tableViewTopOffset: CGFloat = 175
+        static let heightForRow: CGFloat = 60
         
         static let parameterWrapRadius: CGFloat = 10
         static let parameterWrapOffsetV: CGFloat = 5
@@ -41,6 +42,15 @@ enum Constants {
         static let parametersLabelFontSize: CGFloat = 20
         static let parametersLabelLeftOffset: CGFloat = 25
         static let parametersLabelRightOffset: CGFloat = 5
+        
+        static let plusWrapRadius: CGFloat = 7
+        static let plusWrapOffsetV: CGFloat = 8
+        static let plusWrapWidth: CGFloat = 44
+        
+        static let addLabelText: String = "Create custom parameter"
+        static let addLabelLeftOffset: CGFloat = 17
+        static let addLabelRightOffset: CGFloat = 20
+        static let AddParamterCellCount: Int = 1
     }
     
     enum ParametersPictures {
