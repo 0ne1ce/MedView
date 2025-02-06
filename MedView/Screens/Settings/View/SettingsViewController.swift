@@ -8,8 +8,10 @@
 import Foundation
 import UIKit
 
-final class SettingsViewController: UIViewController {
+final class SettingsViewController: UIViewController, SettingsDisplayLogic {
     // MARK: - Properties
+    var interactor: (SettingsBuisnessLogic & SettingsDataStore)?
+    var router: SettingsRouterProtocol?
     var settingsView: SettingsView = SettingsView()
     // MARK: - Lifecycle
     override func loadView() {
@@ -23,6 +25,6 @@ final class SettingsViewController: UIViewController {
     
     // MARK: - Private functions
     private func configure() {
-        view.backgroundColor = .systemMint
+        view.backgroundColor = UIColor().hexToRGB(hex: Constants.backgroundLightHex)
     }
 }

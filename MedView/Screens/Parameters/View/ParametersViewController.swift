@@ -8,51 +8,58 @@
 import Foundation
 import UIKit
 
-class ParametersViewController: UIViewController, ParametersDisplayLogic {
+final class ParametersViewController: UIViewController, ParametersDisplayLogic {
     // MARK: - Properties
     var interactor: (ParametersBuisnessLogic & ParametersDataStore)?
     var router: ParametersRouterProtocol?
     var parametersView: ParametersView = ParametersView()
-    let customNavigation: CustomNavigationBarView = CustomNavigationBarView()
-    //let settingsButton: UIButton = UIButton(type: .custom)
+    let parametersNavigation: ParametersNavigationBarView = ParametersNavigationBarView()
 
     // MARK: - Lifecycle
     override func loadView() {
         view = parametersView
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        navigationController?.setNavigationBarHidden(true, animated: animated)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        navigationController?.setNavigationBarHidden(false, animated: animated)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
-        configureUI()
     }
+    
     // MARK: - Private functions
     private func configure() {
-        //settingsButton.addTarget(self, action: #selector(settingsButtonPressed), for: .touchUpInside)
+        interactor?.configureNavigationBar()
         configureUI()
     }
     
     private func configureUI() {
-        view.addSubview(customNavigation)
-        customNavigation.pinTop(to: view.topAnchor)
-        customNavigation.pinBottom(to: view.safeAreaLayoutGuide.topAnchor, -30)
-        customNavigation.pinLeft(to: view.leadingAnchor)
-        customNavigation.pinRight(to: view.trailingAnchor)
+        view.addSubview(parametersNavigation)
         
-        configureSettingsButton()
+        parametersNavigation.pinTop(to: view.topAnchor)
+        parametersNavigation.setHeight(Constants.CustomNavigationBarView.navigationBarHeight)
+        parametersNavigation.pinLeft(to: view.leadingAnchor)
+        parametersNavigation.pinRight(to: view.trailingAnchor)
+        
+        configureTableView()
     }
     
-    private func configureSettingsButton() {
-//        let settingsImage = UIImage(named: Constants.CustomNavigationBarView.settingsSymbol)
-//        settingsButton.titleLabel?.font = UIFont.systemFont(ofSize: Constants.CustomNavigationBarView.settingsButtonSize)
-//        settingsButton.setTitleColor(.systemMint, for: .normal)
-//        settingsButton.backgroundColor = .clear
-//        settingsButton.setImage(settingsImage, for: .normal)
-//
-//        view.addSubview(settingsButton)
-//        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: settingsButton)
-//        settingsButton.setWidth(Constants.CustomNavigationBarView.settingsButtonSize)
-//        settingsButton.setHeight(Constants.CustomNavigationBarView.settingsButtonSize)
+    private func configureTableView() {
+        parametersView.tableView.register(ParameterCell.self, forCellReuseIdentifier: ParameterCell.id)
+        parametersView.tableView.delegate = self
+        parametersView.tableView.dataSource = self
+    }
+    
+    private func configureButtonTarget() {
+        parametersNavigation.settingsButtonTarget(target: self, action: #selector(settingsButtonPressed))
     }
     
     private func triggerSelectionFeedback() {
@@ -60,11 +67,40 @@ class ParametersViewController: UIViewController, ParametersDisplayLogic {
         generator.prepare()
         generator.selectionChanged()
     }
+    
+    // MARK: - Public functions
+    func displayNavigationBar(with viewModel: CustomNavigationBarViewModel) {
+        if (viewModel.isSettingsButtonHidden == false) {
+            configureButtonTarget()
+        }
+        parametersNavigation.configure(with: viewModel)
+    }
+    
     // MARK: - Actions
     @objc func settingsButtonPressed() {
-        let settingsVC = SettingsViewController()
-        navigationController?.pushViewController(settingsVC, animated: true)
+        router?.showSettingsScreen()
     }
-
 }
 
+extension ParametersViewController: UITableViewDelegate, UITableViewDataSource {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return parametersView.images.count
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = parametersView.tableView.dequeueReusableCell(withIdentifier: ParameterCell.id, for: indexPath) as? ParameterCell else {
+            fatalError("The TableView could not dequeue a ParameterCell in ParametersViewController")
+        }
+        let image = parametersView.images[indexPath.row]
+        let label = parametersView.parameters[indexPath.row]
+        cell.configure(with: image, and: label)
+        
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 60
+    }
+    
+    
+}

@@ -12,4 +12,9 @@ final class ParametersInteractor: ParametersBuisnessLogic, ParametersDataStore {
     // MARK: - Properties
     var presenter: ParametersPresentationLogic?
     var worker: ParametersWorker?
+    
+    // MARK: - Public functions
+    func configureNavigationBar() {
+        presenter?.presentNavigationBar()
+    }
 }

@@ -9,5 +9,6 @@ import Foundation
 import UIKit
 
 protocol ParametersBuisnessLogic: AnyObject {
-    
+    // MARK: - Functions
+    func configureNavigationBar()
 }

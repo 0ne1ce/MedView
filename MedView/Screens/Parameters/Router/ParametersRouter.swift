@@ -11,4 +11,10 @@ import UIKit
 final class ParametersRouter: ParametersRouterProtocol {
     // MARK: - Properties
     weak var view: UIViewController?
+    
+    // MARK: - Functions
+    func showSettingsScreen() {
+        let settingsVC = SettingsAssembly.configuredModule()
+        view?.navigationController?.pushViewController(settingsVC, animated: true)
+    }
 }
