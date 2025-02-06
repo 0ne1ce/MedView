@@ -9,5 +9,6 @@ import Foundation
 import UIKit
 
 protocol ParametersDisplayLogic: AnyObject {
-    
+    // MARK: - Functions
+    func displayNavigationBar(with viewModel: CustomNavigationBarViewModel)
 }

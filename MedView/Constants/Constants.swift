@@ -24,9 +24,34 @@ enum Constants {
     enum ParametersView {
         static let medViewLabelText: String = "MedView"
         
+        static let systemColorStringLocation: Int = 0
+        static let systemColorStringLength: Int = 3
         static let mintColorStringLocation: Int = 3
         static let mintColorStringLength: Int = 4
         
+        static let tableViewTopOffset: CGFloat = 175
+        
+        static let parameterWrapRadius: CGFloat = 10
+        static let parameterWrapOffsetV: CGFloat = 5
+        static let parameterWrapOffsetH: CGFloat = 15
+        
+        static let iconLeftOffset: CGFloat = 15
+        static let iconWidth: CGFloat = 20
+        
+        static let parametersLabelFontSize: CGFloat = 20
+        static let parametersLabelLeftOffset: CGFloat = 25
+        static let parametersLabelRightOffset: CGFloat = 5
     }
     
+    enum ParametersPictures {
+        static let bloodPressure: String = "Blood pressure"
+        static let pulse: String = "Pulse"
+        static let saturation: String = "Saturation"
+        static let sleepHours: String = "Sleep hours"
+        static let stressLevel: String = "Stress level"
+        static let temperature: String = "Temperature"
+        static let weight: String = "Weight"
+        static let bloodGlucose: String = "Blood glucose"
+        static let customParameter: String = "Custom parameter"
+    }
 }
