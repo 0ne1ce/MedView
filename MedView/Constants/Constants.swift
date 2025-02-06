@@ -14,7 +14,8 @@ enum Constants {
     enum CustomNavigationBarView {
         static let navigationBarHeight: CGFloat = 120
         static let navigationBarBorderlineHeight: CGFloat = 1
-        static let titleLabelFontSize: CGFloat = 40
+        static let titleLabelFontSize: CGFloat = 36
+        static let titleLabelHeight: CGFloat = 40
         static let settingsButtonSize: CGFloat = 40
         static let navigationBarItemOffset: CGFloat = 20
         
@@ -51,6 +52,8 @@ enum Constants {
         static let addLabelLeftOffset: CGFloat = 17
         static let addLabelRightOffset: CGFloat = 20
         static let AddParamterCellCount: Int = 1
+        
+        static let titleParametersLabelHex: String = "999999"
     }
     
     enum ParametersPictures {
@@ -63,5 +66,18 @@ enum Constants {
         static let weight: String = "Weight"
         static let bloodGlucose: String = "Blood glucose"
         static let customParameter: String = "Custom parameter"
+    }
+    
+    enum AssistantView {
+        static let assistantLabelText: String = "MV Assistant"
+    }
+    
+    enum HelpView {
+        static let helpLabelText: String = "FAQ and guide"
+    }
+    
+    enum SettingsView {
+        static let settingsLabelText: String = "Settings"
+        static let settingsNavigationBarHeight: CGFloat = 155
     }
 }
