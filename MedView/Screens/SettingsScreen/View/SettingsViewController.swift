@@ -26,19 +26,11 @@ final class SettingsViewController: UIViewController, SettingsDisplayLogic {
     
     // MARK: - Private functions
     private func configure() {
-        interactor?.configureNavigationBar()
+        configureButtonTarget()
     }
     
     private func configureButtonTarget() {
         settingsView.settingsNavigation.settingsButtonTarget(target: self, action: #selector(settingsButtonPressed))
-    }
-    
-    // MARK: - Public functions
-    func displayNavigationBar(with viewModel: CustomNavigationBarViewModel) {
-        if (viewModel.isSettingsButtonHidden == false) {
-            configureButtonTarget()
-        }
-        settingsView.settingsNavigation.configure(with: viewModel)
     }
     
     // MARK: - Actions

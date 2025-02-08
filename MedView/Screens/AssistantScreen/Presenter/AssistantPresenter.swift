@@ -13,12 +13,5 @@ final class AssistantPresenter: AssistantPresentationLogic {
     var view: AssistantDisplayLogic?
     
     // MARK: - Functions
-    func presentNavigationBar() {
-        let titleLabelText = Constants.AssistantView.assistantLabelText
-        let viewModel = NavigationBarViewModel(
-            title: titleLabelText,
-            isSettingsButtonHidden: false
-        )
-        view?.displayNavigationBar(with: viewModel)
-    }
+    
 }

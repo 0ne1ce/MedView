@@ -10,7 +10,7 @@ import UIKit
 
 final class HelpView: UIView {
     // MARK: - Variables
-    let helpNavigation: AssistantNavigationBarView = AssistantNavigationBarView()
+    let helpNavigation: CustomNavigationBarView = CustomNavigationBarView()
     // MARK: - Initialization
     init() {
         super.init(frame: .zero)
@@ -25,9 +25,11 @@ final class HelpView: UIView {
     private func configureUI() {
         backgroundColor = UIColor().hexToRGB(hex: Constants.backgroundLightHex)
         configureNavigationBar()
+        
     }
     
     private func configureNavigationBar() {
+        helpNavigation.configure(with: Constants.HelpView.helpLabelText, isSettingsButtonHidden: false)
         addSubview(helpNavigation)
         
         helpNavigation.pinTop(to: self.topAnchor)

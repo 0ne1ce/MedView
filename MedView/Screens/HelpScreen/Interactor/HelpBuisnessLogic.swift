@@ -10,5 +10,4 @@ import UIKit
 
 protocol HelpBuisnessLogic: AnyObject {
     // MARK: - Functions
-    func configureNavigationBar()
 }

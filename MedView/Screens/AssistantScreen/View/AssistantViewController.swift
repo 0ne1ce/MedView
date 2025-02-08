@@ -36,19 +36,11 @@ final class AssistantViewController: UIViewController, AssistantDisplayLogic {
     
     // MARK: - Private functions
     private func configure() {
-        interactor?.configureNavigationBar()
+        configureButtonTarget()
     }
     
     private func configureButtonTarget() {
         assistantView.assistantNavigation.settingsButtonTarget(target: self, action: #selector(settingsButtonPressed))
-    }
-    
-    // MARK: - Public functions
-    func displayNavigationBar(with viewModel: any CustomNavigationBarViewModel) {
-        if (viewModel.isSettingsButtonHidden == false) {
-            configureButtonTarget()
-        }
-        assistantView.assistantNavigation.configure(with: viewModel)
     }
     
     // MARK: - Actions

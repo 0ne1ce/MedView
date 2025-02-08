@@ -2,16 +2,16 @@
 //  CustomNavigationBarView.swift
 //  MedView
 //
-//  Created by Алексей on 03.02.2025.
+//  Created by Алексей on 09.02.2025.
 //
 
 import Foundation
 import UIKit
 
-final class ParametersNavigationBarView: UIView {
-    // MARK: - Properties
+final class CustomNavigationBarView: UIView {
+    // MARK: - Variables
     let borderline: UIView = UIView()
-    var titleLabel: UILabel = UILabel()
+    let titleLabel: UILabel = UILabel()
     let settingsButton: UIButton = UIButton(type: .custom)
     
     // MARK: - Initialization
@@ -23,10 +23,10 @@ final class ParametersNavigationBarView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
     
     // MARK: - Private functions
     private func configureUI() {
+        backgroundColor = .white
         borderline.backgroundColor = .lightGray
         addSubview(borderline)
         borderline.pinBottom(to: self.bottomAnchor)
@@ -37,7 +37,8 @@ final class ParametersNavigationBarView: UIView {
     
     private func configureTitle() {
         let font = UIFont.systemFont(ofSize: Constants.CustomNavigationBarView.titleLabelFontSize)
-        titleLabel.font = font.italicBold
+        titleLabel.font = font.bold
+        titleLabel.textColor = .black
         
         addSubview(titleLabel)
         titleLabel.pinLeft(to: self.leadingAnchor, Constants.CustomNavigationBarView.navigationBarItemOffset)
@@ -62,22 +63,18 @@ final class ParametersNavigationBarView: UIView {
     }
     
     // MARK: - Public functions
-    func configure(with viewModel: CustomNavigationBarViewModel) {
-        backgroundColor = viewModel.backgroundColor
-        
-        if let attributedTitle = viewModel.attributedTitle {
-            titleLabel.attributedText = attributedTitle
-            configureTitle()
-        } else if let title = viewModel.title {
-            titleLabel.text = title
-            configureTitle()
-        } else {
-            titleLabel.text = nil
+    func configure(with title: String?, isSettingsButtonHidden: Bool) {
+        titleLabel.text = title
+        configureTitle()
+        if isSettingsButtonHidden == false {
+            configureButton()
         }
-        
-        
-        
-        if viewModel.isSettingsButtonHidden == false {
+    }
+    
+    func configure(with attributedTitle: NSAttributedString?, isSettingsButtonHidden: Bool) {
+        titleLabel.attributedText = attributedTitle
+        configureTitle()
+        if isSettingsButtonHidden == false {
             configureButton()
         }
     }

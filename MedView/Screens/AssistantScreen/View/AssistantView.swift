@@ -10,7 +10,7 @@ import UIKit
 
 final class AssistantView: UIView {
     // MARK: - Variables
-    let assistantNavigation: AssistantNavigationBarView = AssistantNavigationBarView()
+    let assistantNavigation: CustomNavigationBarView = CustomNavigationBarView()
     // MARK: - Initialization
     init() {
         super.init(frame: .zero)
@@ -29,7 +29,7 @@ final class AssistantView: UIView {
     
     private func configureNavigationBar() {
         addSubview(assistantNavigation)
-        
+        assistantNavigation.configure(with: Constants.AssistantView.assistantLabelText, isSettingsButtonHidden: false)
         assistantNavigation.pinTop(to: self.topAnchor)
         assistantNavigation.setHeight(Constants.CustomNavigationBarView.navigationBarHeight)
         assistantNavigation.pinLeft(to: self.leadingAnchor)

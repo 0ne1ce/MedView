@@ -14,7 +14,5 @@ final class SettingsInteractor: SettingsBuisnessLogic, SettingsDataStore {
     var worker: SettingsWorker?
     
     // MARK: - Public functions
-    func configureNavigationBar() {
-        presenter?.presentNavigationBar()
-    }
+    
 }

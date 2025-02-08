@@ -10,5 +10,5 @@ import UIKit
 
 protocol AssistantBuisnessLogic: AnyObject {
     // MARK: - Functions
-    func configureNavigationBar()
+    
 }

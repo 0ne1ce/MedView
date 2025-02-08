@@ -36,19 +36,11 @@ final class HelpViewController: UIViewController, HelpDisplayLogic {
     
     // MARK: - Private functions
     private func configure() {
-        interactor?.configureNavigationBar()
+        configureButtonTarget()
     }
     
     private func configureButtonTarget() {
         helpView.helpNavigation.settingsButtonTarget(target: self, action: #selector(settingsButtonPressed))
-    }
-    
-    // MARK: - Public functions
-    public func displayNavigationBar(with viewModel: any CustomNavigationBarViewModel) {
-        if (viewModel.isSettingsButtonHidden == false) {
-            configureButtonTarget()
-        }
-        helpView.helpNavigation.configure(with: viewModel)
     }
     
     // MARK: - Actions

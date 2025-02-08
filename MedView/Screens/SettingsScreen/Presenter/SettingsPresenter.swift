@@ -13,12 +13,5 @@ final class SettingsPresenter: SettingsPresentationLogic {
     var view: SettingsDisplayLogic?
     
     // MARK: - Fuctions
-    func presentNavigationBar() {
-        let titleLabelText = Constants.SettingsView.settingsLabelText
-        let viewModel = NavigationBarViewModel(
-            title: titleLabelText,
-            isSettingsButtonHidden: true
-        )
-        view?.displayNavigationBar(with: viewModel)
-    }
+    
 }

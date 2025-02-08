@@ -10,7 +10,7 @@ import UIKit
 
 final class SettingsView: UIView {
     // MARK: - Variables
-    let settingsNavigation: SettingsNavigationBarView = SettingsNavigationBarView()
+    let settingsNavigation: CustomNavigationBarView = CustomNavigationBarView()
     // MARK: - Initialization
     init() {
         super.init(frame: .zero)
@@ -29,7 +29,7 @@ final class SettingsView: UIView {
     
     private func configureNavigationBar() {
         addSubview(settingsNavigation)
-        
+        settingsNavigation.configure(with: Constants.SettingsView.settingsLabelText, isSettingsButtonHidden: true)
         settingsNavigation.pinTop(to: self.topAnchor)
         settingsNavigation.setHeight(Constants.SettingsView.settingsNavigationBarHeight)
         settingsNavigation.pinLeft(to: self.leadingAnchor)

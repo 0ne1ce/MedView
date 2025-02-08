@@ -14,7 +14,5 @@ final class HelpInteractor: HelpBuisnessLogic, HelpDataStore {
     var worker: HelpWorker?
     
     // MARK: - Functions
-    func configureNavigationBar() {
-        presenter?.presentNavigationBar()
-    }
+    
 }

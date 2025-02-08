@@ -14,7 +14,5 @@ final class AssistantInteractor: AssistantBuisnessLogic, AssistantDataStore {
     var worker: AssistantWorker?
     
     // MARK: - Functions
-    func configureNavigationBar() {
-        presenter?.presentNavigationBar()
-    }
+    
 }

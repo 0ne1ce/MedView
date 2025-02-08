@@ -10,5 +10,5 @@ import UIKit
 
 protocol AssistantDisplayLogic: AnyObject {
     // MARK: - Functions
-    func displayNavigationBar(with viewModel: CustomNavigationBarViewModel)
+    
 }

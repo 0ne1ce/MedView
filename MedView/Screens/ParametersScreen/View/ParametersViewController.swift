@@ -36,8 +36,8 @@ final class ParametersViewController: UIViewController, ParametersDisplayLogic {
     
     // MARK: - Private functions
     private func configure() {
-        interactor?.configureNavigationBar()
         configureTableView()
+        configureButtonTarget()
     }
     
     private func configureTableView() {
@@ -55,14 +55,6 @@ final class ParametersViewController: UIViewController, ParametersDisplayLogic {
         let generator = UISelectionFeedbackGenerator()
         generator.prepare()
         generator.selectionChanged()
-    }
-    
-    // MARK: - Public functions
-    func displayNavigationBar(with viewModel: CustomNavigationBarViewModel) {
-        if (viewModel.isSettingsButtonHidden == false) {
-            configureButtonTarget()
-        }
-        parametersView.parametersNavigation.configure(with: viewModel)
     }
     
     // MARK: - Actions

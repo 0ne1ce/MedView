@@ -10,5 +10,5 @@ import UIKit
 
 protocol ParametersPresentationLogic: AnyObject {
     // MARK: - Functions
-    func presentNavigationBar()
+    
 }

@@ -34,7 +34,7 @@ final class ParametersView: UIView {
     ]
     let tableView: UITableView = UITableView()
     let parametersLabel: UILabel = UILabel()
-    let parametersNavigation: ParametersNavigationBarView = ParametersNavigationBarView()
+    let parametersNavigation: CustomNavigationBarView = CustomNavigationBarView()
     
     // MARK: - Initialization
     init() {
@@ -56,6 +56,19 @@ final class ParametersView: UIView {
     
     private func configureNavigationBar() {
         addSubview(parametersNavigation)
+        let titleLabelText = Constants.ParametersView.medViewLabelText
+        let attributedMedViewText = NSMutableAttributedString(string: titleLabelText)
+        attributedMedViewText.addAttribute(.foregroundColor, value: UIColor.black, range: NSRange(
+                location: Constants.ParametersView.systemColorStringLocation,
+                length: Constants.ParametersView.systemColorStringLength
+            )
+        )
+        attributedMedViewText.addAttribute(.foregroundColor, value: UIColor.systemMint, range: NSRange(
+                location: Constants.ParametersView.mintColorStringLocation,
+                length: Constants.ParametersView.mintColorStringLength
+            )
+        )
+        parametersNavigation.configure(with: attributedMedViewText, isSettingsButtonHidden: false)
         
         parametersNavigation.pinTop(to: self.topAnchor)
         parametersNavigation.setHeight(Constants.CustomNavigationBarView.navigationBarHeight)

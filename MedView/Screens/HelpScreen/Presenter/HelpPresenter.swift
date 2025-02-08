@@ -13,12 +13,5 @@ final class HelpPresenter: HelpPresentationLogic {
     var view: HelpDisplayLogic?
     
     // MARK: - Functions
-    func presentNavigationBar() {
-        let titleLabelText = Constants.HelpView.helpLabelText
-        let viewModel = NavigationBarViewModel(
-            title: titleLabelText,
-            isSettingsButtonHidden: false
-        )
-        view?.displayNavigationBar(with: viewModel)
-    }
+    
 }
