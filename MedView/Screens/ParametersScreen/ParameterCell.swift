@@ -21,6 +21,7 @@ final class ParameterCell: UITableViewCell {
         configureUI()
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -37,12 +38,12 @@ final class ParameterCell: UITableViewCell {
     private func configureWrap() {
         self.contentView.addSubview(wrap)
         wrap.backgroundColor = .white
-        wrap.layer.cornerRadius = Constants.ParametersView.parameterWrapRadius
+        wrap.layer.cornerRadius = ParametersConstants.parameterWrapRadius
         
-        wrap.pinTop(to: self.contentView.topAnchor, Constants.ParametersView.parameterWrapOffsetV)
-        wrap.pinBottom(to: self.contentView.bottomAnchor, Constants.ParametersView.parameterWrapOffsetV)
-        wrap.pinLeft(to: self.contentView.leadingAnchor, Constants.ParametersView.parameterWrapOffsetH)
-        wrap.pinRight(to: self.contentView.trailingAnchor, Constants.ParametersView.parameterWrapOffsetH)
+        wrap.pinTop(to: contentView, ParametersConstants.parameterWrapOffsetV)
+        wrap.pinBottom(to: contentView, ParametersConstants.parameterWrapOffsetV)
+        wrap.pinLeft(to: contentView, ParametersConstants.parameterWrapOffsetH)
+        wrap.pinRight(to: contentView, ParametersConstants.parameterWrapOffsetH)
     }
     
     private func configureImage() {
@@ -54,22 +55,22 @@ final class ParameterCell: UITableViewCell {
         
         icon.pinTop(to: wrap.layoutMarginsGuide.topAnchor)
         icon.pinBottom(to: wrap.layoutMarginsGuide.bottomAnchor)
-        icon.pinLeft(to: wrap.leadingAnchor, Constants.ParametersView.iconLeftOffset)
-        icon.setWidth(Constants.ParametersView.iconWidth)
+        icon.pinLeft(to: wrap, ParametersConstants.iconLeftOffset)
+        icon.setWidth(ParametersConstants.iconWidth)
     }
     
     private func configureLabel() {
         parametersLabel.textColor = .black
         parametersLabel.textAlignment = .left
-        parametersLabel.font = .systemFont(ofSize: Constants.ParametersView.parametersLabelFontSize, weight: .medium)
+        parametersLabel.font = .systemFont(ofSize: ParametersConstants.parametersLabelFontSize, weight: .medium)
         parametersLabel.text = "Error"
         
         wrap.addSubview(parametersLabel)
         
         parametersLabel.pinTop(to: wrap.layoutMarginsGuide.topAnchor)
         parametersLabel.pinBottom(to: wrap.layoutMarginsGuide.bottomAnchor)
-        parametersLabel.pinLeft(to: icon.trailingAnchor, Constants.ParametersView.parametersLabelLeftOffset)
-        parametersLabel.pinRight(to: wrap.trailingAnchor, Constants.ParametersView.parametersLabelRightOffset)
+        parametersLabel.pinLeft(to: icon.trailingAnchor, ParametersConstants.parametersLabelLeftOffset)
+        parametersLabel.pinRight(to: wrap, ParametersConstants.parametersLabelRightOffset)
     }
     
     // MARK: - Public functions
