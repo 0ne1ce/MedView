@@ -9,6 +9,20 @@ import Foundation
 import UIKit
 
 final class ParameterCell: UITableViewCell {
+    // MARK: - Constants
+    private enum Constants {
+        static let parameterWrapRadius: CGFloat = 10
+        static let parameterWrapOffsetV: CGFloat = 5
+        static let parameterWrapOffsetH: CGFloat = 15
+        
+        static let parametersLabelFont: UIFont = .systemFont(ofSize: 20, weight: .medium)
+        
+        static let parametersLabelLeftOffset: CGFloat = 25
+        static let parametersLabelRightOffset: CGFloat = 5
+        
+        static let iconLeftOffset: CGFloat = 15
+        static let iconWidth: CGFloat = 20
+    }
     // MARK: - Variables
     static let id = "ParameterCell"
     private let icon: UIImageView = UIImageView()
@@ -26,6 +40,11 @@ final class ParameterCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Public functions
+    public func configure(with image: UIImage, and label: String) {
+        self.icon.image = image
+        self.parametersLabel.text = label
+    }
     // MARK: - Private functions
     private func configureUI() {
         backgroundColor = .clear
@@ -38,12 +57,12 @@ final class ParameterCell: UITableViewCell {
     private func configureWrap() {
         self.contentView.addSubview(wrap)
         wrap.backgroundColor = .white
-        wrap.layer.cornerRadius = ParametersConstants.parameterWrapRadius
+        wrap.layer.cornerRadius = Constants.parameterWrapRadius
         
-        wrap.pinTop(to: contentView, ParametersConstants.parameterWrapOffsetV)
-        wrap.pinBottom(to: contentView, ParametersConstants.parameterWrapOffsetV)
-        wrap.pinLeft(to: contentView, ParametersConstants.parameterWrapOffsetH)
-        wrap.pinRight(to: contentView, ParametersConstants.parameterWrapOffsetH)
+        wrap.pinTop(to: contentView, Constants.parameterWrapOffsetV)
+        wrap.pinBottom(to: contentView, Constants.parameterWrapOffsetV)
+        wrap.pinLeft(to: contentView, Constants.parameterWrapOffsetH)
+        wrap.pinRight(to: contentView, Constants.parameterWrapOffsetH)
     }
     
     private func configureImage() {
@@ -55,27 +74,22 @@ final class ParameterCell: UITableViewCell {
         
         icon.pinTop(to: wrap.layoutMarginsGuide.topAnchor)
         icon.pinBottom(to: wrap.layoutMarginsGuide.bottomAnchor)
-        icon.pinLeft(to: wrap, ParametersConstants.iconLeftOffset)
-        icon.setWidth(ParametersConstants.iconWidth)
+        icon.pinLeft(to: wrap, Constants.iconLeftOffset)
+        icon.setWidth(Constants.iconWidth)
     }
     
     private func configureLabel() {
         parametersLabel.textColor = .black
         parametersLabel.textAlignment = .left
-        parametersLabel.font = .systemFont(ofSize: ParametersConstants.parametersLabelFontSize, weight: .medium)
+        parametersLabel.font = Constants.parametersLabelFont
         parametersLabel.text = "Error"
         
         wrap.addSubview(parametersLabel)
         
         parametersLabel.pinTop(to: wrap.layoutMarginsGuide.topAnchor)
         parametersLabel.pinBottom(to: wrap.layoutMarginsGuide.bottomAnchor)
-        parametersLabel.pinLeft(to: icon.trailingAnchor, ParametersConstants.parametersLabelLeftOffset)
-        parametersLabel.pinRight(to: wrap, ParametersConstants.parametersLabelRightOffset)
+        parametersLabel.pinLeft(to: icon.trailingAnchor, Constants.parametersLabelLeftOffset)
+        parametersLabel.pinRight(to: wrap, Constants.parametersLabelRightOffset)
     }
     
-    // MARK: - Public functions
-    public func configure(with image: UIImage, and label: String) {
-        self.icon.image = image
-        self.parametersLabel.text = label
-    }
 }

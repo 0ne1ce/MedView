@@ -17,21 +17,22 @@ final class SettingsView: UIView {
         configureUI()
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
     // MARK: - Private functions
     private func configureUI() {
-        backgroundColor = UIColor().hexToRGB(hex: Constants.backgroundLightHex)
+        backgroundColor = UIColor(hex: SettingsConstants.backgroundLightHex)
         configureNavigationBar()
     }
     
     private func configureNavigationBar() {
         addSubview(settingsNavigation)
-        settingsNavigation.configure(with: Constants.SettingsView.settingsLabelText, isSettingsButtonHidden: true)
+        settingsNavigation.configure(with: SettingsConstants.settingsLabelText, true)
         settingsNavigation.pinTop(to: self.topAnchor)
-        settingsNavigation.setHeight(Constants.SettingsView.settingsNavigationBarHeight)
+        settingsNavigation.setHeight(SettingsConstants.settingsNavigationBarHeight)
         settingsNavigation.pinLeft(to: self.leadingAnchor)
         settingsNavigation.pinRight(to: self.trailingAnchor)
     }

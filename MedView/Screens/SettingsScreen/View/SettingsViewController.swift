@@ -13,7 +13,7 @@ final class SettingsViewController: UIViewController, SettingsDisplayLogic {
     var interactor: (SettingsBuisnessLogic & SettingsDataStore)?
     var router: SettingsRouterProtocol?
     var settingsView: SettingsView = SettingsView()
-    
+    let appearance: UINavigationBarAppearance = UINavigationBarAppearance()
     // MARK: - Lifecycle
     override func loadView() {
         view = settingsView
@@ -26,15 +26,16 @@ final class SettingsViewController: UIViewController, SettingsDisplayLogic {
     
     // MARK: - Private functions
     private func configure() {
-        configureButtonTarget()
+        configureNavigationItems()
     }
     
-    private func configureButtonTarget() {
-        settingsView.settingsNavigation.settingsButtonTarget(target: self, action: #selector(settingsButtonPressed))
-    }
-    
-    // MARK: - Actions
-    @objc func settingsButtonPressed() {
+    private func configureNavigationItems() {
+        appearance.configureWithTransparentBackground()
+        appearance.shadowColor = .clear
         
+        navigationController?.navigationBar.tintColor = .systemMint
+        appearance.backButtonAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor.systemMint]
+        navigationController?.navigationBar.standardAppearance = appearance
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
     }
 }

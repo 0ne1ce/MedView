@@ -8,9 +8,9 @@
 import Foundation
 import UIKit
 
-final class AssistantAssembly: NSObject {
+final class AssistantAssembly {
     // MARK: - Functions
-    class func configuredModule() -> UIViewController {
+    static func build() -> UIViewController {
         let view = AssistantViewController()
         let interactor = AssistantInteractor()
         let presenter = AssistantPresenter()

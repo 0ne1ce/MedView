@@ -8,9 +8,9 @@
 import Foundation
 import UIKit
 
-final class SettingsAssembly: NSObject {
+final class SettingsAssembly {
     // MARK: - Funtions
-    class func configuredModule() -> UIViewController {
+    static func build() -> UIViewController {
         let view = SettingsViewController()
         let interactor = SettingsInteractor()
         let presenter = SettingsPresenter()

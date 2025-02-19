@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-enum ParametersColors: String, CaseIterable {
+enum ParametersColorsTitles: String, CaseIterable {
     case bloodPressure = "Blood pressure"
     case pulse = "Pulse"
     case saturation = "Saturation"

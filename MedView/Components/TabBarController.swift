@@ -19,9 +19,9 @@ final class TabBarController: UITabBarController, UITabBarControllerDelegate {
     
     //MARK: - Private functions
     private func configureTabs() {
-        let parametersController = ParametersAssembly.configuredModule()
-        let assistantController = AssistantAssembly.configuredModule()
-        let helpController = HelpAssembly.configuredModule()
+        let parametersController = ParametersAssembly.build()
+        let assistantController = AssistantAssembly.build()
+        let helpController = HelpAssembly.build()
         
         let data = self.createNav(for: parametersController, with: "Data", UIImage(systemName: "heart.text.square"))
         let assistant = self.createNav(for: assistantController, with: "MV Assistant", UIImage(systemName: "stethoscope"))

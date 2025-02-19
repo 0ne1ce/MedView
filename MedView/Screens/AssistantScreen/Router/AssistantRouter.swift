@@ -14,7 +14,7 @@ final class AssistantRouter: AssistantRouterProtocol {
     
     // MARK: - Functions
     func showSettingsScreen() {
-        let settingsVC = SettingsAssembly.configuredModule()
+        let settingsVC = SettingsAssembly.build()
         settingsVC.hidesBottomBarWhenPushed = true
         view?.navigationController?.pushViewController(settingsVC, animated: true)
     }

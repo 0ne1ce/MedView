@@ -9,70 +9,49 @@ import Foundation
 import UIKit
 
 final class CustomNavigationBarView: UIView {
+    // MARK: - Constants
+    private enum Constants {
+        static let navigationBarBorderlineHeight: CGFloat = 1
+        static let titleLabelFontSize: CGFloat = 36
+        static let titleLabelHeight: CGFloat = 40
+        static let settingsButtonSize: CGFloat = 40
+        static let navigationBarItemOffset: CGFloat = 20
+        
+        static let settingsSymbol: String = "SettingsSymbol"
+    }
     // MARK: - Variables
-    let borderline: UIView = UIView()
-    let titleLabel: UILabel = UILabel()
-    let settingsButton: UIButton = UIButton(type: .custom)
+    var borderline: UIView = UIView()
+    var title: UILabel = UILabel()
+    var settingsButton: UIButton = UIButton(type: .custom)
     
     // MARK: - Initialization
     init() {
         super.init(frame: .zero)
-        configureUI()
+        //configureUI()
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // MARK: - Private functions
-    private func configureUI() {
-        backgroundColor = .white
-        borderline.backgroundColor = .lightGray
-        addSubview(borderline)
-        borderline.pinBottom(to: self.bottomAnchor)
-        borderline.pinLeft(to: self.leadingAnchor)
-        borderline.pinRight(to: self.trailingAnchor)
-        borderline.setHeight(Constants.CustomNavigationBarView.navigationBarBorderlineHeight)
-    }
-    
-    private func configureTitle() {
-        let font = UIFont.systemFont(ofSize: Constants.CustomNavigationBarView.titleLabelFontSize)
-        titleLabel.font = font.bold
-        titleLabel.textColor = .black
-        
-        addSubview(titleLabel)
-        titleLabel.pinLeft(to: self.leadingAnchor, Constants.CustomNavigationBarView.navigationBarItemOffset)
-        titleLabel.setHeight(Constants.CustomNavigationBarView.titleLabelHeight)
-        titleLabel.pinBottom(to: self.bottomAnchor, Constants.CustomNavigationBarView.navigationBarItemOffset)
-        titleLabel.pinRight(to: self.trailingAnchor)
-    }
-    
-    private func configureButton() {
-        let settingsImage = UIImage(named: Constants.CustomNavigationBarView.settingsSymbol)
-        settingsButton.titleLabel?.font = UIFont.systemFont(ofSize: Constants.CustomNavigationBarView.settingsButtonSize)
-        settingsButton.setTitleColor(.systemMint, for: .normal)
-        settingsButton.backgroundColor = .clear
-        settingsButton.setImage(settingsImage, for: .normal)
-        
-        
-        addSubview(settingsButton)
-        settingsButton.setWidth(Constants.CustomNavigationBarView.settingsButtonSize)
-        settingsButton.setHeight(Constants.CustomNavigationBarView.settingsButtonSize)
-        settingsButton.pinBottom(to: self.bottomAnchor, Constants.CustomNavigationBarView.navigationBarItemOffset)
-        settingsButton.pinRight(to: self.trailingAnchor, Constants.CustomNavigationBarView.navigationBarItemOffset)
-    }
-    
     // MARK: - Public functions
-    func configure(with title: String?, isSettingsButtonHidden: Bool) {
-        titleLabel.text = title
+    func confiugre(with viewModel: ParametersModels.LoadStart.ViewModel, _ isSettingsButtonHidden: Bool = false) {
+        title.attributedText = viewModel.titleText
+        title.font = viewModel.navigationTitleFont
         configureTitle()
+        
+        backgroundColor = viewModel.navigationBackgroundColor
+        borderline.backgroundColor = viewModel.borderlineColor
+        configureBorderline()
         if isSettingsButtonHidden == false {
+            settingsButton.setImage(viewModel.settingsImage, for: .normal)
             configureButton()
         }
     }
     
-    func configure(with attributedTitle: NSAttributedString?, isSettingsButtonHidden: Bool) {
-        titleLabel.attributedText = attributedTitle
+    func configure(with titleText: String?, _ isSettingsButtonHidden: Bool = false) {
+        title.text = titleText
         configureTitle()
         if isSettingsButtonHidden == false {
             configureButton()
@@ -82,4 +61,29 @@ final class CustomNavigationBarView: UIView {
     public func settingsButtonTarget(target: UIViewController, action: Selector) {
         settingsButton.addTarget(target, action: action, for: .touchUpInside)
     }
+    // MARK: - Private functions
+    private func configureBorderline() {
+        addSubview(borderline)
+        borderline.pinBottom(to: self)
+        borderline.pinLeft(to: self)
+        borderline.pinRight(to: self)
+        borderline.setHeight(Constants.navigationBarBorderlineHeight)
+    }
+    
+    private func configureTitle() {
+        addSubview(title)
+        title.pinLeft(to: self, Constants.navigationBarItemOffset)
+        title.setHeight(Constants.titleLabelHeight)
+        title.pinBottom(to: self, Constants.navigationBarItemOffset)
+        title.pinRight(to: self)
+    }
+    
+    private func configureButton() {
+        addSubview(settingsButton)
+        settingsButton.setWidth(Constants.settingsButtonSize)
+        settingsButton.setHeight(Constants.settingsButtonSize)
+        settingsButton.pinBottom(to: self, Constants.navigationBarItemOffset)
+        settingsButton.pinRight(to: self, Constants.navigationBarItemOffset)
+    }
+    
 }

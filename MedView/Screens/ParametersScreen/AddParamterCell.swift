@@ -9,6 +9,21 @@ import Foundation
 import UIKit
 
 final class AddParamterCell: UITableViewCell {
+    // MARK: - Constants
+    private enum Constants {
+        static let plusWrapRadius: CGFloat = 7
+        static let plusWrapOffsetV: CGFloat = 8
+        static let plusWrapWidth: CGFloat = 44
+        
+        static let parameterWrapOffsetH: CGFloat = 15
+        
+        static let parametersLabelFont: UIFont = .systemFont(ofSize: 20, weight: .medium)
+        
+        static let addLabelText: String = "Create custom parameter"
+        
+        static let addLabelLeftOffset: CGFloat = 17
+        static let addLabelRightOffset: CGFloat = 20
+    }
     // MARK: - Variables
     static let id: String = "AddParameterCell"
     private let plusWrap: UIView = UIView()
@@ -37,14 +52,14 @@ final class AddParamterCell: UITableViewCell {
     
     private func configureWrap() {
         plusWrap.backgroundColor = .white
-        plusWrap.layer.cornerRadius = ParametersConstants.plusWrapRadius
+        plusWrap.layer.cornerRadius = Constants.plusWrapRadius
         
         contentView.addSubview(plusWrap)
         
-        plusWrap.pinTop(to: self.contentView.topAnchor, ParametersConstants.plusWrapOffsetV)
-        plusWrap.pinBottom(to: self.contentView.bottomAnchor, ParametersConstants.plusWrapOffsetV)
-        plusWrap.pinLeft(to: self.contentView.leadingAnchor, ParametersConstants.parameterWrapOffsetH)
-        plusWrap.setWidth(ParametersConstants.plusWrapWidth)
+        plusWrap.pinTop(to: self.contentView.topAnchor, Constants.plusWrapOffsetV)
+        plusWrap.pinBottom(to: self.contentView.bottomAnchor, Constants.plusWrapOffsetV)
+        plusWrap.pinLeft(to: self.contentView.leadingAnchor, Constants.parameterWrapOffsetH)
+        plusWrap.setWidth(Constants.plusWrapWidth)
     }
     
     private func configureImage() {
@@ -58,15 +73,15 @@ final class AddParamterCell: UITableViewCell {
     }
     
     private func configureLabel() {
-        addLabel.text = ParametersConstants.addLabelText
+        addLabel.text = Constants.addLabelText
         addLabel.textColor = .black
-        addLabel.font = .systemFont(ofSize: ParametersConstants.parametersLabelFontSize, weight: .medium)
+        addLabel.font = Constants.parametersLabelFont
         addLabel.textAlignment = .left
         
         contentView.addSubview(addLabel)
         addLabel.pinTop(to: contentView.layoutMarginsGuide.topAnchor)
         addLabel.pinBottom(to: contentView.layoutMarginsGuide.bottomAnchor)
-        addLabel.pinLeft(to: plusWrap.trailingAnchor, ParametersConstants.addLabelLeftOffset)
-        addLabel.pinRight(to: contentView.trailingAnchor, ParametersConstants.addLabelRightOffset)
+        addLabel.pinLeft(to: plusWrap.trailingAnchor, Constants.addLabelLeftOffset)
+        addLabel.pinRight(to: contentView.trailingAnchor, Constants.addLabelRightOffset)
     }
 }

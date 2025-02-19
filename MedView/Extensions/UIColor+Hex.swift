@@ -20,14 +20,15 @@ extension UIColor {
         return (red, green, blue, alpha)
     }
     
-    //MARK: - Functions
-    func hexToRGB(hex: String) -> UIColor {
+    //MARK: - Initialization
+    convenience init(hex: String) {
         let formattedHex = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
         var rgb : UInt64 = 0
         Scanner (string: formattedHex).scanHexInt64(&rgb)
-        return UIColor(red: CGFloat((rgb & 0xFF0000) >> 16) / 255.0,
-                       green: CGFloat((rgb & 0x00FF00) >> 8) / 255.0,
-                       blue: CGFloat(rgb & 0x0000FF) / 255.0,
-                       alpha: 1)
+        let red = CGFloat((rgb & 0xFF0000) >> 16) / 255.0
+        let green = CGFloat((rgb & 0x00FF00) >> 8) / 255.0
+        let blue = CGFloat(rgb & 0x0000FF) / 255.0
+        let alpha = 1.0
+        self.init(red: red, green: green, blue: blue, alpha: alpha)
     }
 }

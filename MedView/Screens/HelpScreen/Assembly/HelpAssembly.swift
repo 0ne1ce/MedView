@@ -8,9 +8,9 @@
 import Foundation
 import UIKit
 
-final class HelpAssembly: NSObject {
+final class HelpAssembly {
     // MARK: - Functions
-    class func configuredModule() -> UIViewController {
+    static func build() -> UIViewController {
         let view = HelpViewController()
         let interactor = HelpInteractor()
         let presenter = HelpPresenter()

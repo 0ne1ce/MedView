@@ -9,59 +9,36 @@ import Foundation
 import UIKit
 
 final class ParametersPresenter: ParametersPresentationLogic {
+    // MARK: - Constants
+    private enum Constants {
+        static let backgroundLightHex: String = "F2F2F7"
+        
+        static let navigationTitleFont: UIFont = UIFont.systemFont(ofSize: 36)
+        
+        static let parametersTitleLabelHex: String = "999999"
+        static let parametersFont: UIFont = .systemFont(ofSize: 20, weight: .bold)
+    }
     // MARK: - Properties
     weak var view: ParametersDisplayLogic?
-    
-    // MARK: - Variables
-    var settingsButton: UIButton = UIButton()
-    var title: UILabel = UILabel()
-    var borderline: UIView = UIView()
-    var tableView: UITableView = UITableView()
-    var tableTitle: UILabel = UILabel()
-    
-    // MARK: - Private functions
-    private func configureButton() {
-        let settingsImage = ParametersConstants.settingsImage
-        settingsButton.backgroundColor = .clear
-        settingsButton.setImage(settingsImage, for: .normal)
-    }
-    
-    private func configureTable() {
-        tableView.backgroundColor = UIColor(hex: ParametersConstants.backgroundLightHex)
-        tableView.separatorStyle = .none
-        tableView.allowsSelection = true
-    }
-    
     // MARK: - Public Fuctions
-    func presentNavigationBar(response: ParametersModels.FetchNavigationBar.Response) {
-        title.attributedText = response.titleText
-        let font = ParametersConstants.navigationTitleFont
-        title.font = font.bold
-        borderline.backgroundColor = .lightGray
-        configureButton()
-        
-        let viewModel = ParametersModels.FetchNavigationBar.ViewModel(
-            title: title,
-            settingsButton: settingsButton,
-            backgroundColor: .white,
-            borderline: borderline
+    func presentStart(response: ParametersModels.LoadStart.Response) {
+        let viewModel = ParametersModels.LoadStart.ViewModel(
+            titleText: response.titleText,
+            tableBackgroundColor: UIColor(hex: Constants.backgroundLightHex),
+            tableTitleText: response.tableTitleText,
+            tableTitleColor: UIColor(hex: Constants.parametersTitleLabelHex),
+            tableTitleFont: Constants.parametersFont,
+            navigationTitleFont: Constants.navigationTitleFont.bold,
+            settingsImage: UIImage(named: response.settingsImageName),
+            navigationBackgroundColor: .white,
+            borderlineColor: .lightGray
         )
         
-        view?.displayNavigationBar(viewModel: viewModel)
+        view?.displayStart(viewModel: viewModel)
     }
     
-    func presentParameters(response: ParametersModels.FetchParameters.Response) {
-        tableTitle.text = response.tableTitleText
-        tableTitle.textColor = UIColor(hex: ParametersConstants.parametersTitleLabelHex)
-        tableTitle.textAlignment = .left
-        tableTitle.font = ParametersConstants.parametersFont
-        
-        configureTable()
-        let viewModel = ParametersModels.FetchParameters.ViewModel(
-            tableView: tableView,
-            tableTitle: tableTitle
-        )
-        
-        view?.displayParameters(viewModel: viewModel)
+    func presentSettings(response: ParametersModels.LoadSettings.Response) {
+        let viewModel = ParametersModels.LoadSettings.ViewModel()
+        view?.displaySettings(viewModel: viewModel)
     }
 }

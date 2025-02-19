@@ -10,6 +10,6 @@ import UIKit
 
 protocol ParametersDisplayLogic: AnyObject {
     // MARK: - Functions
-    func displayNavigationBar(viewModel: ParametersModels.FetchNavigationBar.ViewModel)
-    func displayParameters(viewModel: ParametersModels.FetchParameters.ViewModel)
+    func displayStart(viewModel: ParametersModels.LoadStart.ViewModel)
+    func displaySettings(viewModel: ParametersModels.LoadSettings.ViewModel)
 }

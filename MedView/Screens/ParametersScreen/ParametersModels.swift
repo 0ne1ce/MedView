@@ -9,31 +9,40 @@ import Foundation
 import UIKit
 
 enum ParametersModels {
-    
-    enum FetchNavigationBar {
+    enum LoadStart {
         struct Request {
             
         }
+        
         struct Response {
             var titleText: NSMutableAttributedString
+            var tableTitleText: String
+            var settingsImageName: String
         }
+        
         struct ViewModel {
-            var title: UILabel
-            var settingsButton: UIButton
-            var backgroundColor: UIColor
-            var borderline: UIView
+            var titleText: NSMutableAttributedString
+            var tableBackgroundColor: UIColor
+            var tableTitleText: String
+            var tableTitleColor: UIColor
+            var tableTitleFont: UIFont
+            var navigationTitleFont: UIFont
+            var settingsImage: UIImage?
+            var navigationBackgroundColor: UIColor
+            var borderlineColor: UIColor
         }
     }
-    enum FetchParameters {
+    enum LoadSettings {
         struct Request {
             
         }
+        
         struct Response {
-            var tableTitleText: String
+            
         }
+        
         struct ViewModel {
-            var tableView: UITableView
-            var tableTitle: UILabel
+            
         }
-    } 
+    }
 }

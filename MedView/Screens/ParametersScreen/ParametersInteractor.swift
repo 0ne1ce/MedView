@@ -8,7 +8,23 @@
 import Foundation
 import UIKit
 
-final class ParametersInteractor: ParametersBuisnessLogic {
+final class ParametersInteractor: NSObject, ParametersBuisnessLogic {    
+    // MARK: - Constants
+    private enum Constants {
+        static let medViewLabelText: String = "MedView"
+        static let tableTitleText: String = "Your health parameters"
+        static let settingsImageName: String = "SettingsSymbol"
+        
+        static let systemColorStringLocation: Int = 0
+        static let systemColorStringLength: Int = 3
+        static let mintColorStringLocation: Int = 3
+        static let mintColorStringLength: Int = 4
+        
+        static let numberOfSections: Int = 2
+        static let parameterCellCount: Int = 8
+        static let addParamterCellCount: Int = 1
+    }
+    
     // MARK: - Properties
     var presenter: ParametersPresentationLogic
     var worker: ParametersWorker
@@ -20,27 +36,31 @@ final class ParametersInteractor: ParametersBuisnessLogic {
     }
     
     // MARK: - Public functions
-    func fetchNavigationBar(request: ParametersModels.FetchNavigationBar.Request) {
-        let response = ParametersModels.FetchNavigationBar.Response(titleText: configuredTitle())
-        presenter.presentNavigationBar(response: response)
+    func loadStartData(request: ParametersModels.LoadStart.Request) {
+        let response = ParametersModels.LoadStart.Response(
+            titleText: configuredTitle(),
+            tableTitleText: Constants.tableTitleText,
+            settingsImageName: Constants.settingsImageName
+        )
+        presenter.presentStart(response: response)
     }
     
-    func fetchParameters(request: ParametersModels.FetchParameters.Request) {
-        let response = ParametersModels.FetchParameters.Response(tableTitleText: "Your health parameters")
-        presenter.presentParameters(response: response)
+    func loadSettings(request: ParametersModels.LoadSettings.Request) {
+        let response = ParametersModels.LoadSettings.Response()
+        presenter.presentSettings(response: response)
     }
     
     // MARK: - Private functions
     private func configuredTitle() -> NSMutableAttributedString {
-        let titleLabelText = ParametersConstants.medViewLabelText
+        let titleLabelText = Constants.medViewLabelText
         let attributedTitleText = NSMutableAttributedString(string: titleLabelText)
         attributedTitleText
             .addAttribute(
                 .foregroundColor,
                 value: UIColor.black,
                 range: NSRange(
-                    location: ParametersConstants.systemColorStringLocation,
-                    length: ParametersConstants.systemColorStringLength
+                    location: Constants.systemColorStringLocation,
+                    length: Constants.systemColorStringLength
                 )
             )
         attributedTitleText
@@ -48,10 +68,50 @@ final class ParametersInteractor: ParametersBuisnessLogic {
                 .foregroundColor,
                 value: UIColor.systemMint,
                 range: NSRange(
-                    location: ParametersConstants.mintColorStringLocation,
-                    length: ParametersConstants.mintColorStringLength
+                    location: Constants.mintColorStringLocation,
+                    length: Constants.mintColorStringLength
                 )
             )
         return attributedTitleText
+    }
+}
+
+extension ParametersInteractor: UITableViewDataSource {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return Constants.numberOfSections
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        switch section {
+        case 0:
+            return Constants.parameterCellCount
+        default:
+            return Constants.addParamterCellCount
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        switch indexPath.section {
+        case 0:
+            let cell = tableView.dequeueReusableCell(withIdentifier: ParameterCell.id, for: indexPath)
+            guard let parameterCell = cell as? ParameterCell else {
+                return cell
+            }
+            
+            let title = ParametersColorsTitles.allCases[indexPath.row].rawValue
+            guard let image = UIImage(named: title) else {
+                        fatalError("No image found for asset: \(title)")
+                    }
+            parameterCell.configure(with: image, and: title)
+            
+            return parameterCell
+        default:
+            let cell = tableView.dequeueReusableCell(withIdentifier: AddParamterCell.id, for: indexPath)
+            guard cell is AddParamterCell else {
+                return cell
+            }
+            
+            return cell
+        }
     }
 }
