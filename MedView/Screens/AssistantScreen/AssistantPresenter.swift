@@ -10,7 +10,7 @@ import UIKit
 
 final class AssistantPresenter: AssistantPresentationLogic {
     // MARK: - Constants
-    enum Constants {
+    private enum Constants {
         static let navigationTitleFont: UIFont = UIFont.systemFont(ofSize: 36).bold
     }
     // MARK: - Properties

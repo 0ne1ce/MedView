@@ -10,7 +10,7 @@ import UIKit
 
 final class AssistantInteractor: AssistantBuisnessLogic {
     // MARK: - Constants
-    enum Constants {
+    private enum Constants {
         static let assistantLabelText: String = "MV Assistant"
         static let settingsImageName: String = "SettingsSymbol"
     }

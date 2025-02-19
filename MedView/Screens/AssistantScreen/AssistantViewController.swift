@@ -10,7 +10,7 @@ import UIKit
 
 final class AssistantViewController: UIViewController, AssistantDisplayLogic {
     // MARK: - Constants
-    enum Constants {
+    private enum Constants {
         static let backgroundLightHex: String = "F2F2F7"
         
         static let navigationBarHeight: CGFloat = 120
