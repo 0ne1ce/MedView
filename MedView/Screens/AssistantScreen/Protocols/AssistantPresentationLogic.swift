@@ -10,5 +10,6 @@ import UIKit
 
 protocol AssistantPresentationLogic: AnyObject {
     // MARK: - Functions
-    
+    func presentStart(response: AssistantModels.LoadStart.Response)
+    func presentSettings(response: AssistantModels.LoadSettings.Response)
 }

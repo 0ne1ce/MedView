@@ -11,18 +11,11 @@ import UIKit
 final class AssistantAssembly {
     // MARK: - Functions
     static func build() -> UIViewController {
-        let view = AssistantViewController()
-        let interactor = AssistantInteractor()
         let presenter = AssistantPresenter()
-        
         let worker = AssistantWorker()
+        let interactor = AssistantInteractor(presenter: presenter, worker: worker)
         let router = AssistantRouter()
-        
-        view.router = router
-        view.interactor = interactor
-        
-        interactor.worker = worker
-        interactor.presenter = presenter
+        let view = AssistantViewController(interactor: interactor, router: router)
         
         presenter.view = view
         

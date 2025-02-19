@@ -10,5 +10,6 @@ import UIKit
 
 protocol AssistantDisplayLogic: AnyObject {
     // MARK: - Functions
-    
+    func displayStart(viewModel: AssistantModels.LoadStart.ViewModel)
+    func displaySettings(viewModel: AssistantModels.LoadSettings.ViewModel)
 }

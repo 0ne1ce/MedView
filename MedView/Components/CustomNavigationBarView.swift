@@ -50,6 +50,20 @@ final class CustomNavigationBarView: UIView {
         }
     }
     
+    func confiugre(with viewModel: AssistantModels.LoadStart.ViewModel, _ isSettingsButtonHidden: Bool = false) {
+        title.attributedText = NSAttributedString(string: viewModel.titleText)
+        title.font = viewModel.navigationTitleFont
+        configureTitle()
+        
+        backgroundColor = viewModel.navigationBackgroundColor
+        borderline.backgroundColor = viewModel.borderlineColor
+        configureBorderline()
+        if isSettingsButtonHidden == false {
+            settingsButton.setImage(viewModel.settingsImage, for: .normal)
+            configureButton()
+        }
+    }
+    
     func configure(with titleText: String?, _ isSettingsButtonHidden: Bool = false) {
         title.text = titleText
         configureTitle()

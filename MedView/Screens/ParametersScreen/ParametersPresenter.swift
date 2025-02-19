@@ -13,7 +13,7 @@ final class ParametersPresenter: ParametersPresentationLogic {
     private enum Constants {
         static let backgroundLightHex: String = "F2F2F7"
         
-        static let navigationTitleFont: UIFont = UIFont.systemFont(ofSize: 36)
+        static let navigationTitleFont: UIFont = UIFont.systemFont(ofSize: 36).bold
         
         static let parametersTitleLabelHex: String = "999999"
         static let parametersFont: UIFont = .systemFont(ofSize: 20, weight: .bold)
@@ -28,7 +28,7 @@ final class ParametersPresenter: ParametersPresentationLogic {
             tableTitleText: response.tableTitleText,
             tableTitleColor: UIColor(hex: Constants.parametersTitleLabelHex),
             tableTitleFont: Constants.parametersFont,
-            navigationTitleFont: Constants.navigationTitleFont.bold,
+            navigationTitleFont: Constants.navigationTitleFont,
             settingsImage: UIImage(named: response.settingsImageName),
             navigationBackgroundColor: .white,
             borderlineColor: .lightGray

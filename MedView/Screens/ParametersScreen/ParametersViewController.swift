@@ -25,12 +25,13 @@ final class ParametersViewController: UIViewController, ParametersDisplayLogic {
     // MARK: - Properties
     var interactor: ParametersBuisnessLogic
     var router: ParametersRouterProtocol
+    var navigationBar: CustomNavigationBarView = CustomNavigationBarView()
     
     // MARK: - Variables
-    var navigationBar: CustomNavigationBarView = CustomNavigationBarView()
     var tableView: UITableView = UITableView()
     var tableTitle: UILabel = UILabel()
     
+    // MARK: - Initialization
     init(interactor: ParametersBuisnessLogic, router: ParametersRouterProtocol) {
         self.interactor = interactor
         self.router = router

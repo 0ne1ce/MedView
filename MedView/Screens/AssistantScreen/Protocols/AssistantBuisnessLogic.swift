@@ -10,5 +10,6 @@ import UIKit
 
 protocol AssistantBuisnessLogic: AnyObject {
     // MARK: - Functions
-    
+    func loadStart(request: AssistantModels.LoadStart.Request)
+    func loadSettings(request: AssistantModels.LoadSettings.Request)
 }
