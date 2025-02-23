@@ -70,6 +70,7 @@ final class ParametersViewController: UIViewController, ParametersDisplayLogic {
     func displayStart(viewModel: ParametersModels.LoadStart.ViewModel) {
         navigationBar.confiugre(with: viewModel)
         configureSettingsButtonTarget()
+        
         view.addSubview(navigationBar)
         navigationBar.pinTop(to: view)
         navigationBar.setHeight(Constants.navigationBarHeight)
@@ -92,7 +93,6 @@ final class ParametersViewController: UIViewController, ParametersDisplayLogic {
         tableView.register(ParameterCell.self, forCellReuseIdentifier: ParameterCell.id)
         tableView.register(AddParamterCell.self, forCellReuseIdentifier: AddParamterCell.id)
         tableView.delegate = self
-        // TODO: - interactor - ds
         tableView.dataSource = interactor
         
         tableView.backgroundColor = viewModel.tableBackgroundColor

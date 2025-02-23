@@ -19,7 +19,7 @@ final class AssistantPresenter: AssistantPresentationLogic {
     // MARK: - Functions
     func presentStart(response: AssistantModels.LoadStart.Response) {
         let viewModel = AssistantModels.LoadStart.ViewModel(
-            titleText: response.titleText,
+            navigationTitle: response.titleText,
             settingsImage: UIImage(named: response.settingsImageName),
             navigationTitleFont: Constants.navigationTitleFont,
             navigationBackgroundColor: .white,

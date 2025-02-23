@@ -58,6 +58,7 @@ final class AssistantViewController: UIViewController, AssistantDisplayLogic {
     func displayStart(viewModel: AssistantModels.LoadStart.ViewModel) {
         navigationBar.confiugre(with: viewModel)
         configureSettingsButtonTarget()
+        
         view.addSubview(navigationBar)
         navigationBar.pinTop(to: view)
         navigationBar.setHeight(Constants.navigationBarHeight)

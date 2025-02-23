@@ -1,23 +1,24 @@
 //
-//  AssistantModels.swift
+//  HelpModels.swift
 //  MedView
 //
-//  Created by Алексей on 19.02.2025.
+//  Created by Алексей on 22.02.2025.
 //
+
 import Foundation
 import UIKit
 
-enum AssistantModels {
+enum HelpModels {
     enum LoadStart {
         struct Request {
             
         }
-        
+            
         struct Response {
             var titleText: NSMutableAttributedString
             var settingsImageName: String
         }
-        
+            
         struct ViewModel: NavigationTitleRepresentable {
             var navigationTitle: NSMutableAttributedString
             var settingsImage: UIImage?
@@ -26,7 +27,7 @@ enum AssistantModels {
             var borderlineColor: UIColor
         }
     }
-    
+        
     enum LoadSettings {
         struct Request {
             

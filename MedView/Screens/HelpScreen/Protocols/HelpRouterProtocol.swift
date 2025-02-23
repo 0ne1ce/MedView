@@ -9,5 +9,6 @@ import Foundation
 import UIKit
 
 protocol HelpRouterProtocol: AnyObject {
+    // MARK: - Functions
     func showSettingsScreen()
 }

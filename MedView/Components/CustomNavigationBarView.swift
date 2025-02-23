@@ -27,7 +27,6 @@ final class CustomNavigationBarView: UIView {
     // MARK: - Initialization
     init() {
         super.init(frame: .zero)
-        //configureUI()
     }
     
     @available(*, unavailable)
@@ -36,8 +35,8 @@ final class CustomNavigationBarView: UIView {
     }
     
     // MARK: - Public functions
-    func confiugre(with viewModel: ParametersModels.LoadStart.ViewModel, _ isSettingsButtonHidden: Bool = false) {
-        title.attributedText = viewModel.titleText
+    func confiugre(with viewModel: NavigationTitleRepresentable, _ isSettingsButtonHidden: Bool = false) {
+        title.attributedText = viewModel.navigationTitle
         title.font = viewModel.navigationTitleFont
         configureTitle()
         
@@ -46,28 +45,6 @@ final class CustomNavigationBarView: UIView {
         configureBorderline()
         if isSettingsButtonHidden == false {
             settingsButton.setImage(viewModel.settingsImage, for: .normal)
-            configureButton()
-        }
-    }
-    
-    func confiugre(with viewModel: AssistantModels.LoadStart.ViewModel, _ isSettingsButtonHidden: Bool = false) {
-        title.attributedText = NSAttributedString(string: viewModel.titleText)
-        title.font = viewModel.navigationTitleFont
-        configureTitle()
-        
-        backgroundColor = viewModel.navigationBackgroundColor
-        borderline.backgroundColor = viewModel.borderlineColor
-        configureBorderline()
-        if isSettingsButtonHidden == false {
-            settingsButton.setImage(viewModel.settingsImage, for: .normal)
-            configureButton()
-        }
-    }
-    
-    func configure(with titleText: String?, _ isSettingsButtonHidden: Bool = false) {
-        title.text = titleText
-        configureTitle()
-        if isSettingsButtonHidden == false {
             configureButton()
         }
     }

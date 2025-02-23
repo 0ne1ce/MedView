@@ -11,7 +11,7 @@ import UIKit
 final class AssistantInteractor: AssistantBuisnessLogic {
     // MARK: - Constants
     private enum Constants {
-        static let assistantLabelText: String = "MV Assistant"
+        static let assistantLabelText: NSMutableAttributedString = NSMutableAttributedString("MV Assistant")
         static let settingsImageName: String = "SettingsSymbol"
     }
     // MARK: - Properties

@@ -11,18 +11,12 @@ import UIKit
 final class HelpAssembly {
     // MARK: - Functions
     static func build() -> UIViewController {
-        let view = HelpViewController()
-        let interactor = HelpInteractor()
         let presenter = HelpPresenter()
-        
-        let router = HelpRouter()
         let worker = HelpWorker()
+        let interactor = HelpInteractor(presenter: presenter, worker: worker)
+        let router = HelpRouter()
+        let view = HelpViewController(interactor: interactor, router: router)
         
-        view.interactor = interactor
-        view.router = router
-        
-        interactor.presenter = presenter
-        interactor.worker = worker
         
         presenter.view = view
         

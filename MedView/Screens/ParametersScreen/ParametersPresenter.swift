@@ -23,7 +23,7 @@ final class ParametersPresenter: ParametersPresentationLogic {
     // MARK: - Public Fuctions
     func presentStart(response: ParametersModels.LoadStart.Response) {
         let viewModel = ParametersModels.LoadStart.ViewModel(
-            titleText: response.titleText,
+            navigationTitle: response.titleText,
             tableBackgroundColor: UIColor(hex: Constants.backgroundLightHex),
             tableTitleText: response.tableTitleText,
             tableTitleColor: UIColor(hex: Constants.parametersTitleLabelHex),

@@ -11,18 +11,12 @@ import UIKit
 final class SettingsAssembly {
     // MARK: - Funtions
     static func build() -> UIViewController {
-        let view = SettingsViewController()
-        let interactor = SettingsInteractor()
         let presenter = SettingsPresenter()
-        
-        let router = SettingsRouter()
         let worker = SettingsWorker()
+        let interactor = SettingsInteractor(presenter: presenter, worker: worker)
+        let router = SettingsRouter()
+        let view = SettingsViewController(interactor: interactor, router: router)
         
-        view.interactor = interactor
-        view.router = router
-        
-        interactor.presenter = presenter
-        interactor.worker = worker
         
         presenter.view = view
         

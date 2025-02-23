@@ -10,4 +10,6 @@ import UIKit
 
 protocol HelpBuisnessLogic: AnyObject {
     // MARK: - Functions
+    func loadStart(request: HelpModels.LoadStart.Request)
+    func loadSettings(request: HelpModels.LoadSettings.Request)
 }

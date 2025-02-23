@@ -9,19 +9,39 @@ import Foundation
 import UIKit
 
 final class HelpViewController: UIViewController, HelpDisplayLogic {
-    // MARK: - Properties
-    var interactor: (HelpBuisnessLogic & HelpDataStore)?
-    var router: HelpRouterProtocol?
-    var helpView: HelpView = HelpView()
-    
-    // MARK: - Lifecycle
-    override func loadView() {
-        view = helpView
+    // MARK: - Constants
+    private enum Constants {
+        static let backgroundLightHex: String = "F2F2F7"
+        
+        static let navigationBarHeight: CGFloat = 120
+        static let guideTextContent: String = "What can I do in the Data section? View a list of tracked parameters (e.g., heart rate, blood pressure, temperature, etc.). Tap on a parameter to open a graph showing its changes over a selected period."
+        static let guideTextFontSize: CGFloat = 24
+        static let guideTextLimit: Int = 0
+        static let guideTextFont = UIFont.systemFont(ofSize: 24)
     }
     
+    // MARK: - Properties
+    var interactor: HelpBuisnessLogic
+    var router: HelpRouterProtocol
+    var navigationBar: CustomNavigationBarView = CustomNavigationBarView()
+    
+    // MARK: - Initialization
+    init(interactor: HelpBuisnessLogic, router: HelpRouterProtocol) {
+        self.interactor = interactor
+        self.router = router
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    @available(*, unavailable)
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Lifecycle
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
+        loadStart()
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -34,17 +54,39 @@ final class HelpViewController: UIViewController, HelpDisplayLogic {
         configure()
     }
     
-    // MARK: - Private functions
-    private func configure() {
-        configureButtonTarget()
+    // MARK: - Public functions
+    func loadStart() {
+        let request = HelpModels.LoadStart.Request()
+        interactor.loadStart(request: request)
     }
     
-    private func configureButtonTarget() {
-        helpView.helpNavigation.settingsButtonTarget(target: self, action: #selector(settingsButtonPressed))
+    func displayStart(viewModel: HelpModels.LoadStart.ViewModel) {
+        navigationBar.confiugre(with: viewModel)
+        configureSettingsButtonTarget()
+        
+        view.addSubview(navigationBar)
+        navigationBar.pinTop(to: view)
+        navigationBar.setHeight(Constants.navigationBarHeight)
+        navigationBar.pinLeft(to: view)
+        navigationBar.pinRight(to: view)
+    }
+    
+    func displaySettings(viewModel: HelpModels.LoadSettings.ViewModel) {
+        router.showSettingsScreen()
+    }
+    
+    // MARK: - Private functions
+    private func configure() {
+        view.backgroundColor = UIColor(hex: Constants.backgroundLightHex)
+    }
+    
+    private func configureSettingsButtonTarget() {
+        navigationBar.settingsButtonTarget(target: self, action: #selector(settingsButtonPressed))
     }
     
     // MARK: - Actions
     @objc func settingsButtonPressed() {
-        router?.showSettingsScreen()
+        let request = HelpModels.LoadSettings.Request()
+        interactor.loadSettings(request: request)
     }
 }

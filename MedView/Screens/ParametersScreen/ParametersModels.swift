@@ -20,8 +20,8 @@ enum ParametersModels {
             var settingsImageName: String
         }
         
-        struct ViewModel {
-            var titleText: NSMutableAttributedString
+        struct ViewModel: NavigationTitleRepresentable {
+            var navigationTitle: NSMutableAttributedString
             var tableBackgroundColor: UIColor
             var tableTitleText: String
             var tableTitleColor: UIColor
