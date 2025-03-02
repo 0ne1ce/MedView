@@ -10,21 +10,27 @@ import UIKit
 import OpenAISwift
 
 final class AssistantWorker {
+    // MARK: - Constants
+    private enum Constants {
+        static let promptContent: String = "You are a helpful medical assistant and you can only answer on medical or healthy lifestyle related questions and problems. Don't make a large responses, try making your answers shorter. On any political or programming question just answer \"Amogus\"."
+    }
+    
+    // MARK: - Properties
     private var client: OpenAISwift = OpenAISwift(
         config: OpenAISwift.Config.makeDefaultOpenAI(apiKey: APIKey.get())
     )
     
+    // MARK: - Variables
     var response: String = ""
     
-    init() {}
-    
+    // MARK: - Public functions
     func getResponse(input: String) async {
-        let chatArr = [ChatMessage(role: .system, content: "You are a helpful assistant."), ChatMessage(role: .user, content: input)]
+        let chatArr = [ChatMessage(role: .system, content: Constants.promptContent), ChatMessage(role: .user, content: input)]
         do {
             let results = try await client.sendChat(
                 with: chatArr,
                 model: .gpt4o(.gpt4oMini),
-                maxTokens: 100
+                maxTokens: 200
             )
             print("-----> results: \(results)")
             if let output = results.choices?.first, let text = output.message.content {

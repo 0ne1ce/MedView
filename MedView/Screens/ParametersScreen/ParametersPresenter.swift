@@ -20,6 +20,7 @@ final class ParametersPresenter: ParametersPresentationLogic {
     }
     // MARK: - Properties
     weak var view: ParametersDisplayLogic?
+    
     // MARK: - Public Fuctions
     func presentStart(response: ParametersModels.LoadStart.Response) {
         let viewModel = ParametersModels.LoadStart.ViewModel(

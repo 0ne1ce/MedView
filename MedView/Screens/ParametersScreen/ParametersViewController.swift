@@ -8,6 +8,8 @@
 import Foundation
 import UIKit
 
+typealias TableCellAnimation = (UITableViewCell, IndexPath, UITableView) -> Void
+
 final class ParametersViewController: UIViewController, ParametersDisplayLogic {
     // MARK: - Constants
     private enum Constants {
@@ -15,11 +17,17 @@ final class ParametersViewController: UIViewController, ParametersDisplayLogic {
         
         static let tableViewTopOffset: CGFloat = 175
         static let heightForRow: CGFloat = 60
+        static let heightForRowAnimated: CGFloat = 100
         
         static let parametersOffsetBottom: CGFloat = 10
         static let parametersOffsetLeft: CGFloat = 20
         
         static let navigationBarHeight: CGFloat = 120
+        
+        static let usingSpringWithDampingValue: CGFloat = 0.65
+        static let initialSpringVelocityValue: CGFloat = 0.5
+        static let cellsAnimationDuration: CGFloat = 0.85
+        static let delayFactor: CGFloat = 0.05
     }
     
     // MARK: - Properties
@@ -126,6 +134,23 @@ final class ParametersViewController: UIViewController, ParametersDisplayLogic {
         generator.prepare()
         generator.selectionChanged()
     }
+    
+    private func moveUpBounceAnimation(rowHeight: CGFloat, duration: TimeInterval, delayFactor: Double) -> TableCellAnimation {
+        return { cell, indexPath, tableView in
+            cell.transform = CGAffineTransform(translationX: .zero, y: rowHeight)
+            UIView.animate(
+                withDuration: duration,
+                delay: delayFactor * Double(indexPath.row),
+                usingSpringWithDamping: Constants.usingSpringWithDampingValue,
+                initialSpringVelocity: Constants.initialSpringVelocityValue,
+                options: [.curveEaseInOut],
+                animations:  {
+                    cell.transform = CGAffineTransform(translationX: .zero, y: .zero)
+                }
+            )
+        }
+    }
+    
     // MARK: - Actions
     @objc func settingsButtonPressed() {
         let request = ParametersModels.LoadSettings.Request()
@@ -142,5 +167,15 @@ extension ParametersViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         triggerSelectionFeedback()
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let animation = moveUpBounceAnimation(
+            rowHeight: Constants.heightForRowAnimated,
+            duration: Constants.cellsAnimationDuration,
+            delayFactor: Constants.delayFactor
+        )
+        let animator = TableViewAnimator(animation: animation)
+        animator.animate(cell: cell, at: indexPath, for: tableView)
     }
 }

@@ -26,7 +26,7 @@ final class AssistantViewController: UIViewController, AssistantDisplayLogic {
         static let inputTextViewOffsetTop: CGFloat = 7
         static let inputTextViewOffsetBottom: CGFloat = 10
         
-        static let sendButtonAnimationTime: Double = 1.8
+        static let wrapAppearanceAnimationTime: Double = 0.4
         
         static let sendButtonWidth: CGFloat = 50
         static let sendButtonCornerRadius: CGFloat = 20
@@ -35,6 +35,7 @@ final class AssistantViewController: UIViewController, AssistantDisplayLogic {
         
         static let placeholderText: String = "Request"
     }
+    
     // MARK: - Properties
     var interactor: AssistantBuisnessLogic
     var router: AssistantRouterProtocol
@@ -76,6 +77,20 @@ final class AssistantViewController: UIViewController, AssistantDisplayLogic {
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        UIView.animate(
+            withDuration: Constants.wrapAppearanceAnimationTime,
+            animations: {[self] in
+                wrapAnimated()
+            },
+            completion: {
+                [weak self] _ in
+                self?.sendButton.isEnabled = true
+            }
+        )
     }
     
     // MARK: - Public functions
@@ -129,7 +144,8 @@ final class AssistantViewController: UIViewController, AssistantDisplayLogic {
     
     private func configureInputWrap(with viewModel: AssistantModels.LoadStart.ViewModel) {
         view.addSubview(inputWrap)
-        inputWrap.pinHorizontal(to: view, Constants.inputWrapOffsetH)
+        inputWrap.pinLeft(to: view, Constants.inputWrapOffsetH)
+        inputWrap.setWidth(Constants.sendButtonWidth)
         inputWrap.pinBottom(to: view.keyboardLayoutGuide.topAnchor, Constants.inputWrapBottomOffset)
         inputWrap.setHeight(Constants.inputWrapHeight)
         
@@ -138,6 +154,7 @@ final class AssistantViewController: UIViewController, AssistantDisplayLogic {
     }
     
     private func configureInputTextView(with viewModel: AssistantModels.LoadStart.ViewModel) {
+        inputTextView.translatesAutoresizingMaskIntoConstraints = false
         inputWrap.addSubview(inputTextView)
         inputTextView.pinLeft(to: inputWrap, Constants.inputTextViewOffsetLeft)
         inputTextView.pinRight(to: inputWrap, Constants.inputTextViewOffsetRight)
@@ -191,6 +208,12 @@ final class AssistantViewController: UIViewController, AssistantDisplayLogic {
         generator.selectionChanged()
     }
     
+    private func wrapAnimated() {
+        inputWrap.pinRight(to: view, Constants.inputWrapOffsetH)
+        
+        self.view.layoutIfNeeded()
+    }
+    
     // MARK: - Actions
     @objc func settingsButtonPressed() {
         let request = AssistantModels.LoadSettings.Request()
@@ -198,6 +221,7 @@ final class AssistantViewController: UIViewController, AssistantDisplayLogic {
     }
     
     @objc func sendButtonPressed() {
+        triggerSelectionFeedback()
         guard let inputTextMessage = inputTextView.text, !inputTextView.text.isEmpty, inputTextView.textColor != .lightGray else {
             return
         }
