@@ -9,6 +9,11 @@ import Foundation
 import UIKit
 
 final class TabBarController: UITabBarController, UITabBarControllerDelegate {
+    // MARK: - Constants
+    private enum Constants {
+        static let mainColorHex: String = "00C7C0"
+    }
+    
     // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,7 +49,7 @@ final class TabBarController: UITabBarController, UITabBarControllerDelegate {
         appearance.backgroundColor = .white
         tabBar.standardAppearance = appearance
         tabBar.scrollEdgeAppearance = appearance
-        tabBar.tintColor = .systemMint
+        tabBar.tintColor = UIColor(hex: Constants.mainColorHex)
     }
     
     private func triggerSelectionFeedback() {
