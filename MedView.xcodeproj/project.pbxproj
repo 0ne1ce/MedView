@@ -6,7 +6,13 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		8A7B88EE2D7390B400F9CA77 /* OpenAISwift in Frameworks */ = {isa = PBXBuildFile; productRef = 8A7B88ED2D7390B400F9CA77 /* OpenAISwift */; };
+		8A7B891D2D74863E00F9CA77 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 8A7B891C2D74863400F9CA77 /* .gitignore */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
+		8A7B891C2D74863400F9CA77 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		8AEC0A9F2D36A54D0022AC08 /* MedView.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MedView.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -36,6 +42,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8A7B88EE2D7390B400F9CA77 /* OpenAISwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -47,6 +54,7 @@
 			children = (
 				8AEC0AA12D36A54D0022AC08 /* MedView */,
 				8AEC0AA02D36A54D0022AC08 /* Products */,
+				8A7B891C2D74863400F9CA77 /* .gitignore */,
 			);
 			sourceTree = "<group>";
 		};
@@ -78,6 +86,7 @@
 			);
 			name = MedView;
 			packageProductDependencies = (
+				8A7B88ED2D7390B400F9CA77 /* OpenAISwift */,
 			);
 			productName = MedView;
 			productReference = 8AEC0A9F2D36A54D0022AC08 /* MedView.app */;
@@ -107,6 +116,9 @@
 			);
 			mainGroup = 8AEC0A962D36A54D0022AC08;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				8A7B88EC2D7390B300F9CA77 /* XCLocalSwiftPackageReference "../../../../OpenAISwift" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 8AEC0AA02D36A54D0022AC08 /* Products */;
 			projectDirPath = "";
@@ -122,6 +134,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8A7B891D2D74863E00F9CA77 /* .gitignore in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -335,6 +348,20 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCLocalSwiftPackageReference section */
+		8A7B88EC2D7390B300F9CA77 /* XCLocalSwiftPackageReference "../../../../OpenAISwift" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../../../../OpenAISwift;
+		};
+/* End XCLocalSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		8A7B88ED2D7390B400F9CA77 /* OpenAISwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = OpenAISwift;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 8AEC0A972D36A54D0022AC08 /* Project object */;
 }

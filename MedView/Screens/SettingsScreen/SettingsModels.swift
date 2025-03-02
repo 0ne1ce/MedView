@@ -22,6 +22,7 @@ enum SettingsModels {
             var navigationTitle: NSMutableAttributedString
             var settingsImage: UIImage?
             var navigationTitleFont: UIFont
+            var navigationTitleColor: UIColor?
             var navigationBackgroundColor: UIColor
             var borderlineColor: UIColor
         }

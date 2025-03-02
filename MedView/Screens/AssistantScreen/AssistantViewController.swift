@@ -14,11 +14,40 @@ final class AssistantViewController: UIViewController, AssistantDisplayLogic {
         static let backgroundLightHex: String = "F2F2F7"
         
         static let navigationBarHeight: CGFloat = 120
+        
+        static let inputWrapHeight: CGFloat = 50
+        static let inputWrapOffsetH: CGFloat = 15
+        static let inputWrapBottomOffset: CGFloat = 10
+        static let inputWrapCornerRadius: CGFloat = 20
+        
+        static let inputTextViewOffsetLeft: CGFloat = 20
+        static let inputTextViewOffsetRight: CGFloat = 50
+        static let inputTextViewRightOffsetAnimated: CGFloat = 50
+        static let inputTextViewOffsetTop: CGFloat = 7
+        static let inputTextViewOffsetBottom: CGFloat = 10
+        
+        static let sendButtonAnimationTime: Double = 1.8
+        
+        static let sendButtonWidth: CGFloat = 50
+        static let sendButtonCornerRadius: CGFloat = 20
+        
+        static let heightForRow: CGFloat = 30
+        
+        static let placeholderText: String = "Request"
     }
     // MARK: - Properties
     var interactor: AssistantBuisnessLogic
     var router: AssistantRouterProtocol
     var navigationBar: CustomNavigationBarView = CustomNavigationBarView()
+    
+    // MARK: - Variables
+    var inputWrap: UIView = UIView()
+    var inputTextView: UITextView = UITextView()
+    lazy var tapGestureRecognizer: UITapGestureRecognizer = {
+        return UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
+    }()
+    var sendButton: UIButton = UIButton(type: .custom)
+    var tableView: UITableView = UITableView()
     
     // MARK: - Initialization
     init(interactor: AssistantBuisnessLogic, router: AssistantRouterProtocol) {
@@ -64,19 +93,102 @@ final class AssistantViewController: UIViewController, AssistantDisplayLogic {
         navigationBar.setHeight(Constants.navigationBarHeight)
         navigationBar.pinLeft(to: view)
         navigationBar.pinRight(to: view)
+        
+        configureInputWrap(with: viewModel)
+        configureInputTextView(with: viewModel)
+        configureSendButton(with: viewModel)
+        configureTableView(with: viewModel)
     }
     
     func displaySettings(viewModel: AssistantModels.LoadSettings.ViewModel) {
         router.showSettingsScreen()
     }
     
+    func displayMessage(viewModel: AssistantModels.SendUserMessage.ViewModel) {
+        tableView.reloadData()
+        inputTextView.text = viewModel.placeholderText
+        inputTextView.textColor = viewModel.placeholderColor
+    }
+    
+    func displayAssistantMessage(viewModel: AssistantModels.SendAssistantMessage.ViewModel) {
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+        }
+    }
+    
     // MARK: - Private functions
     private func configure() {
         view.backgroundColor = UIColor(hex: Constants.backgroundLightHex)
+        view.addGestureRecognizer(tapGestureRecognizer)
+        tapGestureRecognizer.numberOfTapsRequired = 1
     }
     
     private func configureSettingsButtonTarget() {
         navigationBar.settingsButtonTarget(target: self, action: #selector(settingsButtonPressed))
+    }
+    
+    private func configureInputWrap(with viewModel: AssistantModels.LoadStart.ViewModel) {
+        view.addSubview(inputWrap)
+        inputWrap.pinHorizontal(to: view, Constants.inputWrapOffsetH)
+        inputWrap.pinBottom(to: view.keyboardLayoutGuide.topAnchor, Constants.inputWrapBottomOffset)
+        inputWrap.setHeight(Constants.inputWrapHeight)
+        
+        inputWrap.layer.cornerRadius = Constants.inputWrapCornerRadius
+        inputWrap.backgroundColor = viewModel.inputWrapBackgroundColor
+    }
+    
+    private func configureInputTextView(with viewModel: AssistantModels.LoadStart.ViewModel) {
+        inputWrap.addSubview(inputTextView)
+        inputTextView.pinLeft(to: inputWrap, Constants.inputTextViewOffsetLeft)
+        inputTextView.pinRight(to: inputWrap, Constants.inputTextViewOffsetRight)
+        inputTextView.pinTop(to: inputWrap, Constants.inputTextViewOffsetTop)
+        inputTextView.pinBottom(to: inputWrap, Constants.inputTextViewOffsetBottom)
+        
+        inputTextView.text = viewModel.placeholderText
+        inputTextView.textColor = viewModel.placeholderColor
+        inputTextView.font = viewModel.placeholderFont
+        inputTextView.isScrollEnabled = true
+        inputTextView.textContainer.maximumNumberOfLines = .zero
+        inputTextView.textContainer.lineBreakMode = .byWordWrapping
+        inputTextView.backgroundColor = viewModel.inputWrapBackgroundColor
+        
+        inputTextView.delegate = self
+    }
+    
+    private func configureSendButton(with viewModel: AssistantModels.LoadStart.ViewModel) {
+        inputWrap.addSubview(sendButton)
+        sendButton.pinRight(to: inputWrap)
+        sendButton.pinTop(to: inputWrap)
+        sendButton.pinBottom(to: inputWrap)
+        sendButton.setWidth(Constants.sendButtonWidth)
+        
+        sendButton.backgroundColor = viewModel.sendButtonColor
+        sendButton.setImage(UIImage(systemName: "arrow.up.heart"), for: .normal)
+        sendButton.tintColor = viewModel.sendButtonTintColor
+        sendButton.addTarget(self, action: #selector(sendButtonPressed), for: .touchUpInside)
+        sendButton.layer.cornerRadius = Constants.sendButtonCornerRadius
+    }
+    
+    private func configureTableView(with viewModel: AssistantModels.LoadStart.ViewModel) {
+        view.addSubview(tableView)
+        tableView.pinHorizontal(to: view)
+        tableView.pinTop(to: navigationBar.bottomAnchor)
+        tableView.pinBottom(to: inputWrap.topAnchor)
+        
+        tableView.register(AssistantMessageCell.self, forCellReuseIdentifier: AssistantMessageCell.reuseId)
+        tableView.register(UserMessageCell.self, forCellReuseIdentifier: UserMessageCell.reuseId)
+        
+        tableView.backgroundColor = viewModel.tableBackgroundColor
+        tableView.delegate = self
+        tableView.dataSource = interactor
+        tableView.separatorStyle = .none
+        tableView.estimatedRowHeight = Constants.heightForRow
+    }
+    
+    private func triggerSelectionFeedback() {
+        let generator = UISelectionFeedbackGenerator()
+        generator.prepare()
+        generator.selectionChanged()
     }
     
     // MARK: - Actions
@@ -85,4 +197,55 @@ final class AssistantViewController: UIViewController, AssistantDisplayLogic {
         interactor.loadSettings(request: request)
     }
     
+    @objc func sendButtonPressed() {
+        guard let inputTextMessage = inputTextView.text, !inputTextView.text.isEmpty, inputTextView.textColor != .lightGray else {
+            return
+        }
+        let userMessageRequest = AssistantModels.SendUserMessage.Request(userMessageText: inputTextMessage)
+        inputTextView.isEditable = false
+        inputTextView.isEditable = true
+        interactor.sendMessage(request: userMessageRequest)
+        
+        let assistantMessageRequest = AssistantModels.SendAssistantMessage.Request(userMessageText: inputTextMessage)
+        Task {
+            await interactor.sendAssistantMessage(request: assistantMessageRequest)
+        }
+    }
+    
+    @objc func handleTap(_ sender: UITapGestureRecognizer) {
+        if sender.state == .ended {
+            inputTextView.isEditable = false
+            inputTextView.isEditable = true
+        }
+    }
+}
+
+// MARK: - UITextViewDelegate
+extension AssistantViewController: UITextViewDelegate {
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if textView.textColor == .lightGray {
+            textView.text = ""
+            textView.textColor = .black
+        }
+    }
+    
+    func textViewDidEndEditing(_ textView: UITextView) {
+        if textView.text.isEmpty {
+            textView.text = Constants.placeholderText
+            textView.textColor = .lightGray
+            textView.resignFirstResponder()
+        }
+    }
+}
+
+// MARK: - UITableViewDelegate
+extension AssistantViewController: UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        triggerSelectionFeedback()
+    }
 }

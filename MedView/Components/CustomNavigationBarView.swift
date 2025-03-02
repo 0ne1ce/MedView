@@ -37,6 +37,9 @@ final class CustomNavigationBarView: UIView {
     // MARK: - Public functions
     func confiugre(with viewModel: NavigationTitleRepresentable, _ isSettingsButtonHidden: Bool = false) {
         title.attributedText = viewModel.navigationTitle
+        if let navigationTitleColor = viewModel.navigationTitleColor {
+            title.textColor = navigationTitleColor
+        }
         title.font = viewModel.navigationTitleFont
         configureTitle()
         

@@ -12,4 +12,6 @@ protocol AssistantPresentationLogic: AnyObject {
     // MARK: - Functions
     func presentStart(response: AssistantModels.LoadStart.Response)
     func presentSettings(response: AssistantModels.LoadSettings.Response)
+    func presentUserMessage(response: AssistantModels.SendUserMessage.Response)
+    func presentAssistantMessage(response: AssistantModels.SendAssistantMessage.Response)
 }

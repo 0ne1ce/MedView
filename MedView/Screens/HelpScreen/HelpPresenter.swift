@@ -23,6 +23,7 @@ final class HelpPresenter: HelpPresentationLogic {
             navigationTitle: response.titleText,
             settingsImage: UIImage(named: response.settingsImageName),
             navigationTitleFont: Constants.navigationTitleFont,
+            navigationTitleColor: .black,
             navigationBackgroundColor: .white,
             borderlineColor: .lightGray
         )

@@ -22,6 +22,7 @@ final class SettingsPresenter: SettingsPresentationLogic {
         let viewModel = SettingsModels.LoadStart.ViewModel(
             navigationTitle: response.titleText,
             navigationTitleFont: Constants.navigationTitleFont,
+            navigationTitleColor: .black,
             navigationBackgroundColor: .white,
             borderlineColor: .lightGray
         )
