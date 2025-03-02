@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8A11671D2D750242000AD80E /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 8A11671C2D750242000AD80E /* Lottie */; };
 		8A7B88EE2D7390B400F9CA77 /* OpenAISwift in Frameworks */ = {isa = PBXBuildFile; productRef = 8A7B88ED2D7390B400F9CA77 /* OpenAISwift */; };
 		8A7B891D2D74863E00F9CA77 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 8A7B891C2D74863400F9CA77 /* .gitignore */; };
 /* End PBXBuildFile section */
@@ -43,6 +44,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8A7B88EE2D7390B400F9CA77 /* OpenAISwift in Frameworks */,
+				8A11671D2D750242000AD80E /* Lottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -87,6 +89,7 @@
 			name = MedView;
 			packageProductDependencies = (
 				8A7B88ED2D7390B400F9CA77 /* OpenAISwift */,
+				8A11671C2D750242000AD80E /* Lottie */,
 			);
 			productName = MedView;
 			productReference = 8AEC0A9F2D36A54D0022AC08 /* MedView.app */;
@@ -118,6 +121,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				8A7B88EC2D7390B300F9CA77 /* XCLocalSwiftPackageReference "../../../../OpenAISwift" */,
+				8A11671B2D750242000AD80E /* XCRemoteSwiftPackageReference "lottie-spm" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 8AEC0AA02D36A54D0022AC08 /* Products */;
@@ -356,7 +360,23 @@
 		};
 /* End XCLocalSwiftPackageReference section */
 
+/* Begin XCRemoteSwiftPackageReference section */
+		8A11671B2D750242000AD80E /* XCRemoteSwiftPackageReference "lottie-spm" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/airbnb/lottie-spm.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.5.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
 /* Begin XCSwiftPackageProductDependency section */
+		8A11671C2D750242000AD80E /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 8A11671B2D750242000AD80E /* XCRemoteSwiftPackageReference "lottie-spm" */;
+			productName = Lottie;
+		};
 		8A7B88ED2D7390B400F9CA77 /* OpenAISwift */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = OpenAISwift;

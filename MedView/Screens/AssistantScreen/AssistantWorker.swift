@@ -12,7 +12,7 @@ import OpenAISwift
 final class AssistantWorker {
     // MARK: - Constants
     private enum Constants {
-        static let promptContent: String = "You are a helpful medical assistant and you can only answer on medical or healthy lifestyle related questions and problems. Don't make a large responses, try making your answers shorter. On any political or programming question just answer \"Amogus\"."
+        static let promptContent: String = "You are a helpful medical assistant and you can only answer on medical or healthy lifestyle related questions and problems. Don't make a large responses, try making your answers shorter, ensure that your answer is no more than 300 tokens. On any political or programming question just answer \"Amogus\"."
     }
     
     // MARK: - Properties
@@ -30,7 +30,7 @@ final class AssistantWorker {
             let results = try await client.sendChat(
                 with: chatArr,
                 model: .gpt4o(.gpt4oMini),
-                maxTokens: 200
+                maxTokens: 300
             )
             print("-----> results: \(results)")
             if let output = results.choices?.first, let text = output.message.content {

@@ -18,9 +18,8 @@ final class AssistantMessageCell: UITableViewCell {
         
         static let sendButtonColorHex: String = "00C7C0"
         
-        static let messageTextLabelOffsetH: CGFloat = 10
-        static let messageTextLabelOffsetV: CGFloat = 7
-        static let messageTextLabelFont: UIFont = UIFont.systemFont(ofSize: 18)
+        static let messageTextViewOffsetH: CGFloat = 10
+        static let messageTextViewFont: UIFont = UIFont.systemFont(ofSize: 18)
     }
     
     // MARK: - Properties
@@ -28,7 +27,7 @@ final class AssistantMessageCell: UITableViewCell {
     
     // MARK: - Variables
     var messageBubble: UIView = UIView()
-    var messageTextLabel: UILabel = UILabel()
+    var messageTextView: UITextView = UITextView()
     
     // MARK: - Initialization
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -42,7 +41,7 @@ final class AssistantMessageCell: UITableViewCell {
     }
     // MARK: - Public functions
     func configure(with message: String) {
-        messageTextLabel.text = message
+        messageTextView.text = message
     }
     
     // MARK: - Private functions
@@ -66,13 +65,17 @@ final class AssistantMessageCell: UITableViewCell {
     }
     
     private func configureWrapTextLabel() {
-        messageBubble.addSubview(messageTextLabel)
-        messageTextLabel.pinHorizontal(to: messageBubble, Constants.messageTextLabelOffsetH)
-        messageTextLabel.pinVertical(to: messageBubble, Constants.messageTextLabelOffsetV)
+        messageBubble.addSubview(messageTextView)
+        messageTextView.pinHorizontal(to: messageBubble, Constants.messageTextViewOffsetH)
+        messageTextView.pinVertical(to: messageBubble)
         
-        messageTextLabel.textColor = .black
-        messageTextLabel.font = Constants.messageTextLabelFont
-        messageTextLabel.textAlignment = .left
-        messageTextLabel.numberOfLines = .zero
+        messageTextView.backgroundColor = .white
+        messageTextView.layer.cornerRadius = Constants.messageBubbleCornerRadius
+        messageTextView.textColor = .black
+        messageTextView.font = Constants.messageTextViewFont
+        messageTextView.textAlignment = .left
+        messageTextView.isScrollEnabled = false
+        messageTextView.isEditable = false
+        messageTextView.isSelectable = true
     }
 }

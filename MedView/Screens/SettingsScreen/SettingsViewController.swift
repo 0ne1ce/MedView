@@ -12,6 +12,7 @@ final class SettingsViewController: UIViewController, SettingsDisplayLogic {
     // MARK: - Constants
     private enum Constants {
         static let backgroundLightHex: String = "F2F2F7"
+        static let mainColorHex: String = "00C7C0"
         
         static let navigationBarHeight: CGFloat = 155
     }
@@ -70,8 +71,8 @@ final class SettingsViewController: UIViewController, SettingsDisplayLogic {
         appearance.configureWithTransparentBackground()
         appearance.shadowColor = .clear
         
-        navigationController?.navigationBar.tintColor = .systemMint
-        appearance.backButtonAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor.systemMint]
+        navigationController?.navigationBar.tintColor = UIColor(hex: Constants.mainColorHex)
+        appearance.backButtonAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor(hex: Constants.mainColorHex)]
         navigationController?.navigationBar.standardAppearance = appearance
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
     }

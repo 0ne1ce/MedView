@@ -18,9 +18,8 @@ final class UserMessageCell: UITableViewCell {
         
         static let sendButtonColorHex: String = "00C7C0"
         
-        static let messageTextLabelOffsetH: CGFloat = 10
-        static let messageTextLabelOffsetV: CGFloat = 7
-        static let messageTextLabelFont: UIFont = UIFont.systemFont(ofSize: 18)
+        static let messageTextViewOffsetH: CGFloat = 10
+        static let messageTextViewFont: UIFont = UIFont.systemFont(ofSize: 18)
     }
     
     // MARK: - Properties
@@ -28,7 +27,7 @@ final class UserMessageCell: UITableViewCell {
     
     // MARK: - Variables
     var messageBubble: UIView = UIView()
-    var messageTextLabel: UILabel = UILabel()
+    var messageTextView: UITextView = UITextView()
     
     // MARK: - Initialization
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -43,7 +42,7 @@ final class UserMessageCell: UITableViewCell {
     
     // MARK: - Public funtions
     func configure(with message: String) {
-        messageTextLabel.text = message
+        messageTextView.text = message
     }
     
     // MARK: - Private functions
@@ -67,14 +66,17 @@ final class UserMessageCell: UITableViewCell {
     }
     
     private func configureWrapTextLabel() {
-        messageBubble.addSubview(messageTextLabel)
-        messageTextLabel.pinHorizontal(to: messageBubble, Constants.messageTextLabelOffsetH)
-        messageTextLabel.pinVertical(to: messageBubble, Constants.messageTextLabelOffsetV)
+        messageBubble.addSubview(messageTextView)
+        messageTextView.pinHorizontal(to: messageBubble, Constants.messageTextViewOffsetH)
+        messageTextView.pinVertical(to: messageBubble)
         
-        messageTextLabel.text = "Test"
-        messageTextLabel.textColor = .white
-        messageTextLabel.font = Constants.messageTextLabelFont
-        messageTextLabel.textAlignment = .left
-        messageTextLabel.numberOfLines = .zero
+        messageTextView.backgroundColor = UIColor(hex: Constants.sendButtonColorHex)
+        messageTextView.layer.cornerRadius = Constants.messageBubbleCornerRadius
+        messageTextView.textColor = .white
+        messageTextView.font = Constants.messageTextViewFont
+        messageTextView.textAlignment = .left
+        messageTextView.isScrollEnabled = false
+        messageTextView.isEditable = false
+        messageTextView.isSelectable = true
     }
 }
