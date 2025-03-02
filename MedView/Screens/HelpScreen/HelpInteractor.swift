@@ -13,6 +13,7 @@ final class HelpInteractor: HelpBuisnessLogic {
     private enum Constants {
         static let helpLabelText: NSMutableAttributedString = NSMutableAttributedString("FAQ and guide")
         static let settingsImageName: String = "SettingsSymbol"
+        static let animationName: String = "HealthLoadAnimation"
     }
     
     // MARK: - Properties
@@ -29,7 +30,8 @@ final class HelpInteractor: HelpBuisnessLogic {
     func loadStart(request: HelpModels.LoadStart.Request) {
         let response = HelpModels.LoadStart.Response(
             titleText: Constants.helpLabelText,
-            settingsImageName: Constants.settingsImageName
+            settingsImageName: Constants.settingsImageName,
+            animationName: Constants.animationName
         )
         presenter.presentStart(response: response)
     }

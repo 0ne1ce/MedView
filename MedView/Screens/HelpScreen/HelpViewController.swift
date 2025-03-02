@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import Lottie
 
 final class HelpViewController: UIViewController, HelpDisplayLogic {
     // MARK: - Constants
@@ -18,6 +19,8 @@ final class HelpViewController: UIViewController, HelpDisplayLogic {
         static let guideTextFontSize: CGFloat = 24
         static let guideTextLimit: Int = 0
         static let guideTextFont = UIFont.systemFont(ofSize: 24)
+        
+        static let animationSize: CGFloat = 200
     }
     
     // MARK: - Properties
@@ -69,6 +72,15 @@ final class HelpViewController: UIViewController, HelpDisplayLogic {
         navigationBar.setHeight(Constants.navigationBarHeight)
         navigationBar.pinLeft(to: view)
         navigationBar.pinRight(to: view)
+        
+        let animationView = LottieAnimationView(name: viewModel.animationName)
+        animationView.contentMode = .scaleAspectFit
+        animationView.loopMode = .autoReverse
+        animationView.play()
+        view.addSubview(animationView)
+        animationView.pinCenter(to: view)
+        animationView.setWidth(Constants.animationSize)
+        animationView.setHeight(Constants.animationSize)
     }
     
     func displaySettings(viewModel: HelpModels.LoadSettings.ViewModel) {

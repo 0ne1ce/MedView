@@ -17,6 +17,7 @@ enum HelpModels {
         struct Response {
             var titleText: NSMutableAttributedString
             var settingsImageName: String
+            var animationName: String
         }
             
         struct ViewModel: NavigationTitleRepresentable {
@@ -26,6 +27,7 @@ enum HelpModels {
             var navigationTitleColor: UIColor?
             var navigationBackgroundColor: UIColor
             var borderlineColor: UIColor
+            var animationName: String
         }
     }
         
