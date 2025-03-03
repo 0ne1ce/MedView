@@ -26,7 +26,6 @@ enum HelpModels {
             var navigationTitleFont: UIFont
             var navigationTitleColor: UIColor?
             var navigationBackgroundColor: UIColor
-            var borderlineColor: UIColor
             var animationName: String
         }
     }

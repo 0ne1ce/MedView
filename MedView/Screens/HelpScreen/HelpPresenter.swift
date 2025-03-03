@@ -25,7 +25,6 @@ final class HelpPresenter: HelpPresentationLogic {
             navigationTitleFont: Constants.navigationTitleFont,
             navigationTitleColor: .black,
             navigationBackgroundColor: .white,
-            borderlineColor: .lightGray,
             animationName: response.animationName
         )
         view?.displayStart(viewModel: viewModel)

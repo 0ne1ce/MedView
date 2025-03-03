@@ -13,5 +13,4 @@ protocol NavigationTitleRepresentable {
     var navigationTitleColor: UIColor? { get }
     var settingsImage: UIImage? { get }
     var navigationBackgroundColor: UIColor { get }
-    var borderlineColor: UIColor { get }
 }

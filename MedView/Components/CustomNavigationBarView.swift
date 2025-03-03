@@ -20,7 +20,6 @@ final class CustomNavigationBarView: UIView {
         static let settingsSymbol: String = "SettingsSymbol"
     }
     // MARK: - Variables
-    var borderline: UIView = UIView()
     var title: UILabel = UILabel()
     var settingsButton: UIButton = UIButton(type: .custom)
     
@@ -44,8 +43,6 @@ final class CustomNavigationBarView: UIView {
         configureTitle()
         
         backgroundColor = viewModel.navigationBackgroundColor
-        borderline.backgroundColor = viewModel.borderlineColor
-        configureBorderline()
         if isSettingsButtonHidden == false {
             settingsButton.setImage(viewModel.settingsImage, for: .normal)
             configureButton()
@@ -56,14 +53,6 @@ final class CustomNavigationBarView: UIView {
         settingsButton.addTarget(target, action: action, for: .touchUpInside)
     }
     // MARK: - Private functions
-    private func configureBorderline() {
-        addSubview(borderline)
-        borderline.pinBottom(to: self)
-        borderline.pinLeft(to: self)
-        borderline.pinRight(to: self)
-        borderline.setHeight(Constants.navigationBarBorderlineHeight)
-    }
-    
     private func configureTitle() {
         addSubview(title)
         title.pinLeft(to: self, Constants.navigationBarItemOffset)

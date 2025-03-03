@@ -30,7 +30,6 @@ enum ParametersModels {
             var navigationTitleColor: UIColor?
             var settingsImage: UIImage?
             var navigationBackgroundColor: UIColor
-            var borderlineColor: UIColor
         }
     }
     enum LoadSettings {

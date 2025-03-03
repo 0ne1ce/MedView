@@ -8,6 +8,7 @@
 import Foundation
 import UIKit
 
+// MARK: - Font methods
 extension UIFont {
 
     var bold: UIFont {

@@ -23,8 +23,7 @@ final class SettingsPresenter: SettingsPresentationLogic {
             navigationTitle: response.titleText,
             navigationTitleFont: Constants.navigationTitleFont,
             navigationTitleColor: .black,
-            navigationBackgroundColor: .white,
-            borderlineColor: .lightGray
+            navigationBackgroundColor: .white
         )
         view?.displayStart(viewModel: viewModel)
     }

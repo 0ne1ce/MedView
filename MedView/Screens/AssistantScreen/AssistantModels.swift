@@ -29,7 +29,6 @@ enum AssistantModels {
             var navigationTitleFont: UIFont
             var navigationTitleColor: UIColor?
             var navigationBackgroundColor: UIColor
-            var borderlineColor: UIColor
             var sendButtonColor: UIColor
             var sendButtonTintColor: UIColor
             var tableBackgroundColor: UIColor

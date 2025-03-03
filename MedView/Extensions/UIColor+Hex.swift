@@ -7,7 +7,7 @@
 import Foundation
 import UIKit
 
-// MARK: - UIColor
+// MARK: - Color convertation methods
 extension UIColor {
     //MARK: - Variables
     var rgba: (red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) {

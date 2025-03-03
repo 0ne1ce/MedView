@@ -31,8 +31,7 @@ final class ParametersPresenter: ParametersPresentationLogic {
             tableTitleFont: Constants.parametersFont,
             navigationTitleFont: Constants.navigationTitleFont,
             settingsImage: UIImage(named: response.settingsImageName),
-            navigationBackgroundColor: .white,
-            borderlineColor: .lightGray
+            navigationBackgroundColor: .white
         )
         
         view?.displayStart(viewModel: viewModel)

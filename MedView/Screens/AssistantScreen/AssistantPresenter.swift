@@ -32,7 +32,6 @@ final class AssistantPresenter: AssistantPresentationLogic {
             navigationTitleFont: Constants.navigationTitleFont,
             navigationTitleColor: .black,
             navigationBackgroundColor: .white,
-            borderlineColor: .lightGray,
             sendButtonColor: UIColor(hex: Constants.sendButtonColorHex),
             sendButtonTintColor: .white,
             tableBackgroundColor: .clear
