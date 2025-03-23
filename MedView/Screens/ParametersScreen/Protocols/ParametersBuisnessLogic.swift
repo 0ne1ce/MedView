@@ -12,4 +12,5 @@ protocol ParametersBuisnessLogic: AnyObject, UITableViewDataSource {
     // MARK: - Functions
     func loadStartData(request: ParametersModels.LoadStart.Request)
     func loadSettings(request: ParametersModels.LoadSettings.Request)
+    func loadParameter(request: ParametersModels.LoadParameter.Request)
 }

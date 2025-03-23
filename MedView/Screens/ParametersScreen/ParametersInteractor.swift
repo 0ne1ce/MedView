@@ -52,6 +52,11 @@ final class ParametersInteractor: NSObject, ParametersBuisnessLogic {
         presenter.presentSettings(response: response)
     }
     
+    func loadParameter(request: ParametersModels.LoadParameter.Request) {
+        let response = ParametersModels.LoadParameter.Response()
+        presenter.presentParameter(response: response)
+    }
+    
     // MARK: - Private functions
     private func configuredTitle() -> NSMutableAttributedString {
         let titleLabelText = Constants.medViewLabelText

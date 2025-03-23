@@ -93,6 +93,12 @@ final class ParametersViewController: UIViewController, ParametersDisplayLogic {
     func displaySettings(viewModel: ParametersModels.LoadSettings.ViewModel) {
         router.showSettingsScreen()
     }
+    
+    func displayParamter(viewModel: ParametersModels.LoadParameter.ViewModel) {
+        router.showParameter()
+    }
+    
+    
     // MARK: - Private functions
     private func configure() {
         view.backgroundColor = UIColor(hex: Constants.backgroundLightHex)
@@ -165,9 +171,11 @@ extension ParametersViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return Constants.heightForRow
     }
-    
-    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         triggerSelectionFeedback()
+        let request = ParametersModels.LoadParameter.Request()
+        interactor.loadParameter(request: request)
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {

@@ -18,4 +18,9 @@ final class ParametersRouter: ParametersRouterProtocol {
         settingsVC.hidesBottomBarWhenPushed = true
         view?.navigationController?.pushViewController(settingsVC, animated: true)
     }
+    
+    func showParameter() {
+        let medParameterVC = MedParameterAssembly.build()
+        view?.present(medParameterVC, animated: true)
+    }
 }

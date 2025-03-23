@@ -12,4 +12,5 @@ protocol ParametersPresentationLogic: AnyObject {
     // MARK: - Functions
     func presentStart(response: ParametersModels.LoadStart.Response)
     func presentSettings(response: ParametersModels.LoadSettings.Response)
+    func presentParameter(response: ParametersModels.LoadParameter.Response)
 }

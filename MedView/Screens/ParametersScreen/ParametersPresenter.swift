@@ -41,4 +41,9 @@ final class ParametersPresenter: ParametersPresentationLogic {
         let viewModel = ParametersModels.LoadSettings.ViewModel()
         view?.displaySettings(viewModel: viewModel)
     }
+    
+    func presentParameter(response: ParametersModels.LoadParameter.Response) {
+        let viewModel = ParametersModels.LoadParameter.ViewModel()
+        view?.displayParamter(viewModel: viewModel)
+    }
 }

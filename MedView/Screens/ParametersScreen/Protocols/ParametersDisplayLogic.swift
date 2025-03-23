@@ -12,4 +12,5 @@ protocol ParametersDisplayLogic: AnyObject {
     // MARK: - Functions
     func displayStart(viewModel: ParametersModels.LoadStart.ViewModel)
     func displaySettings(viewModel: ParametersModels.LoadSettings.ViewModel)
+    func displayParamter(viewModel: ParametersModels.LoadParameter.ViewModel)
 }

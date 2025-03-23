@@ -32,7 +32,22 @@ enum ParametersModels {
             var navigationBackgroundColor: UIColor
         }
     }
+    
     enum LoadSettings {
+        struct Request {
+            
+        }
+        
+        struct Response {
+            
+        }
+        
+        struct ViewModel {
+            
+        }
+    }
+    
+    enum LoadParameter {
         struct Request {
             
         }

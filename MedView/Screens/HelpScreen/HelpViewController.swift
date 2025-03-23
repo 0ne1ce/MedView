@@ -15,7 +15,6 @@ final class HelpViewController: UIViewController, HelpDisplayLogic {
         static let backgroundLightHex: String = "F2F2F7"
         
         static let navigationBarHeight: CGFloat = 120
-        static let guideTextContent: String = "What can I do in the Data section? View a list of tracked parameters (e.g., heart rate, blood pressure, temperature, etc.). Tap on a parameter to open a graph showing its changes over a selected period."
         static let guideTextFontSize: CGFloat = 24
         static let guideTextLimit: Int = 0
         static let guideTextFont = UIFont.systemFont(ofSize: 24)
