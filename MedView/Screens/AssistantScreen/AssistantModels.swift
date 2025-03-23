@@ -17,6 +17,7 @@ enum AssistantModels {
             var titleText: NSMutableAttributedString
             var settingsImageName: String
             var placeholderText: String
+            var animationName: String
         }
         
         struct ViewModel: NavigationTitleRepresentable {
@@ -32,6 +33,7 @@ enum AssistantModels {
             var sendButtonColor: UIColor
             var sendButtonTintColor: UIColor
             var tableBackgroundColor: UIColor
+            var animationName: String
         }
     }
     

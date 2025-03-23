@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import Lottie
 
 final class AssistantViewController: UIViewController, AssistantDisplayLogic {
     // MARK: - Constants
@@ -34,6 +35,8 @@ final class AssistantViewController: UIViewController, AssistantDisplayLogic {
         static let heightForRow: CGFloat = 30
         
         static let placeholderText: String = "Request"
+        
+        static let animationSize: CGFloat = 40
     }
     
     // MARK: - Properties
@@ -100,7 +103,8 @@ final class AssistantViewController: UIViewController, AssistantDisplayLogic {
     }
     
     func displayStart(viewModel: AssistantModels.LoadStart.ViewModel) {
-        navigationBar.confiugre(with: viewModel)
+        let animatedIcon = configureAnimatedIcon(with: viewModel)
+        navigationBar.configure(with: viewModel, animatedIcon)
         configureSettingsButtonTarget()
         
         view.addSubview(navigationBar)
@@ -212,6 +216,17 @@ final class AssistantViewController: UIViewController, AssistantDisplayLogic {
         inputWrap.pinRight(to: view, Constants.inputWrapOffsetH)
         
         self.view.layoutIfNeeded()
+    }
+    
+    private func configureAnimatedIcon(with viewModel: AssistantModels.LoadStart.ViewModel) -> UIView {
+        let animationView = LottieAnimationView(name: viewModel.animationName)
+        animationView.contentMode = .scaleAspectFit
+        animationView.loopMode = .autoReverse
+        animationView.play()
+        animationView.setWidth(Constants.animationSize)
+        animationView.setHeight(Constants.animationSize)
+        
+        return animationView
     }
     
     // MARK: - Actions

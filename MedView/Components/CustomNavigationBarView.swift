@@ -34,7 +34,7 @@ final class CustomNavigationBarView: UIView {
     }
     
     // MARK: - Public functions
-    func confiugre(with viewModel: NavigationTitleRepresentable, _ isSettingsButtonHidden: Bool = false) {
+    func configure(with viewModel: NavigationTitleRepresentable, _ isSettingsButtonHidden: Bool = false) {
         title.attributedText = viewModel.navigationTitle
         if let navigationTitleColor = viewModel.navigationTitleColor {
             title.textColor = navigationTitleColor
@@ -47,6 +47,16 @@ final class CustomNavigationBarView: UIView {
             settingsButton.setImage(viewModel.settingsImage, for: .normal)
             configureButton()
         }
+        if viewModel.navigationTitle == NSMutableAttributedString("FAQ and guide") {
+            title.pinRight(to: settingsButton.leadingAnchor)
+        }
+    }
+    
+    func configure(with viewModel: NavigationTitleRepresentable, _ animatedIcon: UIView) {
+        configure(with: viewModel)
+        addSubview(animatedIcon)
+        animatedIcon.pinLeft(to: title.trailingAnchor)
+        animatedIcon.pinBottom(to: self, Constants.navigationBarItemOffset)
     }
     
     public func settingsButtonTarget(target: UIViewController, action: Selector) {
@@ -58,7 +68,7 @@ final class CustomNavigationBarView: UIView {
         title.pinLeft(to: self, Constants.navigationBarItemOffset)
         title.setHeight(Constants.titleLabelHeight)
         title.pinBottom(to: self, Constants.navigationBarItemOffset)
-        title.pinRight(to: self)
+        title.pinRight(to: self.centerXAnchor, Constants.navigationBarItemOffset)
     }
     
     private func configureButton() {

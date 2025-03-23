@@ -52,7 +52,7 @@ final class SettingsViewController: UIViewController, SettingsDisplayLogic {
     }
     
     func displayStart(viewModel: SettingsModels.LoadStart.ViewModel) {
-        navigationBar.confiugre(with: viewModel, true)
+        navigationBar.configure(with: viewModel, true)
         view.addSubview(navigationBar)
         
         navigationBar.pinTop(to: view)

@@ -77,7 +77,7 @@ final class ParametersViewController: UIViewController, ParametersDisplayLogic {
     }
     
     func displayStart(viewModel: ParametersModels.LoadStart.ViewModel) {
-        navigationBar.confiugre(with: viewModel)
+        navigationBar.configure(with: viewModel)
         configureSettingsButtonTarget()
         
         view.addSubview(navigationBar)

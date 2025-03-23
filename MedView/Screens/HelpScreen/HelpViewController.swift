@@ -19,13 +19,16 @@ final class HelpViewController: UIViewController, HelpDisplayLogic {
         static let guideTextLimit: Int = 0
         static let guideTextFont = UIFont.systemFont(ofSize: 24)
         
-        static let animationSize: CGFloat = 200
+        static let animationSize: CGFloat = 75
+        static let animationOfssetTop: CGFloat = 10
     }
     
     // MARK: - Properties
     var interactor: HelpBuisnessLogic
     var router: HelpRouterProtocol
     var navigationBar: CustomNavigationBarView = CustomNavigationBarView()
+    
+    var questionsAnswersTable: UITableView = UITableView()
     
     // MARK: - Initialization
     init(interactor: HelpBuisnessLogic, router: HelpRouterProtocol) {
@@ -63,7 +66,7 @@ final class HelpViewController: UIViewController, HelpDisplayLogic {
     }
     
     func displayStart(viewModel: HelpModels.LoadStart.ViewModel) {
-        navigationBar.confiugre(with: viewModel)
+        navigationBar.configure(with: viewModel)
         configureSettingsButtonTarget()
         
         view.addSubview(navigationBar)
@@ -77,7 +80,8 @@ final class HelpViewController: UIViewController, HelpDisplayLogic {
         animationView.loopMode = .autoReverse
         animationView.play()
         view.addSubview(animationView)
-        animationView.pinCenter(to: view)
+        animationView.pinHorizontal(to: view)
+        animationView.pinTop(to: navigationBar.bottomAnchor, Constants.animationOfssetTop)
         animationView.setWidth(Constants.animationSize)
         animationView.setHeight(Constants.animationSize)
     }

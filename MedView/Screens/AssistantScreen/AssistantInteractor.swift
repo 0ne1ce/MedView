@@ -11,12 +11,14 @@ import UIKit
 final class AssistantInteractor: NSObject, AssistantBuisnessLogic {
     // MARK: - Constants
     private enum Constants {
-        static let assistantLabelText: NSMutableAttributedString = NSMutableAttributedString("MV Assistant")
+        static let assistantLabelText: NSMutableAttributedString = NSMutableAttributedString("Assistant")
         static let settingsImageName: String = "SettingsSymbol"
         static let placeholderText: String = "Request"
         
         static let numberOfSections: Int = 2
         static let firstMessageCount: Int = 1
+        
+        static let animationName: String = "HealthLoadAnimation"
     }
     
     // MARK: - MessageRoles
@@ -48,7 +50,8 @@ final class AssistantInteractor: NSObject, AssistantBuisnessLogic {
         let response = AssistantModels.LoadStart.Response(
             titleText: Constants.assistantLabelText,
             settingsImageName: Constants.settingsImageName,
-            placeholderText: Constants.placeholderText
+            placeholderText: Constants.placeholderText,
+            animationName: Constants.animationName
         )
         presenter.presentStart(response: response)
     }

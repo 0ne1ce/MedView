@@ -34,7 +34,8 @@ final class AssistantPresenter: AssistantPresentationLogic {
             navigationBackgroundColor: .white,
             sendButtonColor: UIColor(hex: Constants.sendButtonColorHex),
             sendButtonTintColor: .white,
-            tableBackgroundColor: .clear
+            tableBackgroundColor: .clear,
+            animationName: response.animationName
         )
         view?.displayStart(viewModel: viewModel)
     }

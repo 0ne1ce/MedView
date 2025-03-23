@@ -12,6 +12,15 @@ final class TabBarController: UITabBarController, UITabBarControllerDelegate {
     // MARK: - Constants
     private enum Constants {
         static let mainColorHex: String = "00C7C0"
+        
+        static let parametersTabTitle: String = "Data"
+        static let parametersTabImage: UIImage? = UIImage(systemName: "heart.text.square")
+        
+        static let assistantTabTitle: String = "Assistant"
+        static let assistantTabImage: UIImage? = UIImage(systemName: "stethoscope")
+        
+        static let helpTabTitle: String = "Help"
+        static let helpTabImage: UIImage? = UIImage(systemName: "questionmark.circle")
     }
     
     // MARK: - Lifecycle
@@ -28,9 +37,9 @@ final class TabBarController: UITabBarController, UITabBarControllerDelegate {
         let assistantController = AssistantAssembly.build()
         let helpController = HelpAssembly.build()
         
-        let data = self.createNav(for: parametersController, with: "Data", UIImage(systemName: "heart.text.square"))
-        let assistant = self.createNav(for: assistantController, with: "MV Assistant", UIImage(systemName: "stethoscope"))
-        let help = self.createNav(for: helpController, with: "Help", UIImage(systemName: "questionmark.circle"))
+        let data = self.createNav(for: parametersController, with: Constants.parametersTabTitle, Constants.parametersTabImage)
+        let assistant = self.createNav(for: assistantController, with: Constants.assistantTabTitle, Constants.assistantTabImage)
+        let help = self.createNav(for: helpController, with: Constants.helpTabTitle, Constants.helpTabImage)
         self.setViewControllers([data, assistant, help], animated: true)
     }
     
