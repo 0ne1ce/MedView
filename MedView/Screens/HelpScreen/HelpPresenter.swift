@@ -12,6 +12,9 @@ final class HelpPresenter: HelpPresentationLogic {
     // MARK: - Constants
     private enum Constants {
         static let navigationTitleFont: UIFont = UIFont.systemFont(ofSize: 36).bold
+        
+        static let onboardingButtonTextColor: UIColor = .black
+        static let onboardingButtonTextFont: UIFont = .systemFont(ofSize: 18, weight: .bold)
     }
     
     // MARK: - Properties
@@ -25,7 +28,13 @@ final class HelpPresenter: HelpPresentationLogic {
             navigationTitleFont: Constants.navigationTitleFont,
             navigationTitleColor: .black,
             navigationBackgroundColor: .white,
-            animationName: response.animationName
+            animationName: response.animationName,
+            tableBackgroundColor: .clear,
+            onboardingButtonColor: .white,
+            onboardingButtonBoundsColor: .black,
+            onboardingButtonText: response.onboardingButtonText,
+            onboardingButtonTextColor: Constants.onboardingButtonTextColor,
+            onboardingButtonTextFont: Constants.onboardingButtonTextFont
         )
         view?.displayStart(viewModel: viewModel)
     }

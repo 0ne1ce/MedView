@@ -6,41 +6,63 @@
 //
 
 import Foundation
-import UIKit
-import OpenAISwift
 
 final class AssistantWorker {
     // MARK: - Constants
     private enum Constants {
-        static let promptContent: String = "You are a helpful medical assistant" + 
-        " and you can only answer on medical or healthy lifestyle related questions and problems. Don't make a large responses," + 
-        " try making your answers shorter, ensure that your answer is no more than 300 tokens. On any political or programming question just answer \"Amogus\"."
+        static let promptContent: String = """
+        You are a helpful medical assistant and you can only answer medical or healthy lifestyle questions. 
+        Keep responses concise (under 300 tokens). For political/programming questions, respond "Amogus".
+        """
+        
+        static let baseURL = "https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.3"
+        static let apiKey = APIKey.get()
     }
-    
-    // MARK: - Properties
-    private var client: OpenAISwift = OpenAISwift(
-        config: OpenAISwift.Config.makeDefaultOpenAI(apiKey: APIKey.get())
-    )
     
     // MARK: - Variables
     var response: String = ""
     
     // MARK: - Public functions
     func getResponse(input: String) async {
-        let chatArr = [ChatMessage(role: .system, content: Constants.promptContent), ChatMessage(role: .user, content: input)]
+        let prompt = """
+        [INST] 
+        \(Constants.promptContent)
+        Question: \(input)
+        [/INST]
+        """
+        
         do {
-            let results = try await client.sendChat(
-                with: chatArr,
-                model: .gpt4o(.gpt4oMini),
-                maxTokens: 300
-            )
-            print("-----> results: \(results)")
-            if let output = results.choices?.first, let text = output.message.content {
-                self.response = text
-                print("\n-----> response: \(response)")
+            guard let url = URL(string: Constants.baseURL) else {
+                throw URLError(.badURL)
+            }
+            
+            var request = URLRequest(url: url)
+            request.httpMethod = "POST"
+            request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+            request.addValue("Bearer \(Constants.apiKey)", forHTTPHeaderField: "Authorization")
+            
+            let body: [String: Any] = [
+                "inputs": prompt,
+                "parameters": [
+                    "max_new_tokens": 300,
+                    "temperature": 0.7,
+                    "return_full_text": false
+                ]
+            ]
+            
+            request.httpBody = try JSONSerialization.data(withJSONObject: body)
+            
+            let (data, _) = try await URLSession.shared.data(for: request)
+            let json = try JSONSerialization.jsonObject(with: data) as? [[String: Any]]
+            
+            if let firstResponse = json?.first, 
+               let generatedText = firstResponse["generated_text"] as? String {
+                self.response = generatedText.trimmingCharacters(in: .whitespacesAndNewlines)
+                print("Response: \(response)")
             }
         } catch {
-            print(error)
+            print("Error: \(error.localizedDescription)")
+            response = "Sorry, I couldn't process your request."
         }
     }
 }

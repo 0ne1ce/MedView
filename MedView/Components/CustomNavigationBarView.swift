@@ -18,6 +18,8 @@ final class CustomNavigationBarView: UIView {
         static let navigationBarItemOffset: CGFloat = 20
         
         static let settingsSymbol: String = "SettingsSymbol"
+        
+        static let faqNavigationTitleOffsetRight: CGFloat = -100
     }
     // MARK: - Variables
     var title: UILabel = UILabel()
@@ -40,15 +42,12 @@ final class CustomNavigationBarView: UIView {
             title.textColor = navigationTitleColor
         }
         title.font = viewModel.navigationTitleFont
-        configureTitle()
+        configureTitle(with: viewModel)
         
         backgroundColor = viewModel.navigationBackgroundColor
         if isSettingsButtonHidden == false {
             settingsButton.setImage(viewModel.settingsImage, for: .normal)
             configureButton()
-        }
-        if viewModel.navigationTitle == NSMutableAttributedString("FAQ and guide") {
-            title.pinRight(to: settingsButton.leadingAnchor)
         }
     }
     
@@ -63,12 +62,16 @@ final class CustomNavigationBarView: UIView {
         settingsButton.addTarget(target, action: action, for: .touchUpInside)
     }
     // MARK: - Private functions
-    private func configureTitle() {
+    private func configureTitle(with viewModel: NavigationTitleRepresentable) {
         addSubview(title)
         title.pinLeft(to: self.leadingAnchor, Constants.navigationBarItemOffset)
         title.setHeight(Constants.titleLabelHeight)
         title.pinBottom(to: self.bottomAnchor, Constants.navigationBarItemOffset)
-        title.pinRight(to: self.centerXAnchor, Constants.navigationBarItemOffset)
+        if viewModel.navigationTitle == NSMutableAttributedString("FAQ and guide") {
+            title.pinRight(to: self.centerXAnchor, Constants.faqNavigationTitleOffsetRight)
+        } else {
+            title.pinRight(to: self.centerXAnchor, Constants.navigationBarItemOffset)
+        }
     }
     
     private func configureButton() {

@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-protocol HelpBuisnessLogic: AnyObject {
+protocol HelpBuisnessLogic: AnyObject, UITableViewDataSource {
     // MARK: - Functions
     func loadStart(request: HelpModels.LoadStart.Request)
     func loadSettings(request: HelpModels.LoadSettings.Request)

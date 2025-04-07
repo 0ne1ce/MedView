@@ -18,6 +18,7 @@ enum HelpModels {
             var titleText: NSMutableAttributedString
             var settingsImageName: String
             var animationName: String
+            var onboardingButtonText: String
         }
             
         struct ViewModel: NavigationTitleRepresentable {
@@ -27,6 +28,12 @@ enum HelpModels {
             var navigationTitleColor: UIColor?
             var navigationBackgroundColor: UIColor
             var animationName: String
+            var tableBackgroundColor: UIColor
+            var onboardingButtonColor: UIColor
+            var onboardingButtonBoundsColor: UIColor
+            var onboardingButtonText: String
+            var onboardingButtonTextColor: UIColor
+            var onboardingButtonTextFont: UIFont
         }
     }
         
