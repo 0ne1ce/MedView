@@ -17,7 +17,6 @@ final class SettingsAssembly {
         let router = SettingsRouter()
         let view = SettingsViewController(interactor: interactor, router: router)
         
-        
         presenter.view = view
         
         router.view = view

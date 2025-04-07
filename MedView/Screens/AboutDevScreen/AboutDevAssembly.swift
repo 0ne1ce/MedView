@@ -9,7 +9,19 @@ import UIKit
 import Foundation
 
 final class AboutDevAssembly {
-//    static func build() -> UIViewController {
-//        
-//    }
+    static func build() -> UIViewController {
+        let presenter = AbourDevPresenter()
+        let worker = AboutDevWorker()
+        
+        let interactor = AboutDevInteractor(presenter: presenter, worker: worker)
+        let router = AboutDevRouter()
+        
+        let view = AboutDevViewController(interactor: interactor, router: router)
+        
+        router.view = view
+        presenter.view = view
+        
+        return view
+        
+    }
 }

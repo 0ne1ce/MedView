@@ -12,7 +12,8 @@ final class HelpInteractor: HelpBuisnessLogic {
     // MARK: - Constants
     private enum Constants {
         static let questionFirst: String = "What can I do in the Data section?"
-        static let answerFirst: String = "View a list of tracked parameters (e.g., heart rate, blood pressure, temperature, etc.). Tap on a parameter to open a graph showing its changes over a selected period."
+        static let answerFirst: String = "View a list of tracked parameters (e.g., heart rate, blood pressure, temperature, etc.)." + 
+        " Tap on a parameter to open a graph showing its changes over a selected period."
         static let helpLabelText: NSMutableAttributedString = NSMutableAttributedString("FAQ and guide")
         static let settingsImageName: String = "SettingsSymbol"
         static let animationName: String = "HealthLoadAnimation"

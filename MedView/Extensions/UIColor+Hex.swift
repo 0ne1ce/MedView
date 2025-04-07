@@ -9,7 +9,7 @@ import UIKit
 
 // MARK: - Color convertation methods
 extension UIColor {
-    //MARK: - Variables
+    // MARK: - Variables
     var rgba: (red: CGFloat, green: CGFloat, blue: CGFloat, alpha: CGFloat) {
         var red: CGFloat = 0
         var green: CGFloat = 0
@@ -20,11 +20,11 @@ extension UIColor {
         return (red, green, blue, alpha)
     }
     
-    //MARK: - Initialization
+    // MARK: - Initialization
     convenience init(hex: String) {
         let formattedHex = hex.trimmingCharacters(in: CharacterSet.alphanumerics.inverted)
-        var rgb : UInt64 = 0
-        Scanner (string: formattedHex).scanHexInt64(&rgb)
+        var rgb: UInt64 = 0
+        Scanner(string: formattedHex).scanHexInt64(&rgb)
         let red = CGFloat((rgb & 0xFF0000) >> 16) / 255.0
         let green = CGFloat((rgb & 0x00FF00) >> 8) / 255.0
         let blue = CGFloat(rgb & 0x0000FF) / 255.0

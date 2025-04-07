@@ -89,8 +89,7 @@ final class AssistantViewController: UIViewController, AssistantDisplayLogic {
             animations: {[self] in
                 wrapAnimated()
             },
-            completion: {
-                [weak self] _ in
+            completion: { [weak self] _ in
                 self?.sendButton.isEnabled = true
             }
         )

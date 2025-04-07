@@ -12,6 +12,8 @@ final class SettingsInteractor: SettingsBuisnessLogic {
     // MARK: - Constants
     private enum Constants {
         static let settingsLabelText: NSMutableAttributedString = NSMutableAttributedString("Settings")
+        
+        static let aboutDevButtonTitle: String = "About dev"
     }
     
     // MARK: - Properties
@@ -26,7 +28,15 @@ final class SettingsInteractor: SettingsBuisnessLogic {
     
     // MARK: - Public functions
     func loadStart(request: SettingsModels.LoadStart.Request) {
-        let response = SettingsModels.LoadStart.Response(titleText: Constants.settingsLabelText)
+        let response = SettingsModels.LoadStart.Response(
+            titleText: Constants.settingsLabelText,
+            buttonTitle: Constants.aboutDevButtonTitle
+        )
         presenter.presentStart(response: response)
+    }
+    
+    func loadAboutDev(request: SettingsModels.LoadAboutDev.Request) {
+        let response = SettingsModels.LoadAboutDev.Response()
+        presenter.presentAboutDev(response: response)
     }
 }

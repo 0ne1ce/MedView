@@ -12,7 +12,9 @@ import OpenAISwift
 final class AssistantWorker {
     // MARK: - Constants
     private enum Constants {
-        static let promptContent: String = "You are a helpful medical assistant and you can only answer on medical or healthy lifestyle related questions and problems. Don't make a large responses, try making your answers shorter, ensure that your answer is no more than 300 tokens. On any political or programming question just answer \"Amogus\"."
+        static let promptContent: String = "You are a helpful medical assistant" + 
+        " and you can only answer on medical or healthy lifestyle related questions and problems. Don't make a large responses," + 
+        " try making your answers shorter, ensure that your answer is no more than 300 tokens. On any political or programming question just answer \"Amogus\"."
     }
     
     // MARK: - Properties

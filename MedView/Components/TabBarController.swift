@@ -15,12 +15,15 @@ final class TabBarController: UITabBarController, UITabBarControllerDelegate {
         
         static let parametersTabTitle: String = "Data"
         static let parametersTabImage: UIImage? = UIImage(systemName: "heart.text.square")
+        static let parametersTabImageSelected: UIImage? = UIImage(systemName: "heart.text.square.fill")
         
         static let assistantTabTitle: String = "Assistant"
-        static let assistantTabImage: UIImage? = UIImage(systemName: "stethoscope")
+        static let assistantTabImage: UIImage? = UIImage(systemName: "stethoscope.circle")
+        static let assistantTabImageSelected: UIImage? = UIImage(systemName: "stethoscope.circle.fill")
         
         static let helpTabTitle: String = "Help"
         static let helpTabImage: UIImage? = UIImage(systemName: "questionmark.circle")
+        static let helpTabImageSelected: UIImage? = UIImage(systemName: "questionmark.circle.fill")
     }
     
     // MARK: - Lifecycle
@@ -31,20 +34,32 @@ final class TabBarController: UITabBarController, UITabBarControllerDelegate {
         configureUI()
     }
     
-    //MARK: - Private functions
+    // MARK: - Private functions
     private func configureTabs() {
-        let parametersController = ParametersAssembly.build()
-        let assistantController = AssistantAssembly.build()
-        let helpController = HelpAssembly.build()
+        let parametersController = UINavigationController(rootViewController: ParametersAssembly.build())
+        let assistantController = UINavigationController(rootViewController: AssistantAssembly.build())
+        let helpController = UINavigationController(rootViewController: HelpAssembly.build())
         
-        let data = self.createNav(for: parametersController, with: Constants.parametersTabTitle, Constants.parametersTabImage)
-        let assistant = self.createNav(for: assistantController, with: Constants.assistantTabTitle, Constants.assistantTabImage)
-        let help = self.createNav(for: helpController, with: Constants.helpTabTitle, Constants.helpTabImage)
-        self.setViewControllers([data, assistant, help], animated: true)
+        parametersController.tabBarItem = UITabBarItem(
+            title: Constants.parametersTabTitle,
+            image: Constants.parametersTabImage,
+            selectedImage: Constants.parametersTabImageSelected
+        )
+        assistantController.tabBarItem = UITabBarItem(
+            title: Constants.assistantTabTitle,
+            image: Constants.assistantTabImage,
+            selectedImage: Constants.assistantTabImageSelected
+        )
+        helpController.tabBarItem = UITabBarItem(
+            title: Constants.helpTabTitle,
+            image: Constants.helpTabImage,
+            selectedImage: Constants.helpTabImageSelected
+        )
+        
+        self.setViewControllers([parametersController, assistantController, helpController], animated: true)
     }
     
-    private func createNav(for viewController: UIViewController, with title: String, _ image: UIImage?) -> UINavigationController
-    {
+    private func createNav(for viewController: UIViewController, with title: String, _ image: UIImage?) -> UINavigationController {
         let nav = UINavigationController(rootViewController: viewController)
         nav.tabBarItem.title = title
         nav.tabBarItem.image = image
@@ -55,10 +70,12 @@ final class TabBarController: UITabBarController, UITabBarControllerDelegate {
     private func configureUI() {
         let appearance = UITabBarAppearance()
         appearance.configureWithOpaqueBackground()
-        appearance.backgroundColor = .white
+        appearance.backgroundColor = .clear
+        
         tabBar.standardAppearance = appearance
         tabBar.scrollEdgeAppearance = appearance
         tabBar.tintColor = UIColor(hex: Constants.mainColorHex)
+        tabBar.clipsToBounds = true
     }
     
     private func triggerSelectionFeedback() {

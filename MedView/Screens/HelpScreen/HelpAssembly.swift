@@ -17,7 +17,6 @@ final class HelpAssembly {
         let router = HelpRouter()
         let view = HelpViewController(interactor: interactor, router: router)
         
-        
         presenter.view = view
         
         router.view = view

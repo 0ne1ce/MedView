@@ -13,8 +13,8 @@ final class CustomNavigationBarView: UIView {
     private enum Constants {
         static let navigationBarBorderlineHeight: CGFloat = 1
         static let titleLabelFontSize: CGFloat = 36
-        static let titleLabelHeight: CGFloat = 40
-        static let settingsButtonSize: CGFloat = 40
+        static let titleLabelHeight: CGFloat = 44
+        static let settingsButtonSize: CGFloat = 44
         static let navigationBarItemOffset: CGFloat = 20
         
         static let settingsSymbol: String = "SettingsSymbol"
@@ -65,9 +65,9 @@ final class CustomNavigationBarView: UIView {
     // MARK: - Private functions
     private func configureTitle() {
         addSubview(title)
-        title.pinLeft(to: self, Constants.navigationBarItemOffset)
+        title.pinLeft(to: self.leadingAnchor, Constants.navigationBarItemOffset)
         title.setHeight(Constants.titleLabelHeight)
-        title.pinBottom(to: self, Constants.navigationBarItemOffset)
+        title.pinBottom(to: self.bottomAnchor, Constants.navigationBarItemOffset)
         title.pinRight(to: self.centerXAnchor, Constants.navigationBarItemOffset)
     }
     

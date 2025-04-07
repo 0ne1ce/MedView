@@ -46,7 +46,7 @@ final class HelpViewController: UIViewController, HelpDisplayLogic {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(true, animated: animated)
-        loadStart()
+        
     }
 
     override func viewWillDisappear(_ animated: Bool) {
@@ -57,6 +57,7 @@ final class HelpViewController: UIViewController, HelpDisplayLogic {
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
+        loadStart()
     }
     
     // MARK: - Public functions

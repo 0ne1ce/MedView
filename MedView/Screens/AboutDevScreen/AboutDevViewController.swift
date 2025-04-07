@@ -7,16 +7,19 @@
 
 import Foundation
 import UIKit
+import MapKit
 
 final class AboutDevViewController: UIViewController, AboutDevDisplayLogic {
     // MARK: - Constants
     private enum Constants {
-        
+        static let hseMapViewOffsetV: CGFloat = 150
     }
     
     // MARK: - Properties
     var interactor: AboutDevBuisnessLogic
     var router: AboutDevRouterProtocol
+    
+    private let hseMapView: MKMapView = MKMapView()
     
     // MARK: - Initialization
     init(interactor: AboutDevBuisnessLogic, router: AboutDevRouterProtocol) {
@@ -31,13 +34,9 @@ final class AboutDevViewController: UIViewController, AboutDevDisplayLogic {
     }
     
     // MARK: - Lifecycle
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        loadStart()
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+        loadStart()
     }
     
     // MARK: - Public functions
@@ -48,6 +47,11 @@ final class AboutDevViewController: UIViewController, AboutDevDisplayLogic {
     
     func displayStart(viewModel: AboutDevModels.LoadStart.ViewModel) {
         view.backgroundColor = UIColor(hex: viewModel.backgroundColorHex)
+        view.addSubview(hseMapView)
+        hseMapView.setRegion(viewModel.hseLocationRegion, animated: true)
+        hseMapView.addAnnotation(viewModel.hseAnnotation)
+        hseMapView.pinHorizontal(to: view)
+        hseMapView.pinVertical(to: view, Constants.hseMapViewOffsetV)
     }
     
 }

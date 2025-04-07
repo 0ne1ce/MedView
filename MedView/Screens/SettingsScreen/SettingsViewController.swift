@@ -15,6 +15,16 @@ final class SettingsViewController: UIViewController, SettingsDisplayLogic {
         static let mainColorHex: String = "00C7C0"
         
         static let navigationBarHeight: CGFloat = 155
+        
+        static let buttonTitleWidth: CGFloat = 120
+        static let buttonTitleOffsetLeft: CGFloat = 70
+        
+        static let buttonOffsetH: CGFloat = 100
+        static let buttonHeight: CGFloat = 45
+        static let buttonOffsetBottom: CGFloat = 45
+        static let buttonCornerRadius: CGFloat = 20
+        static let buttonImageOffsetRight: CGFloat = 5
+        static let buttonImageOffsetTop: CGFloat = 15
     }
     
     // MARK: - Properties
@@ -22,6 +32,8 @@ final class SettingsViewController: UIViewController, SettingsDisplayLogic {
     var router: SettingsRouterProtocol
     var navigationBar: CustomNavigationBarView = CustomNavigationBarView()
     let appearance: UINavigationBarAppearance = UINavigationBarAppearance()
+    
+    let aboutDevButton: UIButton = UIButton(type: .system)
     
     // MARK: - Initialization
     init(interactor: SettingsBuisnessLogic, router: SettingsRouterProtocol) {
@@ -37,6 +49,7 @@ final class SettingsViewController: UIViewController, SettingsDisplayLogic {
     
     // MARK: - Lifecycle
     override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         loadStart()
     }
     
@@ -59,6 +72,12 @@ final class SettingsViewController: UIViewController, SettingsDisplayLogic {
         navigationBar.setHeight(Constants.navigationBarHeight)
         navigationBar.pinLeft(to: view)
         navigationBar.pinRight(to: view)
+        
+        configureAboutDevButton(with: viewModel)
+    }
+    
+    func displayAboutDev(viewModel: SettingsModels.LoadAboutDev.ViewModel) {
+        router.showAboutDevScreen()
     }
     
     // MARK: - Private functions
@@ -75,5 +94,38 @@ final class SettingsViewController: UIViewController, SettingsDisplayLogic {
         appearance.backButtonAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor(hex: Constants.mainColorHex)]
         navigationController?.navigationBar.standardAppearance = appearance
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
+    }
+    
+    private func configureAboutDevButton(with viewModel: SettingsModels.LoadStart.ViewModel) {
+        view.addSubview(aboutDevButton)
+        
+        aboutDevButton.setHeight(Constants.buttonHeight)
+        aboutDevButton.pinHorizontal(to: view, Constants.buttonOffsetH)
+        aboutDevButton.pinBottom(to: view.bottomAnchor, Constants.buttonOffsetBottom)
+        
+        aboutDevButton.setTitle(viewModel.buttonTitle, for: .normal)
+        aboutDevButton.titleLabel?.font = viewModel.buttonTitleFont
+        aboutDevButton.setTitleColor(viewModel.buttonTitleColor, for: .normal)
+        aboutDevButton.backgroundColor = viewModel.buttonColor
+        aboutDevButton.layer.cornerRadius = Constants.buttonCornerRadius
+        aboutDevButton.addTarget(self, action: #selector(aboutDevButtonPressed), for: .touchUpInside)
+        
+        if let buttonTitleLabel = aboutDevButton.titleLabel {
+            buttonTitleLabel.pinRight(to: aboutDevButton.trailingAnchor)
+            buttonTitleLabel.pinLeft(to: aboutDevButton.leadingAnchor, Constants.buttonTitleOffsetLeft)
+            let imageView = UIImageView(image: viewModel.buttonImage)
+            imageView.tintColor = viewModel.buttonImageTintColor
+            aboutDevButton.addSubview(imageView)
+            imageView.pinTop(to: buttonTitleLabel.topAnchor)
+            imageView.pinBottom(to: buttonTitleLabel.bottomAnchor)
+            imageView.pinRight(to: buttonTitleLabel.leadingAnchor, Constants.buttonImageOffsetRight)
+        }
+        
+    }
+    
+    // MARK: - Actions
+    @objc func aboutDevButtonPressed() {
+        let request = SettingsModels.LoadAboutDev.Request()
+        interactor.loadAboutDev(request: request)
     }
 }

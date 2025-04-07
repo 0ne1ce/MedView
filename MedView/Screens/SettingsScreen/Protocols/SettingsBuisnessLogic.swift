@@ -11,4 +11,5 @@ import UIKit
 protocol SettingsBuisnessLogic: AnyObject {
     // MARK: - Functions
     func loadStart(request: SettingsModels.LoadStart.Request)
+    func loadAboutDev(request: SettingsModels.LoadAboutDev.Request)
 }

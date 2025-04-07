@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-typealias TableCellAnimation = (UITableViewCell, IndexPath, UITableView) -> Void
+typealias TableCellAnimation = (UITableViewCell, IndexPath) -> Void
 
 final class ParametersViewController: UIViewController, ParametersDisplayLogic {
     // MARK: - Constants
@@ -69,7 +69,6 @@ final class ParametersViewController: UIViewController, ParametersDisplayLogic {
         configure()
     }
     
-    
     // MARK: - Public Functions
     func loadStart() {
         let request = ParametersModels.LoadStart.Request()
@@ -97,7 +96,6 @@ final class ParametersViewController: UIViewController, ParametersDisplayLogic {
     func displayParamter(viewModel: ParametersModels.LoadParameter.ViewModel) {
         router.showParameter()
     }
-    
     
     // MARK: - Private functions
     private func configure() {
@@ -143,7 +141,7 @@ final class ParametersViewController: UIViewController, ParametersDisplayLogic {
     }
     
     private func moveUpBounceAnimation(rowHeight: CGFloat, duration: TimeInterval, delayFactor: Double) -> TableCellAnimation {
-        return { cell, indexPath, tableView in
+        return { cell, indexPath in
             cell.transform = CGAffineTransform(translationX: .zero, y: rowHeight)
             UIView.animate(
                 withDuration: duration,
@@ -151,7 +149,7 @@ final class ParametersViewController: UIViewController, ParametersDisplayLogic {
                 usingSpringWithDamping: Constants.usingSpringWithDampingValue,
                 initialSpringVelocity: Constants.initialSpringVelocityValue,
                 options: [.curveEaseInOut],
-                animations:  {
+                animations: {
                     cell.transform = CGAffineTransform(translationX: .zero, y: .zero)
                 }
             )
@@ -185,6 +183,6 @@ extension ParametersViewController: UITableViewDelegate {
             delayFactor: Constants.delayFactor
         )
         let animator = TableViewAnimator(animation: animation)
-        animator.animate(cell: cell, at: indexPath, for: tableView)
+        animator.animate(cell: cell, at: indexPath)
     }
 }

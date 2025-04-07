@@ -7,26 +7,35 @@
 
 import UIKit
 import Foundation
+import MapKit
 
-final class AboutDevInteractor: MedParameterBuisnessLogic {
+final class AboutDevInteractor: AboutDevBuisnessLogic {
     // MARK: - Constants
     private enum Constants {
-        
+        static let hseLatitude: Double = 55.754082
+        static let hseLongtitude: Double = 37.648754
+        static let hseAnnotationTitle: String = "HSE"
+        static let hseAnnotationSubtitle: String = "FCS Software Engineering"
     }
     
     // MARK: - Properties
-    var presenter: MedParameterPresentationLogic
-    var worker: MedParameterWorker
+    var presenter: AboutDevPresentationLogic
+    var worker: AboutDevWorker
     
     // MARK: - Initialization
-    init(presenter: MedParameterPresentationLogic, worker: MedParameterWorker) {
+    init(presenter: AboutDevPresentationLogic, worker: AboutDevWorker) {
         self.presenter = presenter
         self.worker = worker
     }
     
     // MARK: - Public functions
-    func loadStart(request: MedParameterModels.LoadStart.Request) {
-        let response = MedParameterModels.LoadStart.Response()
+    func loadStart(request: AboutDevModels.LoadStart.Request) {
+        let response = AboutDevModels.LoadStart.Response(
+            hseLocationLatitude: Constants.hseLatitude,
+            hseLocationLongtitude: Constants.hseLongtitude,
+            hseLocationAnnotationTitle: Constants.hseAnnotationTitle,
+            hseLocationAnnotationSubtitle: Constants.hseAnnotationSubtitle
+        )
         presenter.presentStart(response: response)
     }
 }

@@ -11,12 +11,19 @@ import UIKit
 final class MedParameterViewController: UIViewController, MedParameterDisplayLogic {
     // MARK: - Constants
     private enum Constants {
+        static let mainColorHex: String = "00C7C0"
+        static let parameterColorHex: String = "5856D6"
+        static let dataPoints: [Double] = [80, 80.8, 80.1, 80.5, 80.8, 81.0, 81.3]
         
+        static let graphOffsetH: CGFloat = 30
+        static let graphOffsetV: CGFloat = 300
     }
     
     // MARK: - Properties
     var interactor: MedParameterBuisnessLogic
     var router: MedParameterRouterProtocol
+    
+    let appearance: UINavigationBarAppearance = UINavigationBarAppearance()
     
     // MARK: - Initialization
     init(interactor: MedParameterBuisnessLogic, router: MedParameterRouterProtocol) {
@@ -31,13 +38,9 @@ final class MedParameterViewController: UIViewController, MedParameterDisplayLog
     }
     
     // MARK: - Lifecycle
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        loadStart()
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+        loadStart()
     }
     
     // MARK: - Public functions
@@ -48,6 +51,14 @@ final class MedParameterViewController: UIViewController, MedParameterDisplayLog
     
     func displayStart(viewModel: MedParameterModels.LoadStart.ViewModel) {
         view.backgroundColor = UIColor(hex: viewModel.backgroundColorHex)
+        
+        appearance.configureWithTransparentBackground()
+        appearance.shadowColor = .clear
+        
+        navigationController?.navigationBar.tintColor = UIColor(hex: Constants.mainColorHex)
+        appearance.backButtonAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor(hex: Constants.mainColorHex)]
+        navigationController?.navigationBar.standardAppearance = appearance
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
     }
     
 }

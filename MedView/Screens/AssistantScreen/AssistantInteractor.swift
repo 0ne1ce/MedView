@@ -69,7 +69,7 @@ final class AssistantInteractor: NSObject, AssistantBuisnessLogic {
     
     func sendAssistantMessage(request: AssistantModels.SendAssistantMessage.Request) async {
         await worker.getResponse(input: request.userMessageText)
-        if (worker.response != "") {
+        if worker.response != "" {
             messages.append(Message(role: .assistant, messageText: worker.response))
         }
         let response = AssistantModels.SendAssistantMessage.Response()

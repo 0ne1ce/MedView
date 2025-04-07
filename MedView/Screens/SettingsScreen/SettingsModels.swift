@@ -16,6 +16,7 @@ enum SettingsModels {
         
         struct Response {
             var titleText: NSMutableAttributedString
+            var buttonTitle: String
         }
         
         struct ViewModel: NavigationTitleRepresentable {
@@ -24,6 +25,26 @@ enum SettingsModels {
             var navigationTitleFont: UIFont
             var navigationTitleColor: UIColor?
             var navigationBackgroundColor: UIColor
+            var buttonTitle: String
+            var buttonTitleFont: UIFont
+            var buttonTitleColor: UIColor
+            var buttonColor: UIColor
+            var buttonImageTintColor: UIColor
+            var buttonImage: UIImage?
+        }
+    }
+    
+    enum LoadAboutDev {
+        struct Request {
+            
+        }
+        
+        struct Response {
+            
+        }
+        
+        struct ViewModel {
+            
         }
     }
 }

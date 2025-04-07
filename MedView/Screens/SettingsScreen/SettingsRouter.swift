@@ -14,6 +14,7 @@ final class SettingsRouter: SettingsRouterProtocol {
     
     // MARK: - Fuctions
     func showAboutDevScreen() {
-        
+        let aboutDevVC = AboutDevAssembly.build()
+        view?.present(aboutDevVC, animated: true)
     }
 }

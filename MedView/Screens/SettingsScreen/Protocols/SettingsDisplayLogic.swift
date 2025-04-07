@@ -11,4 +11,5 @@ import UIKit
 protocol SettingsDisplayLogic: AnyObject {
     // MARK: - Functions
     func displayStart(viewModel: SettingsModels.LoadStart.ViewModel)
+    func displayAboutDev(viewModel: SettingsModels.LoadAboutDev.ViewModel)
 }
