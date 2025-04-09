@@ -16,6 +16,7 @@ final class AboutDevInteractor: AboutDevBuisnessLogic {
         static let hseLongtitude: Double = 37.648754
         static let hseAnnotationTitle: String = "HSE"
         static let hseAnnotationSubtitle: String = "FCS Software Engineering"
+        static let hseAuthor: String = "Chernyy A. V."
     }
     
     // MARK: - Properties
@@ -34,7 +35,8 @@ final class AboutDevInteractor: AboutDevBuisnessLogic {
             hseLocationLatitude: Constants.hseLatitude,
             hseLocationLongtitude: Constants.hseLongtitude,
             hseLocationAnnotationTitle: Constants.hseAnnotationTitle,
-            hseLocationAnnotationSubtitle: Constants.hseAnnotationSubtitle
+            hseLocationAnnotationSubtitle: Constants.hseAnnotationSubtitle,
+            hseAuthor: Constants.hseAuthor
         )
         presenter.presentStart(response: response)
     }

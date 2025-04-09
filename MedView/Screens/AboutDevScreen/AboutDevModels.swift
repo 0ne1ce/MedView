@@ -20,12 +20,16 @@ enum AboutDevModels {
             var hseLocationLongtitude: Double
             var hseLocationAnnotationTitle: String
             var hseLocationAnnotationSubtitle: String
+            var hseAuthor: String
         }
         
         struct ViewModel {
             var backgroundColorHex: String
             var hseLocationRegion: MKCoordinateRegion
             var hseAnnotation: MKPointAnnotation
+            var hseAuthor: String
+            var infoFont: UIFont
+            var hseImage: UIImage?
         }
     }
 }

@@ -14,6 +14,9 @@ final class AbourDevPresenter: AboutDevPresentationLogic {
     private enum Constants {
         static let backgroundLightHex: String = "F2F2F7"
         static let regionDelta: Double = 0.01
+        
+        static let infoFont: UIFont = UIFont.systemFont(ofSize: 24, weight: .black)
+        static let hseImage: UIImage? = UIImage(named: "HSE")
     }
     
     // MARK: - Properties
@@ -38,7 +41,10 @@ final class AbourDevPresenter: AboutDevPresentationLogic {
         let viewModel = AboutDevModels.LoadStart.ViewModel(
             backgroundColorHex: Constants.backgroundLightHex,
             hseLocationRegion: region,
-            hseAnnotation: annotation
+            hseAnnotation: annotation,
+            hseAuthor: response.hseAuthor,
+            infoFont: Constants.infoFont,
+            hseImage: Constants.hseImage
         )
         view?.displayStart(viewModel: viewModel)
     }

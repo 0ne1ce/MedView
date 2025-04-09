@@ -13,6 +13,12 @@ final class AboutDevViewController: UIViewController, AboutDevDisplayLogic {
     // MARK: - Constants
     private enum Constants {
         static let hseMapViewOffsetV: CGFloat = 150
+        static let authorInfoOffsetH: CGFloat = 100
+        static let authorInfoOffsetTop: CGFloat = 20
+        
+        static let hseImageHeight: CGFloat = 100
+        static let hseImageOffsetBottom: CGFloat = 20
+        static let hseImageOffsetH: CGFloat = 100
     }
     
     // MARK: - Properties
@@ -20,6 +26,8 @@ final class AboutDevViewController: UIViewController, AboutDevDisplayLogic {
     var router: AboutDevRouterProtocol
     
     private let hseMapView: MKMapView = MKMapView()
+    private let authorInfoLabel: UILabel = UILabel()
+    private let hseImageView: UIImageView = UIImageView()
     
     // MARK: - Initialization
     init(interactor: AboutDevBuisnessLogic, router: AboutDevRouterProtocol) {
@@ -52,6 +60,20 @@ final class AboutDevViewController: UIViewController, AboutDevDisplayLogic {
         hseMapView.addAnnotation(viewModel.hseAnnotation)
         hseMapView.pinHorizontal(to: view)
         hseMapView.pinVertical(to: view, Constants.hseMapViewOffsetV)
+        
+        view.addSubview(authorInfoLabel)
+        authorInfoLabel.pinHorizontal(to: view, Constants.authorInfoOffsetH)
+        authorInfoLabel.pinTop(to: hseMapView.bottomAnchor, Constants.authorInfoOffsetTop)
+        authorInfoLabel.text = viewModel.hseAuthor
+        authorInfoLabel.textColor = .black
+        authorInfoLabel.font = viewModel.infoFont
+        authorInfoLabel.textAlignment = .center
+        
+        view.addSubview(hseImageView)
+        hseImageView.image = viewModel.hseImage
+        hseImageView.setHeight(Constants.hseImageHeight)
+        hseImageView.pinHorizontal(to: view, Constants.hseImageOffsetH)
+        hseImageView.pinBottom(to: hseMapView.topAnchor, Constants.hseImageOffsetBottom)
     }
     
 }

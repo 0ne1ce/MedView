@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		8A11671D2D750242000AD80E /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 8A11671C2D750242000AD80E /* Lottie */; };
-		8A7B88EE2D7390B400F9CA77 /* OpenAISwift in Frameworks */ = {isa = PBXBuildFile; productRef = 8A7B88ED2D7390B400F9CA77 /* OpenAISwift */; };
 		8A7B891D2D74863E00F9CA77 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = 8A7B891C2D74863400F9CA77 /* .gitignore */; };
 /* End PBXBuildFile section */
 
@@ -43,7 +42,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8A7B88EE2D7390B400F9CA77 /* OpenAISwift in Frameworks */,
 				8A11671D2D750242000AD80E /* Lottie in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -78,6 +76,7 @@
 				8AEC0A9B2D36A54D0022AC08 /* Sources */,
 				8AEC0A9C2D36A54D0022AC08 /* Frameworks */,
 				8AEC0A9D2D36A54D0022AC08 /* Resources */,
+				8ABA64332DA4059000182FD3 /* Swiftlint */,
 			);
 			buildRules = (
 			);
@@ -88,7 +87,6 @@
 			);
 			name = MedView;
 			packageProductDependencies = (
-				8A7B88ED2D7390B400F9CA77 /* OpenAISwift */,
 				8A11671C2D750242000AD80E /* Lottie */,
 			);
 			productName = MedView;
@@ -120,7 +118,6 @@
 			mainGroup = 8AEC0A962D36A54D0022AC08;
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
-				8A7B88EC2D7390B300F9CA77 /* XCLocalSwiftPackageReference "../../../../OpenAISwift" */,
 				8A11671B2D750242000AD80E /* XCRemoteSwiftPackageReference "lottie-spm" */,
 			);
 			preferredProjectObjectVersion = 77;
@@ -144,6 +141,28 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		8ABA64332DA4059000182FD3 /* Swiftlint */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = Swiftlint;
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if test -d \"/opt/homebrew/bin/\"; then\n  PATH=\"/opt/homebrew/bin/:${PATH}\"\nfi\n\nexport PATH\n\nif which swiftlint >/dev/null; then\n  swiftlint\nelse\n  echo \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		8AEC0A9B2D36A54D0022AC08 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -163,6 +182,8 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = Y8JWN96XN8;
+				ENABLE_APP_SANDBOX = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MedView/App/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -191,6 +212,8 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = Y8JWN96XN8;
+				ENABLE_APP_SANDBOX = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MedView/App/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -353,13 +376,6 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCLocalSwiftPackageReference section */
-		8A7B88EC2D7390B300F9CA77 /* XCLocalSwiftPackageReference "../../../../OpenAISwift" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = ../../../../OpenAISwift;
-		};
-/* End XCLocalSwiftPackageReference section */
-
 /* Begin XCRemoteSwiftPackageReference section */
 		8A11671B2D750242000AD80E /* XCRemoteSwiftPackageReference "lottie-spm" */ = {
 			isa = XCRemoteSwiftPackageReference;
@@ -376,10 +392,6 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 8A11671B2D750242000AD80E /* XCRemoteSwiftPackageReference "lottie-spm" */;
 			productName = Lottie;
-		};
-		8A7B88ED2D7390B400F9CA77 /* OpenAISwift */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = OpenAISwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
