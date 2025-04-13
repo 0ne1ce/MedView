@@ -104,7 +104,6 @@ final class ParametersViewController: UIViewController, ParametersDisplayLogic {
     
     private func configureTable(with viewModel: ParametersModels.LoadStart.ViewModel) {
         tableView.register(ParameterCell.self, forCellReuseIdentifier: ParameterCell.id)
-        tableView.register(AddParamterCell.self, forCellReuseIdentifier: AddParamterCell.id)
         tableView.delegate = self
         tableView.dataSource = interactor
         

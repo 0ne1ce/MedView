@@ -25,6 +25,10 @@ final class SettingsViewController: UIViewController, SettingsDisplayLogic {
         static let buttonCornerRadius: CGFloat = 20
         static let buttonImageOffsetRight: CGFloat = 5
         static let buttonImageOffsetTop: CGFloat = 15
+        
+        static let heightForRow: CGFloat = 60
+        
+        static let settingsTableOffsetTop: CGFloat = 10
     }
     
     // MARK: - Properties
@@ -34,6 +38,7 @@ final class SettingsViewController: UIViewController, SettingsDisplayLogic {
     let appearance: UINavigationBarAppearance = UINavigationBarAppearance()
     
     let aboutDevButton: UIButton = UIButton(type: .system)
+    var settingsTable: UITableView = UITableView()
     
     // MARK: - Initialization
     init(interactor: SettingsBuisnessLogic, router: SettingsRouterProtocol) {
@@ -74,6 +79,7 @@ final class SettingsViewController: UIViewController, SettingsDisplayLogic {
         navigationBar.pinRight(to: view)
         
         configureAboutDevButton(with: viewModel)
+        configureSettingsTable()
     }
     
     func displayAboutDev(viewModel: SettingsModels.LoadAboutDev.ViewModel) {
@@ -123,9 +129,31 @@ final class SettingsViewController: UIViewController, SettingsDisplayLogic {
         
     }
     
+    private func configureSettingsTable() {
+        settingsTable.register(SettingsCell.self, forCellReuseIdentifier: SettingsCell.reuseId)
+        settingsTable.register(AddNotificationCell.self, forCellReuseIdentifier: AddNotificationCell.reuseId)
+        settingsTable.delegate = self
+        settingsTable.dataSource = interactor
+        
+        settingsTable.backgroundColor = .clear
+        settingsTable.separatorStyle = .none
+        settingsTable.allowsSelection = true
+        
+        view.addSubview(settingsTable)
+        settingsTable.pinHorizontal(to: view)
+        settingsTable.pinBottom(to: aboutDevButton.topAnchor)
+        settingsTable.pinTop(to: navigationBar.bottomAnchor, Constants.settingsTableOffsetTop)
+    }
+    
     // MARK: - Actions
     @objc func aboutDevButtonPressed() {
         let request = SettingsModels.LoadAboutDev.Request()
         interactor.loadAboutDev(request: request)
+    }
+}
+
+extension SettingsViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return Constants.heightForRow
     }
 }

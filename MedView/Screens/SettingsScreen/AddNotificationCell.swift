@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-final class AddParamterCell: UITableViewCell {
+final class AddNotificationCell: UITableViewCell {
     // MARK: - Constants
     private enum Constants {
         static let plusWrapRadius: CGFloat = 7
@@ -19,13 +19,13 @@ final class AddParamterCell: UITableViewCell {
         
         static let parametersLabelFont: UIFont = .systemFont(ofSize: 20, weight: .medium)
         
-        static let addLabelText: String = "Create custom parameter"
+        static let addLabelText: String = "Create custom notification"
         
         static let addLabelLeftOffset: CGFloat = 17
         static let addLabelRightOffset: CGFloat = 20
     }
     // MARK: - Variables
-    static let id: String = "AddParameterCell"
+    static let reuseId: String = "AddNotificationCell"
     private let plusWrap: UIView = UIView()
     private let plusIcon: UIImageView = UIImageView()
     private let addLabel: UILabel = UILabel()

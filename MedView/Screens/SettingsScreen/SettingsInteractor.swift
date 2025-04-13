@@ -8,17 +8,30 @@
 import Foundation
 import UIKit
 
-final class SettingsInteractor: SettingsBuisnessLogic {
+final class SettingsInteractor: NSObject, SettingsBuisnessLogic {
     // MARK: - Constants
     private enum Constants {
         static let settingsLabelText: NSMutableAttributedString = NSMutableAttributedString("Settings")
         
         static let aboutDevButtonTitle: String = "About dev"
+        
+        static let numberOfSections: Int = 5
+        static let numberOfRowsCard: Int = 1
+        static let numberOfRowsTheme: Int = 1
+        static let numberOfRowsNotificationsDefault: Int = 3
+        static let numberOfRowsNotificationsCreation: Int = 1
+        static let notificationsDefaultTitles: [String] = [
+            "Drink water notifications",
+            "Eat food notifications",
+            "Sleep notifications"
+        ]
     }
     
     // MARK: - Properties
     var presenter: SettingsPresentationLogic
     var worker: SettingsWorker
+    
+    var notificationsCustomTitles: [String] = []
     
     // MARK: - Initialization
     init(presenter: SettingsPresentationLogic, worker: SettingsWorker) {
@@ -38,5 +51,75 @@ final class SettingsInteractor: SettingsBuisnessLogic {
     func loadAboutDev(request: SettingsModels.LoadAboutDev.Request) {
         let response = SettingsModels.LoadAboutDev.Response()
         presenter.presentAboutDev(response: response)
+    }
+}
+
+extension SettingsInteractor: UITableViewDataSource {
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return Constants.numberOfSections
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        switch section {
+        case 0:
+            return Constants.numberOfRowsCard
+        case 1:
+            return Constants.numberOfRowsTheme
+        case 2:
+            return Constants.numberOfRowsNotificationsDefault
+        case 3:
+            return notificationsCustomTitles.count
+        case 4:
+            return Constants.numberOfRowsNotificationsCreation
+        default:
+            return 0
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        switch indexPath.section {
+        case 0:
+            let cell = tableView.dequeueReusableCell(withIdentifier: SettingsCell.reuseId, for: indexPath)
+            
+            guard let settingsCell = cell as? SettingsCell else {
+                return cell
+            }
+            settingsCell.configure(with: "Medical Card", true)
+            return settingsCell
+        case 1:
+            let cell = tableView.dequeueReusableCell(withIdentifier: SettingsCell.reuseId, for: indexPath)
+            
+            guard let settingsCell = cell as? SettingsCell else {
+                return cell
+            }
+            settingsCell.configure(with: "Dark theme")
+            return settingsCell
+        case 2:
+            let cell = tableView.dequeueReusableCell(withIdentifier: SettingsCell.reuseId, for: indexPath)
+            
+            guard let settingsCell = cell as? SettingsCell else {
+                return cell
+            }
+            settingsCell.configure(with: Constants.notificationsDefaultTitles[indexPath.row])
+            return settingsCell
+        case 3:
+            let cell = tableView.dequeueReusableCell(withIdentifier: SettingsCell.reuseId, for: indexPath)
+            
+            guard let settingsCell = cell as? SettingsCell else {
+                return cell
+            }
+            settingsCell.configure(with: notificationsCustomTitles[indexPath.row])
+            return settingsCell
+        case 4:
+            let extraCell = tableView.dequeueReusableCell(withIdentifier: AddNotificationCell.reuseId, for: indexPath)
+            
+            guard let notificationCell = extraCell as? AddNotificationCell else {
+                return extraCell
+            } 
+            
+            return notificationCell
+        default:
+            return AddNotificationCell()
+        }
     }
 }

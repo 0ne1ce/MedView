@@ -84,40 +84,22 @@ final class ParametersInteractor: NSObject, ParametersBuisnessLogic {
 }
 
 extension ParametersInteractor: UITableViewDataSource {
-//    func numberOfSections(in tableView: UITableView) -> Int {
-//        return Constants.numberOfSections
-//    }
-    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-//        switch section {
-//        case 0:
-//            return Constants.parameterCellCount
-//        default:
-//            return Constants.addParamterCellCount
-//        }
         return Constants.parameterCellCount
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        switch indexPath.section {
-//        case 0:
-            let cell = tableView.dequeueReusableCell(withIdentifier: ParameterCell.id, for: indexPath)
-            guard let parameterCell = cell as? ParameterCell else {
-                return cell
-            }
+        let cell = tableView.dequeueReusableCell(withIdentifier: ParameterCell.id, for: indexPath)
+        guard let parameterCell = cell as? ParameterCell else {
+            return cell
+        }
             
-            let title = ParametersColorsTitles.allCases[indexPath.row].rawValue
-            guard let image = UIImage(named: title) else {
-                        fatalError("No image found for asset: \(title)")
-                    }
-            parameterCell.configure(with: image, and: title)
+        let title = ParametersColorsTitles.allCases[indexPath.row].rawValue
+        guard let image = UIImage(named: title) else {
+            return cell
+        }
+        parameterCell.configure(with: image, and: title)
             
-            return parameterCell
-//        default:
-//            let cell = tableView.dequeueReusableCell(withIdentifier: AddParamterCell.id, for: indexPath)
-//            guard cell is AddParamterCell else {
-//                return cell
-//            }
-//        }
+        return parameterCell
     }
 }
