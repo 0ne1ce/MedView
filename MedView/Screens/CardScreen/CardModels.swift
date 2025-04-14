@@ -23,7 +23,21 @@ enum CardModels {
             var settingsImage: UIImage?
             var navigationTitleFont: UIFont
             var navigationTitleColor: UIColor?
-            var navigationBackgroundColor: UIColor
+        }
+    }
+    
+    enum SaveValue {
+        struct Request {
+            var parameterTag: Int
+            var value: String
+        }
+        
+        struct Response {
+            
+        }
+        
+        struct ViewModel {
+            
         }
     }
 }

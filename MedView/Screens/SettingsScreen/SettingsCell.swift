@@ -70,7 +70,7 @@ final class SettingsCell: UITableViewCell {
         settingsWrap.pinHorizontal(to: contentView, Constants.wrapOffsetH)
         
         settingsWrap.layer.cornerRadius = Constants.wrapRadius
-        settingsWrap.backgroundColor = .white
+        settingsWrap.backgroundColor = .cellBackground
     }
     
     private func configureLabel() {
@@ -81,7 +81,7 @@ final class SettingsCell: UITableViewCell {
         settingsLabel.pinLeft(to: settingsWrap, Constants.settingsLabelOffsetLeft)
         settingsLabel.pinRight(to: settingsWrap, Constants.settingsLabelOffsetRight)
         
-        settingsLabel.textColor = .black
+        settingsLabel.textColor = .textPrimary
         settingsLabel.textAlignment = .left
         settingsLabel.font = Constants.settingsLabelFont
         settingsLabel.text = "Error"
@@ -106,7 +106,7 @@ final class SettingsCell: UITableViewCell {
         settingsSwitch.pinBottom(to: settingsWrap.layoutMarginsGuide.bottomAnchor)
         settingsSwitch.isOn = toggleState
         settingsSwitch.addTarget(self, action: #selector(switchPressed), for: .valueChanged)
-        settingsSwitch.onTintColor = .systemMint
+        settingsSwitch.onTintColor = .main
     }
     
     // MARK: - Actions

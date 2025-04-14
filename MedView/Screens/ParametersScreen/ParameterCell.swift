@@ -56,7 +56,7 @@ final class ParameterCell: UITableViewCell {
     
     private func configureWrap() {
         self.contentView.addSubview(wrap)
-        wrap.backgroundColor = .white
+        wrap.backgroundColor = UIColor.cellBackground
         wrap.layer.cornerRadius = Constants.parameterWrapRadius
         
         wrap.pinTop(to: contentView, Constants.parameterWrapOffsetV)
@@ -79,7 +79,7 @@ final class ParameterCell: UITableViewCell {
     }
     
     private func configureLabel() {
-        parametersLabel.textColor = .black
+        parametersLabel.textColor = UIColor.textPrimary
         parametersLabel.textAlignment = .left
         parametersLabel.font = Constants.parametersLabelFont
         parametersLabel.text = "Error"

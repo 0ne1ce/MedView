@@ -24,7 +24,6 @@ enum SettingsModels {
             var settingsImage: UIImage?
             var navigationTitleFont: UIFont
             var navigationTitleColor: UIColor?
-            var navigationBackgroundColor: UIColor
             var buttonTitle: String
             var buttonTitleFont: UIFont
             var buttonTitleColor: UIColor

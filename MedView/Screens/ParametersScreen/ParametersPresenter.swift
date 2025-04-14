@@ -11,11 +11,10 @@ import UIKit
 final class ParametersPresenter: ParametersPresentationLogic {
     // MARK: - Constants
     private enum Constants {
-        static let backgroundLightHex: String = "F2F2F7"
+        static let backgroundColor: UIColor = UIColor.backgroundPrimary
         
         static let navigationTitleFont: UIFont = UIFont.systemFont(ofSize: 36).bold
         
-        static let parametersTitleLabelHex: String = "999999"
         static let parametersFont: UIFont = .systemFont(ofSize: 20, weight: .bold)
     }
     // MARK: - Properties
@@ -25,13 +24,12 @@ final class ParametersPresenter: ParametersPresentationLogic {
     func presentStart(response: ParametersModels.LoadStart.Response) {
         let viewModel = ParametersModels.LoadStart.ViewModel(
             navigationTitle: response.titleText,
-            tableBackgroundColor: UIColor(hex: Constants.backgroundLightHex),
+            tableBackgroundColor: Constants.backgroundColor,
             tableTitleText: response.tableTitleText,
-            tableTitleColor: UIColor(hex: Constants.parametersTitleLabelHex),
+            tableTitleColor: UIColor.parametersTitleLabel,
             tableTitleFont: Constants.parametersFont,
             navigationTitleFont: Constants.navigationTitleFont,
-            settingsImage: UIImage(named: response.settingsImageName),
-            navigationBackgroundColor: .white
+            settingsImage: UIImage(named: response.settingsImageName)
         )
         
         view?.displayStart(viewModel: viewModel)

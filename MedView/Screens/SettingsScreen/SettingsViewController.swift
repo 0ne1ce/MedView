@@ -11,9 +11,6 @@ import UIKit
 final class SettingsViewController: UIViewController, SettingsDisplayLogic {
     // MARK: - Constants
     private enum Constants {
-        static let backgroundLightHex: String = "F2F2F7"
-        static let mainColorHex: String = "00C7C0"
-        
         static let navigationBarHeight: CGFloat = 155
         
         static let buttonTitleWidth: CGFloat = 120
@@ -96,7 +93,7 @@ final class SettingsViewController: UIViewController, SettingsDisplayLogic {
     
     // MARK: - Private functions
     private func configure() {
-        view.backgroundColor = UIColor(hex: Constants.backgroundLightHex)
+        view.backgroundColor = .backgroundPrimary
         configureNavigationItems()
     }
     
@@ -104,8 +101,8 @@ final class SettingsViewController: UIViewController, SettingsDisplayLogic {
         appearance.configureWithTransparentBackground()
         appearance.shadowColor = .clear
         
-        navigationController?.navigationBar.tintColor = UIColor(hex: Constants.mainColorHex)
-        appearance.backButtonAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor(hex: Constants.mainColorHex)]
+        navigationController?.navigationBar.tintColor = .main
+        appearance.backButtonAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor.main]
         navigationController?.navigationBar.standardAppearance = appearance
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
     }
@@ -160,11 +157,13 @@ final class SettingsViewController: UIViewController, SettingsDisplayLogic {
     
     // MARK: - Actions
     @objc func aboutDevButtonPressed() {
+        triggerSelectionFeedback()
         let request = SettingsModels.LoadAboutDev.Request()
         interactor.loadAboutDev(request: request)
     }
 }
 
+// MARK: - UITableViewDelegate
 extension SettingsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return Constants.heightForRow

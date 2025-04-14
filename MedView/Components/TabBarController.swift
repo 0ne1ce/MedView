@@ -11,8 +11,6 @@ import UIKit
 final class TabBarController: UITabBarController, UITabBarControllerDelegate {
     // MARK: - Constants
     private enum Constants {
-        static let mainColorHex: String = "00C7C0"
-        
         static let parametersTabTitle: String = "Data"
         static let parametersTabImage: UIImage? = UIImage(systemName: "heart.text.square")
         static let parametersTabImageSelected: UIImage? = UIImage(systemName: "heart.text.square.fill")
@@ -74,7 +72,7 @@ final class TabBarController: UITabBarController, UITabBarControllerDelegate {
         
         tabBar.standardAppearance = appearance
         tabBar.scrollEdgeAppearance = appearance
-        tabBar.tintColor = UIColor(hex: Constants.mainColorHex)
+        tabBar.tintColor = UIColor.main
         tabBar.clipsToBounds = true
     }
     

@@ -15,7 +15,7 @@ final class ParametersInteractor: NSObject, ParametersBuisnessLogic {
         static let tableTitleText: String = "Your health parameters"
         static let settingsImageName: String = "SettingsSymbol"
         
-        static let mainColorHex: String = "00C7C0"
+        static let mainColor: UIColor = UIColor.main
         
         static let systemColorStringLocation: Int = 0
         static let systemColorStringLength: Int = 3
@@ -64,7 +64,7 @@ final class ParametersInteractor: NSObject, ParametersBuisnessLogic {
         attributedTitleText
             .addAttribute(
                 .foregroundColor,
-                value: UIColor.black,
+                value: UIColor.textPrimary,
                 range: NSRange(
                     location: Constants.systemColorStringLocation,
                     length: Constants.systemColorStringLength
@@ -73,7 +73,7 @@ final class ParametersInteractor: NSObject, ParametersBuisnessLogic {
         attributedTitleText
             .addAttribute(
                 .foregroundColor,
-                value: UIColor(hex: Constants.mainColorHex),
+                value: Constants.mainColor,
                 range: NSRange(
                     location: Constants.mintColorStringLocation,
                     length: Constants.mintColorStringLength

@@ -8,7 +8,8 @@
 import Foundation
 import UIKit
 
-protocol CardBuisnessLogic: AnyObject {
+protocol CardBuisnessLogic: AnyObject, UITableViewDataSource {
     // MARK: - Functions
     func loadStart(request: CardModels.LoadStart.Request)
+    func saveTextFieldValue(request: CardModels.SaveValue.Request)
 }

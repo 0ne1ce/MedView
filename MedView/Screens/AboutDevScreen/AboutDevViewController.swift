@@ -54,7 +54,7 @@ final class AboutDevViewController: UIViewController, AboutDevDisplayLogic {
     }
     
     func displayStart(viewModel: AboutDevModels.LoadStart.ViewModel) {
-        view.backgroundColor = UIColor(hex: viewModel.backgroundColorHex)
+        view.backgroundColor = viewModel.backgroundColor
         view.addSubview(hseMapView)
         hseMapView.setRegion(viewModel.hseLocationRegion, animated: true)
         hseMapView.addAnnotation(viewModel.hseAnnotation)
@@ -65,7 +65,7 @@ final class AboutDevViewController: UIViewController, AboutDevDisplayLogic {
         authorInfoLabel.pinHorizontal(to: view, Constants.authorInfoOffsetH)
         authorInfoLabel.pinTop(to: hseMapView.bottomAnchor, Constants.authorInfoOffsetTop)
         authorInfoLabel.text = viewModel.hseAuthor
-        authorInfoLabel.textColor = .black
+        authorInfoLabel.textColor = .textPrimary
         authorInfoLabel.font = viewModel.infoFont
         authorInfoLabel.textAlignment = .center
         

@@ -69,6 +69,7 @@ final class SettingsInteractor: NSObject, SettingsBuisnessLogic {
     }
 }
 
+// MARK: - UITableViewDataSource
 extension SettingsInteractor: UITableViewDataSource {
     func numberOfSections(in tableView: UITableView) -> Int {
         return Constants.numberOfSections

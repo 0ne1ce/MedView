@@ -22,8 +22,7 @@ final class NotificationPresenter: NotificationPresentationLogic {
         let viewModel = NotificationModels.LoadStart.ViewModel(
             navigationTitle: response.titleText,
             navigationTitleFont: Constants.navigationTitleFont,
-            navigationTitleColor: .black,
-            navigationBackgroundColor: .white
+            navigationTitleColor: .textPrimary
         )
         view?.displayStart(viewModel: viewModel)
     }

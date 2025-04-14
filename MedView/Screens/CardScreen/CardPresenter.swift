@@ -22,9 +22,13 @@ final class CardPresenter: CardPresentationLogic {
         let viewModel = CardModels.LoadStart.ViewModel(
             navigationTitle: response.titleText,
             navigationTitleFont: Constants.navigationTitleFont,
-            navigationTitleColor: .black,
-            navigationBackgroundColor: .white
+            navigationTitleColor: .textPrimary
         )
         view?.displayStart(viewModel: viewModel)
+    }
+    
+    func presentTextFieldValue(response: CardModels.SaveValue.Response) {
+        let viewModel = CardModels.SaveValue.ViewModel()
+        view?.displayTextFieldValue(viewModel: viewModel)
     }
 }

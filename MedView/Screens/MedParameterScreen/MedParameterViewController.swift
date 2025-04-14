@@ -11,8 +11,6 @@ import UIKit
 final class MedParameterViewController: UIViewController, MedParameterDisplayLogic {
     // MARK: - Constants
     private enum Constants {
-        static let mainColorHex: String = "00C7C0"
-        static let parameterColorHex: String = "5856D6"
         static let dataPoints: [Double] = [80, 80.8, 80.1, 80.5, 80.8, 81.0, 81.3]
         
         static let graphOffsetH: CGFloat = 30
@@ -50,13 +48,13 @@ final class MedParameterViewController: UIViewController, MedParameterDisplayLog
     }
     
     func displayStart(viewModel: MedParameterModels.LoadStart.ViewModel) {
-        view.backgroundColor = UIColor(hex: viewModel.backgroundColorHex)
+        view.backgroundColor = viewModel.backgroundColor
         
         appearance.configureWithTransparentBackground()
         appearance.shadowColor = .clear
         
-        navigationController?.navigationBar.tintColor = UIColor(hex: Constants.mainColorHex)
-        appearance.backButtonAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor(hex: Constants.mainColorHex)]
+        navigationController?.navigationBar.tintColor = .main
+        appearance.backButtonAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor.main]
         navigationController?.navigationBar.standardAppearance = appearance
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
     }

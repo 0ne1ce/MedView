@@ -51,7 +51,7 @@ final class AddNotificationCell: UITableViewCell {
     }
     
     private func configureWrap() {
-        plusWrap.backgroundColor = .white
+        plusWrap.backgroundColor = .cellBackground
         plusWrap.layer.cornerRadius = Constants.plusWrapRadius
         
         contentView.addSubview(plusWrap)
@@ -74,7 +74,7 @@ final class AddNotificationCell: UITableViewCell {
     
     private func configureLabel() {
         addLabel.text = Constants.addLabelText
-        addLabel.textColor = .black
+        addLabel.textColor = .textPrimary
         addLabel.font = Constants.parametersLabelFont
         addLabel.textAlignment = .left
         

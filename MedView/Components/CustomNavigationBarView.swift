@@ -48,7 +48,7 @@ final class CustomNavigationBarView: UIView {
         title.font = viewModel.navigationTitleFont
         configureTitle(with: viewModel)
         
-        backgroundColor = viewModel.navigationBackgroundColor
+        backgroundColor = .cellBackground
         if isSettingsButtonHidden == false {
             settingsButton.setImage(viewModel.settingsImage, for: .normal)
             configureButton()

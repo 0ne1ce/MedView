@@ -11,10 +11,6 @@ import UIKit
 final class NotificationViewController: UIViewController, NotificationDisplayLogic {
     // MARK: - Constants
     private enum Constants {
-        static let backgroundLightHex: String = "F2F2F7"
-        
-        static let mainColorHex: String = "00C7C0"
-        
         static let navigationBarHeight: CGFloat = 155
     }
     
@@ -68,7 +64,7 @@ final class NotificationViewController: UIViewController, NotificationDisplayLog
     
     // MARK: - Private functions
     private func configure() {
-        view.backgroundColor = UIColor(hex: Constants.backgroundLightHex)
+        view.backgroundColor = .backgroundPrimary
         configureNavigationItems()
     }
     
@@ -76,8 +72,8 @@ final class NotificationViewController: UIViewController, NotificationDisplayLog
         appearance.configureWithTransparentBackground()
         appearance.shadowColor = .clear
         
-        navigationController?.navigationBar.tintColor = UIColor(hex: Constants.mainColorHex)
-        appearance.backButtonAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor(hex: Constants.mainColorHex)]
+        navigationController?.navigationBar.tintColor = .main
+        appearance.backButtonAppearance.normal.titleTextAttributes = [.foregroundColor: UIColor.main]
         navigationController?.navigationBar.standardAppearance = appearance
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
     }

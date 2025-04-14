@@ -26,7 +26,6 @@ enum HelpModels {
             var settingsImage: UIImage?
             var navigationTitleFont: UIFont
             var navigationTitleColor: UIColor?
-            var navigationBackgroundColor: UIColor
             var animationName: String
             var tableBackgroundColor: UIColor
             var onboardingButtonColor: UIColor

@@ -11,4 +11,5 @@ import UIKit
 protocol CardPresentationLogic: AnyObject {
     // MARK: - Functions
     func presentStart(response: CardModels.LoadStart.Response)
+    func presentTextFieldValue(response: CardModels.SaveValue.Response)
 }

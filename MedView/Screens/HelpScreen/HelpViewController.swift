@@ -11,9 +11,7 @@ import Lottie
 
 final class HelpViewController: UIViewController, HelpDisplayLogic {
     // MARK: - Constants
-    private enum Constants {
-        static let backgroundLightHex: String = "F2F2F7"
-        
+    private enum Constants {  
         static let navigationBarHeight: CGFloat = 120
         static let guideTextFontSize: CGFloat = 24
         static let guideTextLimit: Int = 0
@@ -104,7 +102,7 @@ final class HelpViewController: UIViewController, HelpDisplayLogic {
     
     // MARK: - Private functions
     private func configure() {
-        view.backgroundColor = UIColor(hex: Constants.backgroundLightHex)
+        view.backgroundColor = .backgroundPrimary
     }
     
     private func configureSettingsButtonTarget() {
@@ -124,7 +122,6 @@ final class HelpViewController: UIViewController, HelpDisplayLogic {
             titleLabel.leadingAnchor.constraint(equalTo: onboardingButton.leadingAnchor, constant: Constants.onboardingTitleLabelOffsetLeft),
             titleLabel.centerYAnchor.constraint(equalTo: onboardingButton.centerYAnchor)
         ])
-        
         onboardingButton.setTitle(viewModel.onboardingButtonText, for: .normal)
         onboardingButton.tintColor = viewModel.onboardingButtonTextColor
         onboardingButton.titleLabel?.font = viewModel.onboardingButtonTextFont
@@ -132,7 +129,7 @@ final class HelpViewController: UIViewController, HelpDisplayLogic {
         onboardingButton.backgroundColor = viewModel.onboardingButtonColor
         
         onboardingButton.layer.cornerRadius = Constants.onboardingButtonRadius
-        onboardingButton.layer.shadowColor = UIColor.black.cgColor
+        onboardingButton.layer.shadowColor = viewModel.onboardingButtonBoundsColor.cgColor
         onboardingButton.layer.shadowOffset = CGSize(
             width: .zero,
             height: Constants.onboardingButtonShadowHeight

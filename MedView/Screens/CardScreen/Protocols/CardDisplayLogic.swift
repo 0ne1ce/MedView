@@ -11,4 +11,5 @@ import UIKit
 protocol CardDisplayLogic: AnyObject {
     // MARK: - Functions
     func displayStart(viewModel: CardModels.LoadStart.ViewModel)
+    func displayTextFieldValue(viewModel: CardModels.SaveValue.ViewModel)
 }

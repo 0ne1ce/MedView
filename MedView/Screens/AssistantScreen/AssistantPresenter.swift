@@ -14,8 +14,6 @@ final class AssistantPresenter: AssistantPresentationLogic {
         static let navigationTitleFont: UIFont = UIFont.systemFont(ofSize: 36).bold
         
         static let placeholderFont: UIFont = UIFont.systemFont(ofSize: 18).bold
-        
-        static let sendButtonColorHex: String = "00C7C0"
     }
     // MARK: - Properties
     var view: AssistantDisplayLogic?
@@ -28,11 +26,10 @@ final class AssistantPresenter: AssistantPresentationLogic {
             placeholderText: response.placeholderText,
             placeholderFont: Constants.placeholderFont,
             placeholderColor: .lightGray,
-            inputWrapBackgroundColor: .white,
+            inputWrapBackgroundColor: UIColor.cellBackground,
             navigationTitleFont: Constants.navigationTitleFont,
-            navigationTitleColor: .black,
-            navigationBackgroundColor: .white,
-            sendButtonColor: UIColor(hex: Constants.sendButtonColorHex),
+            navigationTitleColor: .textPrimary,
+            sendButtonColor: .main,
             sendButtonTintColor: .white,
             tableBackgroundColor: .clear,
             animationName: response.animationName

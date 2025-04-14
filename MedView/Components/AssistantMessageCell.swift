@@ -16,8 +16,6 @@ final class AssistantMessageCell: UITableViewCell {
         static let messageBubbleOffsetRight: CGFloat = 100
         static let messageBubbleCornerRadius: CGFloat = 15
         
-        static let sendButtonColorHex: String = "00C7C0"
-        
         static let messageTextViewOffsetH: CGFloat = 10
         static let messageTextViewFont: UIFont = UIFont.systemFont(ofSize: 18)
     }
@@ -61,7 +59,7 @@ final class AssistantMessageCell: UITableViewCell {
         messageBubble.pinRight(to: contentView, Constants.messageBubbleOffsetRight)
         
         messageBubble.layer.cornerRadius = Constants.messageBubbleCornerRadius
-        messageBubble.backgroundColor = .white
+        messageBubble.backgroundColor = UIColor.cellBackground
     }
     
     private func configureWrapTextLabel() {
@@ -69,9 +67,9 @@ final class AssistantMessageCell: UITableViewCell {
         messageTextView.pinHorizontal(to: messageBubble, Constants.messageTextViewOffsetH)
         messageTextView.pinVertical(to: messageBubble)
         
-        messageTextView.backgroundColor = .white
+        messageTextView.backgroundColor = UIColor.cellBackground
         messageTextView.layer.cornerRadius = Constants.messageBubbleCornerRadius
-        messageTextView.textColor = .black
+        messageTextView.textColor = .textPrimary
         messageTextView.font = Constants.messageTextViewFont
         messageTextView.textAlignment = .left
         messageTextView.isScrollEnabled = false

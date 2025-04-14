@@ -19,7 +19,7 @@ enum MedParameterModels {
         }
         
         struct ViewModel {
-            var backgroundColorHex: String
+            var backgroundColor: UIColor
         }
     }
 }

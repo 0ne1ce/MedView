@@ -24,7 +24,7 @@ enum AboutDevModels {
         }
         
         struct ViewModel {
-            var backgroundColorHex: String
+            var backgroundColor: UIColor
             var hseLocationRegion: MKCoordinateRegion
             var hseAnnotation: MKPointAnnotation
             var hseAuthor: String

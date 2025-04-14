@@ -11,7 +11,7 @@ import Foundation
 final class MedParameterPresenter: MedParameterPresentationLogic {
     // MARK: - Constants
     private enum Constants {
-        static let backgroundLightHex: String = "F2F2F7"
+
     }
     
     // MARK: - Properties
@@ -19,7 +19,7 @@ final class MedParameterPresenter: MedParameterPresentationLogic {
     
     // MARK: - Public functions
     func presentStart(response: MedParameterModels.LoadStart.Response) {
-        let viewModel = MedParameterModels.LoadStart.ViewModel(backgroundColorHex: Constants.backgroundLightHex)
+        let viewModel = MedParameterModels.LoadStart.ViewModel(backgroundColor: .backgroundPrimary)
         view?.displayStart(viewModel: viewModel)
     }
 }

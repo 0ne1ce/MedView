@@ -29,7 +29,6 @@ enum ParametersModels {
             var navigationTitleFont: UIFont
             var navigationTitleColor: UIColor?
             var settingsImage: UIImage?
-            var navigationBackgroundColor: UIColor
         }
     }
     

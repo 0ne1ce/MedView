@@ -12,5 +12,4 @@ protocol NavigationTitleRepresentable {
     var navigationTitleFont: UIFont { get }
     var navigationTitleColor: UIColor? { get }
     var settingsImage: UIImage? { get }
-    var navigationBackgroundColor: UIColor { get }
 }

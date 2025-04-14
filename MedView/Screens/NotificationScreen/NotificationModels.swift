@@ -23,7 +23,6 @@ enum NotificationModels {
             var settingsImage: UIImage?
             var navigationTitleFont: UIFont
             var navigationTitleColor: UIColor?
-            var navigationBackgroundColor: UIColor
         }
     }
 }

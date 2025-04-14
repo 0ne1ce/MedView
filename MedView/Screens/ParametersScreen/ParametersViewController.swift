@@ -13,7 +13,7 @@ typealias TableCellAnimation = (UITableViewCell, IndexPath) -> Void
 final class ParametersViewController: UIViewController, ParametersDisplayLogic {
     // MARK: - Constants
     private enum Constants {
-        static let backgroundLightHex: String = "F2F2F7"
+        static let backgroundColor: UIColor = UIColor.backgroundPrimary
         
         static let tableViewTopOffset: CGFloat = 175
         static let heightForRow: CGFloat = 60
@@ -99,7 +99,7 @@ final class ParametersViewController: UIViewController, ParametersDisplayLogic {
     
     // MARK: - Private functions
     private func configure() {
-        view.backgroundColor = UIColor(hex: Constants.backgroundLightHex)
+        view.backgroundColor = Constants.backgroundColor
     }
     
     private func configureTable(with viewModel: ParametersModels.LoadStart.ViewModel) {

@@ -12,7 +12,6 @@ import MapKit
 final class AbourDevPresenter: AboutDevPresentationLogic {
     // MARK: - Constants
     private enum Constants {
-        static let backgroundLightHex: String = "F2F2F7"
         static let regionDelta: Double = 0.01
         
         static let infoFont: UIFont = UIFont.systemFont(ofSize: 24, weight: .black)
@@ -39,7 +38,7 @@ final class AbourDevPresenter: AboutDevPresentationLogic {
             subtitle: response.hseLocationAnnotationSubtitle
         )
         let viewModel = AboutDevModels.LoadStart.ViewModel(
-            backgroundColorHex: Constants.backgroundLightHex,
+            backgroundColor: .backgroundPrimary,
             hseLocationRegion: region,
             hseAnnotation: annotation,
             hseAuthor: response.hseAuthor,

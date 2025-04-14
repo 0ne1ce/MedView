@@ -12,8 +12,6 @@ import Lottie
 final class AssistantViewController: UIViewController, AssistantDisplayLogic {
     // MARK: - Constants
     private enum Constants {
-        static let backgroundLightHex: String = "F2F2F7"
-        
         static let navigationBarHeight: CGFloat = 120
         
         static let inputWrapHeight: CGFloat = 50
@@ -136,7 +134,7 @@ final class AssistantViewController: UIViewController, AssistantDisplayLogic {
     
     // MARK: - Private functions
     private func configure() {
-        view.backgroundColor = UIColor(hex: Constants.backgroundLightHex)
+        view.backgroundColor = .backgroundPrimary
         view.addGestureRecognizer(tapGestureRecognizer)
         tapGestureRecognizer.numberOfTapsRequired = 1
     }
@@ -263,7 +261,7 @@ extension AssistantViewController: UITextViewDelegate {
     func textViewDidBeginEditing(_ textView: UITextView) {
         if textView.textColor == .lightGray {
             textView.text = ""
-            textView.textColor = .black
+            textView.textColor = .textPrimary
         }
     }
     
