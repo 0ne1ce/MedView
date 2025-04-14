@@ -65,4 +65,22 @@ final class SettingsWorker {
     func loadCustomNotificationsStates() -> [Bool] {
         return defaults.array(forKey: Constants.customNotificatonsSwitchStatesKey) as? [Bool] ?? []
     }
+    
+    func testNotification() {
+        let content = UNMutableNotificationContent()
+        content.title = "Be healthy"
+        content.body = "And sleep more <3"
+        content.sound = .default
+
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
+        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+
+        UNUserNotificationCenter.current().add(request) { error in
+            if let error = error {
+                print("Ошибка при добавлении уведомления: \(error)")
+            } else {
+                print("Уведомление запланировано через \(5) секунд")
+            }
+        }
+    }
 }

@@ -124,6 +124,9 @@ extension SettingsInteractor: UITableViewDataSource {
             }
             
             settingsCell.switchValueChanged = { [weak self] isOn in
+                if isOn {
+                    self?.worker.testNotification()
+                }
                 self?.notificationsDefaultStates[indexPath.row] = isOn
                 self?.worker.saveDefaultNotificationsStates(self?.notificationsDefaultStates ?? [])
             }

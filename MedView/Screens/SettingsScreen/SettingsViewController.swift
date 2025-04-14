@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import UserNotifications
 
 final class SettingsViewController: UIViewController, SettingsDisplayLogic {
     // MARK: - Constants
@@ -14,7 +15,7 @@ final class SettingsViewController: UIViewController, SettingsDisplayLogic {
         static let navigationBarHeight: CGFloat = 155
         
         static let buttonTitleWidth: CGFloat = 120
-        static let buttonTitleOffsetLeft: CGFloat = 70
+        static let buttonTitleOffsetLeft: CGFloat = 75
         
         static let buttonOffsetH: CGFloat = 100
         static let buttonHeight: CGFloat = 45
@@ -58,6 +59,7 @@ final class SettingsViewController: UIViewController, SettingsDisplayLogic {
     override func viewDidLoad() {
         super.viewDidLoad()
         configure()
+        requestNotificationPermission()
     }
     
     // MARK: - Public functions
@@ -147,6 +149,16 @@ final class SettingsViewController: UIViewController, SettingsDisplayLogic {
         settingsTable.pinHorizontal(to: view)
         settingsTable.pinBottom(to: aboutDevButton.topAnchor)
         settingsTable.pinTop(to: navigationBar.bottomAnchor, Constants.settingsTableOffsetTop)
+    }
+    
+    func requestNotificationPermission() {
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
+            if let error = error {
+                print("Ошибка запроса разрешения на уведомления: \(error)")
+            } else {
+                print("Разрешение на уведомления: \(granted ? "разрешено" : "запрещено")")
+            }
+        }
     }
     
     private func triggerSelectionFeedback() {
