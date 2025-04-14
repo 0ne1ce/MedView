@@ -32,6 +32,8 @@ final class SettingsCell: UITableViewCell {
     var settingsLabel: UILabel = UILabel()
     var settingsSwitch: UISwitch = UISwitch()
     
+    var switchValueChanged: ((Bool) -> Void)?
+    
     // MARK: - Initialization
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -44,12 +46,12 @@ final class SettingsCell: UITableViewCell {
     }
     
     // MARK: - Public functions
-    public func configure(with title: String, _ isToggleHidden: Bool = false) {
+    public func configure(with title: String, _ isToggleHidden: Bool = false, _ toggleIsOn: Bool = false) {
         settingsLabel.text = title
         if isToggleHidden {
             configureAnimation()
         } else {
-            configureToggle()
+            configureToggle(toggleIsOn)
         }
     }
     
@@ -97,10 +99,18 @@ final class SettingsCell: UITableViewCell {
         animationView.setHeight(Constants.animationSize)
     }
     
-    private func configureToggle() {
+    private func configureToggle(_ toggleState: Bool) {
         settingsWrap.addSubview(settingsSwitch)
         settingsSwitch.pinLeft(to: settingsLabel.trailingAnchor)
         settingsSwitch.pinTop(to: settingsWrap.layoutMarginsGuide.topAnchor)
         settingsSwitch.pinBottom(to: settingsWrap.layoutMarginsGuide.bottomAnchor)
+        settingsSwitch.isOn = toggleState
+        settingsSwitch.addTarget(self, action: #selector(switchPressed), for: .valueChanged)
+        settingsSwitch.onTintColor = .systemMint
+    }
+    
+    // MARK: - Actions
+    @objc private func switchPressed(_ sender: UISwitch) {
+        switchValueChanged?(sender.isOn)
     }
 }

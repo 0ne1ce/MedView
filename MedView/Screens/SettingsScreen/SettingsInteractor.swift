@@ -31,7 +31,9 @@ final class SettingsInteractor: NSObject, SettingsBuisnessLogic {
     var presenter: SettingsPresentationLogic
     var worker: SettingsWorker
     
+    var themeState: Bool = false
     var notificationsCustomTitles: [String] = []
+    var notificationsDefaultStates: [Bool] = []
     
     // MARK: - Initialization
     init(presenter: SettingsPresentationLogic, worker: SettingsWorker) {
@@ -41,6 +43,9 @@ final class SettingsInteractor: NSObject, SettingsBuisnessLogic {
     
     // MARK: - Public functions
     func loadStart(request: SettingsModels.LoadStart.Request) {
+        notificationsCustomTitles = worker.loadCustomNotifications()
+        notificationsDefaultStates = worker.loadDefaultNotificationsStates()
+        themeState = worker.loadThemeState()
         let response = SettingsModels.LoadStart.Response(
             titleText: Constants.settingsLabelText,
             buttonTitle: Constants.aboutDevButtonTitle
@@ -92,7 +97,13 @@ extension SettingsInteractor: UITableViewDataSource {
             guard let settingsCell = cell as? SettingsCell else {
                 return cell
             }
-            settingsCell.configure(with: "Dark theme")
+            
+            settingsCell.switchValueChanged = { [weak self] isOn in
+                self?.themeState = isOn
+                self?.worker.saveThemeState(self?.themeState ?? false)
+            }
+            
+            settingsCell.configure(with: "Dark theme", false, themeState)
             return settingsCell
         case 2:
             let cell = tableView.dequeueReusableCell(withIdentifier: SettingsCell.reuseId, for: indexPath)
@@ -100,7 +111,13 @@ extension SettingsInteractor: UITableViewDataSource {
             guard let settingsCell = cell as? SettingsCell else {
                 return cell
             }
-            settingsCell.configure(with: Constants.notificationsDefaultTitles[indexPath.row])
+            
+            settingsCell.switchValueChanged = { [weak self] isOn in
+                self?.notificationsDefaultStates[indexPath.row] = isOn
+                self?.worker.saveDefaultNotificationsStates(self?.notificationsDefaultStates ?? [])
+            }
+            
+            settingsCell.configure(with: Constants.notificationsDefaultTitles[indexPath.row], false, notificationsDefaultStates[indexPath.row])
             return settingsCell
         case 3:
             let cell = tableView.dequeueReusableCell(withIdentifier: SettingsCell.reuseId, for: indexPath)
@@ -115,7 +132,7 @@ extension SettingsInteractor: UITableViewDataSource {
             
             guard let notificationCell = extraCell as? AddNotificationCell else {
                 return extraCell
-            } 
+            }
             
             return notificationCell
         default:
