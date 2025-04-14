@@ -10,4 +10,6 @@ import UIKit
 
 protocol SettingsRouterProtocol: AnyObject {
     func showAboutDevScreen()
+    func showCardScreen()
+    func showNotificationScreen()
 }

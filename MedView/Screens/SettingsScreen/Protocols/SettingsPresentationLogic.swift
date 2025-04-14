@@ -12,4 +12,6 @@ protocol SettingsPresentationLogic: AnyObject {
     // MARK: - Functions
     func presentStart(response: SettingsModels.LoadStart.Response)
     func presentAboutDev(response: SettingsModels.LoadAboutDev.Response)
+    func presentCard(response: SettingsModels.LoadCard.Response)
+    func presentNotification(response: SettingsModels.LoadNotification.Response)
 }

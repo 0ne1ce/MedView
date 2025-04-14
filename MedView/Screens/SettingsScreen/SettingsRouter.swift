@@ -17,4 +17,14 @@ final class SettingsRouter: SettingsRouterProtocol {
         let aboutDevVC = AboutDevAssembly.build()
         view?.present(aboutDevVC, animated: true)
     }
+    
+    func showCardScreen() {
+        let cardVC = CardAssembly.build()
+        view?.navigationController?.pushViewController(cardVC, animated: true)
+    }
+    
+    func showNotificationScreen() {
+        let notificationVC = NotificationAssembly.build()
+        view?.navigationController?.pushViewController(notificationVC, animated: true)
+    }
 }

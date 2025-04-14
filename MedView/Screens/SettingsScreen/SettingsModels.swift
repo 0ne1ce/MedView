@@ -47,4 +47,32 @@ enum SettingsModels {
             
         }
     }
+    
+    enum LoadCard {
+        struct Request {
+            
+        }
+        
+        struct Response {
+            
+        }
+        
+        struct ViewModel {
+            
+        }
+    }
+    
+    enum LoadNotification {
+        struct Request {
+            
+        }
+        
+        struct Response {
+            
+        }
+        
+        struct ViewModel {
+            
+        }
+    }
 }

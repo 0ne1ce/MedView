@@ -19,11 +19,15 @@ final class CustomNavigationBarView: UIView {
         
         static let settingsSymbol: String = "SettingsSymbol"
         
-        static let faqNavigationTitleOffsetRight: CGFloat = -100
+        static let customTitleOffsetRight: CGFloat = -100
     }
     // MARK: - Variables
     var title: UILabel = UILabel()
     var settingsButton: UIButton = UIButton(type: .custom)
+    var defaultNavigationTitles: [NSMutableAttributedString] = [
+        NSMutableAttributedString("MedView"),
+        NSMutableAttributedString("Assistant")
+    ]
     
     // MARK: - Initialization
     init() {
@@ -67,10 +71,10 @@ final class CustomNavigationBarView: UIView {
         title.pinLeft(to: self.leadingAnchor, Constants.navigationBarItemOffset)
         title.setHeight(Constants.titleLabelHeight)
         title.pinBottom(to: self.bottomAnchor, Constants.navigationBarItemOffset)
-        if viewModel.navigationTitle == NSMutableAttributedString("FAQ and guide") {
-            title.pinRight(to: self.centerXAnchor, Constants.faqNavigationTitleOffsetRight)
-        } else {
+        if defaultNavigationTitles.contains(viewModel.navigationTitle) {
             title.pinRight(to: self.centerXAnchor, Constants.navigationBarItemOffset)
+        } else {
+            title.pinRight(to: self.centerXAnchor, Constants.customTitleOffsetRight)
         }
     }
     

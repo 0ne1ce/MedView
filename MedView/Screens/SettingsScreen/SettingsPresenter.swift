@@ -20,7 +20,7 @@ final class SettingsPresenter: SettingsPresentationLogic {
     // MARK: - Properties
     var view: SettingsDisplayLogic?
     
-    // MARK: - Fuctions
+    // MARK: - Functions
     func presentStart(response: SettingsModels.LoadStart.Response) {
         let viewModel = SettingsModels.LoadStart.ViewModel(
             navigationTitle: response.titleText,
@@ -40,5 +40,15 @@ final class SettingsPresenter: SettingsPresentationLogic {
     func presentAboutDev(response: SettingsModels.LoadAboutDev.Response) {
         let viewModel = SettingsModels.LoadAboutDev.ViewModel()
         view?.displayAboutDev(viewModel: viewModel)
+    }
+    
+    func presentCard(response: SettingsModels.LoadCard.Response) {
+        let viewModel = SettingsModels.LoadCard.ViewModel()
+        view?.displayCard(viewModel: viewModel)
+    }
+    
+    func presentNotification(response: SettingsModels.LoadNotification.Response) {
+        let viewModel = SettingsModels.LoadNotification.ViewModel()
+        view?.displayNotification(viewModel: viewModel)
     }
 }

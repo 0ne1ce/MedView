@@ -57,6 +57,16 @@ final class SettingsInteractor: NSObject, SettingsBuisnessLogic {
         let response = SettingsModels.LoadAboutDev.Response()
         presenter.presentAboutDev(response: response)
     }
+    
+    func loadCard(request: SettingsModels.LoadCard.Request) {
+        let response = SettingsModels.LoadCard.Response()
+        presenter.presentCard(response: response)
+    }
+    
+    func loadNotification(request: SettingsModels.LoadNotification.Request) {
+        let response = SettingsModels.LoadNotification.Response()
+        presenter.presentNotification(response: response)
+    }
 }
 
 extension SettingsInteractor: UITableViewDataSource {

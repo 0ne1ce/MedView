@@ -86,6 +86,14 @@ final class SettingsViewController: UIViewController, SettingsDisplayLogic {
         router.showAboutDevScreen()
     }
     
+    func displayCard(viewModel: SettingsModels.LoadCard.ViewModel) {
+        router.showCardScreen()
+    }
+    
+    func displayNotification(viewModel: SettingsModels.LoadNotification.ViewModel) {
+        router.showNotificationScreen()
+    }
+    
     // MARK: - Private functions
     private func configure() {
         view.backgroundColor = UIColor(hex: Constants.backgroundLightHex)
@@ -126,7 +134,6 @@ final class SettingsViewController: UIViewController, SettingsDisplayLogic {
             imageView.pinBottom(to: buttonTitleLabel.bottomAnchor)
             imageView.pinRight(to: buttonTitleLabel.leadingAnchor, Constants.buttonImageOffsetRight)
         }
-        
     }
     
     private func configureSettingsTable() {
@@ -145,6 +152,12 @@ final class SettingsViewController: UIViewController, SettingsDisplayLogic {
         settingsTable.pinTop(to: navigationBar.bottomAnchor, Constants.settingsTableOffsetTop)
     }
     
+    private func triggerSelectionFeedback() {
+        let generator = UISelectionFeedbackGenerator()
+        generator.prepare()
+        generator.selectionChanged()
+    }
+    
     // MARK: - Actions
     @objc func aboutDevButtonPressed() {
         let request = SettingsModels.LoadAboutDev.Request()
@@ -155,5 +168,24 @@ final class SettingsViewController: UIViewController, SettingsDisplayLogic {
 extension SettingsViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return Constants.heightForRow
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        switch indexPath.section {
+        case 0:
+            triggerSelectionFeedback()
+            let request = SettingsModels.LoadCard.Request()
+            interactor.loadCard(request: request)
+        case 2:
+            triggerSelectionFeedback()
+            let request = SettingsModels.LoadNotification.Request()
+            interactor.loadNotification(request: request)
+        case 3:
+            triggerSelectionFeedback()
+            let request = SettingsModels.LoadNotification.Request()
+            interactor.loadNotification(request: request)
+        default:
+            return
+        }
     }
 }
