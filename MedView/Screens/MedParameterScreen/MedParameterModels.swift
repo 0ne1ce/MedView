@@ -15,7 +15,11 @@ enum MedParameterModels {
         }
         
         struct Response {
-            
+            var placeholderText: String
+            var awaitText: String
+            var settingsImageName: String
+            var deleteButtonText: String
+            var data: [Pulse]
         }
         
         struct ViewModel: NavigationTitleRepresentable {
@@ -31,6 +35,11 @@ enum MedParameterModels {
             var placeholderColor: UIColor
             var sendButtonColor: UIColor
             var sendButtonTintColor: UIColor
+            var awaitText: String
+            var awaitTitleFont: UIFont
+            var deleteButtonText: String
+            var deleteButtonFont: UIFont
+            var data: [ChartDataPoint]
         }
     }
     
@@ -40,11 +49,39 @@ enum MedParameterModels {
         }
         
         struct Response {
-            var data: [ChartDataPoint]
+            var data: [Pulse]
         }
         
         struct ViewModel {
             var data: [ChartDataPoint]
+        }
+    }
+    
+    enum DeleteData {
+        struct Request {
+
+        }
+        
+        struct Response {
+            var data: [Pulse]
+        }
+        
+        struct ViewModel {
+            var data: [ChartDataPoint]
+        }
+    }
+    
+    enum LoadSettings {
+        struct Request {
+            
+        }
+        
+        struct Response {
+            
+        }
+        
+        struct ViewModel {
+            
         }
     }
 }

@@ -75,16 +75,27 @@ final class SettingsWorker {
         content.body = "It's your reminder to drink water and be healthy!"
         content.sound = .default
         
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 60, repeats: false)
-        let drinkNotificationId: String = UUID().uuidString
-        let request = UNNotificationRequest(identifier: drinkNotificationId, content: content, trigger: trigger)
-        drinkNotificationsIds.append(drinkNotificationId)
-
-        UNUserNotificationCenter.current().add(request)
+        let dailySchedule: [DateComponents] = [
+            DateComponents(hour: 9, minute: 0),
+            DateComponents(hour: 11, minute: 30),
+            DateComponents(hour: 14, minute: 0),
+            DateComponents(hour: 16, minute: 30),
+            DateComponents(hour: 19, minute: 0),
+            DateComponents(hour: 21, minute: 30)
+        ]
+        
+        for scheduleElement in dailySchedule {
+            let trigger = UNCalendarNotificationTrigger(dateMatching: scheduleElement, repeats: true)
+            let drinkNotificationId: String = UUID().uuidString
+            let request = UNNotificationRequest(identifier: drinkNotificationId, content: content, trigger: trigger)
+            drinkNotificationsIds.append(drinkNotificationId)
+            UNUserNotificationCenter.current().add(request)
+        }
     }
     
     func disableDrinkNotifications() {
         UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: drinkNotificationsIds)
+        drinkNotificationsIds.removeAll()
     }
     
     func enableFoodNotifications() {
@@ -93,16 +104,24 @@ final class SettingsWorker {
         content.body = "It's your reminder to eat food and be healthy!"
         content.sound = .default
         
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 70, repeats: true)
-        let foodNotificationId: String = UUID().uuidString
-        let request = UNNotificationRequest(identifier: foodNotificationId, content: content, trigger: trigger)
-        foodNotificationsIds.append(foodNotificationId)
-
-        UNUserNotificationCenter.current().add(request)
+        let dailySchedule: [DateComponents] = [
+            DateComponents(hour: 9, minute: 30),
+            DateComponents(hour: 13, minute: 0),
+            DateComponents(hour: 18, minute: 0)
+        ]
+        
+        for scheduleElement in dailySchedule {
+            let trigger = UNCalendarNotificationTrigger(dateMatching: scheduleElement, repeats: true)
+            let foodNotificationId: String = UUID().uuidString
+            let request = UNNotificationRequest(identifier: foodNotificationId, content: content, trigger: trigger)
+            foodNotificationsIds.append(foodNotificationId)
+            UNUserNotificationCenter.current().add(request)
+        }
     }
     
     func disableFoodNotifications() {
         UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: foodNotificationsIds)
+        foodNotificationsIds.removeAll()
     }
     
     func enableSleepNotifications() {
@@ -125,5 +144,6 @@ final class SettingsWorker {
     
     func disableSleepNotifications() {
         UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [sleepNotificationsId])
+        sleepNotificationsId = ""
     }
 }

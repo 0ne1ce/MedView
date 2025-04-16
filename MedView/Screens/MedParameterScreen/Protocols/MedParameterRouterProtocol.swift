@@ -7,5 +7,5 @@
 
 protocol MedParameterRouterProtocol: AnyObject {
     // MARK: - Functions
-    
+    func showSettingsScreen()
 }

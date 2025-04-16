@@ -13,5 +13,8 @@ final class MedParameterRouter: MedParameterRouterProtocol {
     weak var view: UIViewController?
     
     // MARK: - Functions
-
+    func showSettingsScreen() {
+        let settingsVC = SettingsAssembly.build()
+        view?.navigationController?.pushViewController(settingsVC, animated: true)
+    }
 }

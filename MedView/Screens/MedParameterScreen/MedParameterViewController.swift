@@ -16,6 +16,7 @@ final class MedParameterViewController: UIViewController, MedParameterDisplayLog
         
         static let graphOffsetHeight: CGFloat = 300
         static let graphOffsetTop: CGFloat = 100
+        static let graphOffsetRight: CGFloat = 5
         
         static let inputWrapHeight: CGFloat = 50
         static let inputWrapOffsetH: CGFloat = 15
@@ -34,6 +35,12 @@ final class MedParameterViewController: UIViewController, MedParameterDisplayLog
         static let sendButtonCornerRadius: CGFloat = 20
         
         static let animationSize: CGFloat = 40
+        
+        static let deleteButtonOffsetBottom: CGFloat = 10
+        static let deleteButtonOffsetRight: CGFloat = 10
+        static let deleteButtonWidth: CGFloat = 100
+        static let deleteButtonHeight: CGFloat = 30
+        static let deleteButtonRadius: CGFloat = 10
     }
     
     // MARK: - Properties
@@ -49,6 +56,8 @@ final class MedParameterViewController: UIViewController, MedParameterDisplayLog
         return UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
     }()
     var sendButton: UIButton = UIButton(type: .custom)
+    var deleteButton: UIButton = UIButton(type: .system)
+    var awaitLabel: UILabel = UILabel()
     
     // MARK: - Initialization
     init(interactor: MedParameterBuisnessLogic, router: MedParameterRouterProtocol) {
@@ -91,23 +100,45 @@ final class MedParameterViewController: UIViewController, MedParameterDisplayLog
     func displayStart(viewModel: MedParameterModels.LoadStart.ViewModel) {
         view.backgroundColor = viewModel.backgroundColor
         
-        navigationBar.configure(with: viewModel, true)
+        navigationBar.configure(with: viewModel)
         view.addSubview(navigationBar)
+        configureSettingsButtonTarget()
         
         navigationBar.pinTop(to: view)
         navigationBar.setHeight(Constants.navigationBarHeight)
         navigationBar.pinLeft(to: view)
         navigationBar.pinRight(to: view)
         
-        setupChart()
+        setupChart(with: viewModel)
         configureInputWrap(with: viewModel)
         configureInputTextField(with: viewModel)
         configureSendButton(with: viewModel)
+        configureDeleteButton(with: viewModel)
+        configureAwaitLabel(with: viewModel)
+        if hostingController.rootView.data.isEmpty {
+            deleteButton.isHidden = true
+        } else {
+            awaitLabel.isHidden = true
+        }
     }
     
     func displayTextFieldValue(viewModel: MedParameterModels.SaveValue.ViewModel) {
+        awaitLabel.isHidden = true
+        deleteButton.isHidden = false
         let chartView = ChartView(data: viewModel.data)
         hostingController.rootView = chartView
+    }
+    
+    func displayAferDeletion(viewModel: MedParameterModels.DeleteData.ViewModel) {
+        awaitLabel.isHidden = false
+        deleteButton.isHidden = true
+        let chartView = ChartView(data: viewModel.data)
+        hostingController.rootView = chartView
+        view.layoutIfNeeded()
+    }
+    
+    func displaySettings(viewModel: MedParameterModels.LoadSettings.ViewModel) {
+        router.showSettingsScreen()
     }
     
     // MARK: - Private functions
@@ -123,7 +154,9 @@ final class MedParameterViewController: UIViewController, MedParameterDisplayLog
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
     }
     
-    private func setupChart() {
+    private func setupChart(with viewModel: MedParameterModels.LoadStart.ViewModel) {
+        let chartView = ChartView(data: viewModel.data)
+        hostingController.rootView = chartView
         addChild(hostingController)
         hostingController.didMove(toParent: self)
         
@@ -132,7 +165,7 @@ final class MedParameterViewController: UIViewController, MedParameterDisplayLog
         NSLayoutConstraint.activate([
             hostingController.view.topAnchor.constraint(equalTo: navigationBar.bottomAnchor, constant: Constants.graphOffsetTop),
             hostingController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            hostingController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            hostingController.view.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -Constants.graphOffsetRight),
             hostingController.view.heightAnchor.constraint(equalToConstant: Constants.graphOffsetHeight)
         ])
     }
@@ -178,6 +211,38 @@ final class MedParameterViewController: UIViewController, MedParameterDisplayLog
         sendButton.layer.cornerRadius = Constants.sendButtonCornerRadius
     }
     
+    private func configureDeleteButton(with viewModel: MedParameterModels.LoadStart.ViewModel) {
+        view.addSubview(deleteButton)
+        deleteButton.pinRight(to: view, Constants.deleteButtonOffsetRight)
+        deleteButton.pinBottom(to: hostingController.view.topAnchor, Constants.deleteButtonOffsetBottom)
+        deleteButton.setWidth(Constants.deleteButtonWidth)
+        deleteButton.setHeight(Constants.deleteButtonHeight)
+        
+        deleteButton.backgroundColor = .systemRed
+        deleteButton.setImage(UIImage(systemName: "trash"), for: .normal)
+        deleteButton.tintColor = .white
+        deleteButton.setTitle(viewModel.deleteButtonText, for: .normal)
+        deleteButton.setTitleColor(.white, for: .normal)
+        deleteButton.titleLabel?.font = viewModel.deleteButtonFont
+        deleteButton.titleLabel?.textColor = .white
+        deleteButton.addTarget(self, action: #selector(deleteButtonPressed), for: .touchUpInside)
+        deleteButton.layer.cornerRadius = Constants.deleteButtonRadius
+    }
+    
+    private func configureAwaitLabel(with viewModel: MedParameterModels.LoadStart.ViewModel) {
+        view.addSubview(awaitLabel)
+        awaitLabel.pinCenter(to: hostingController.view)
+        
+        awaitLabel.text = viewModel.awaitText
+        awaitLabel.font = viewModel.awaitTitleFont
+        awaitLabel.textAlignment = .center
+        awaitLabel.textColor = viewModel.placeholderColor
+    }
+    
+    private func configureSettingsButtonTarget() {
+        navigationBar.settingsButtonTarget(target: self, action: #selector(settingsButtonPressed))
+    }
+    
     private func wrapAnimated() {
         inputWrap.pinRight(to: view, Constants.inputWrapOffsetH)
         
@@ -208,6 +273,17 @@ final class MedParameterViewController: UIViewController, MedParameterDisplayLog
         let request = MedParameterModels.SaveValue.Request(value: value)
         inputTextField.text = ""
         interactor.saveTextFieldValue(request: request)
+    }
+    
+    @objc func deleteButtonPressed() {
+        triggerSelectionFeedback()
+        let request = MedParameterModels.DeleteData.Request()
+        interactor.deleteData(request: request)
+    }
+    
+    @objc func settingsButtonPressed() {
+        let request = MedParameterModels.LoadSettings.Request()
+        interactor.loadSettings(request: request)
     }
 }
 
