@@ -8,4 +8,5 @@
 protocol MedParameterPresentationLogic: AnyObject {
     // MARK: - Functions
     func presentStart(response: MedParameterModels.LoadStart.Response)
+    func presentTextFieldValue(response: MedParameterModels.SaveValue.Response)
 }

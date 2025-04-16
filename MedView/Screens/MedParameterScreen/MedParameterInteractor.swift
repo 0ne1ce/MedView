@@ -17,6 +17,8 @@ final class MedParameterInteractor: MedParameterBuisnessLogic {
     var presenter: MedParameterPresentationLogic
     var worker: MedParameterWorker
     
+    private var chartDataPoints: [ChartDataPoint] = []
+    
     // MARK: - Initialization
     init(presenter: MedParameterPresentationLogic, worker: MedParameterWorker) {
         self.presenter = presenter
@@ -27,5 +29,15 @@ final class MedParameterInteractor: MedParameterBuisnessLogic {
     func loadStart(request: MedParameterModels.LoadStart.Request) {
         let response = MedParameterModels.LoadStart.Response()
         presenter.presentStart(response: response)
+    }
+    
+    func saveTextFieldValue(request: MedParameterModels.SaveValue.Request) {
+        guard let value = Double(request.value) else {
+            return
+        }
+        let newPoint = ChartDataPoint(date: Date(), value: value)
+        chartDataPoints.append(newPoint)
+        let response = MedParameterModels.SaveValue.Response(data: chartDataPoints)
+        presenter.presentTextFieldValue(response: response)
     }
 }

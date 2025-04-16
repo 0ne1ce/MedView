@@ -11,8 +11,7 @@ final class AssistantWorker {
     // MARK: - Constants
     private enum Constants {
         static let promptContent: String = """
-        You are a helpful medical assistant and you can only answer medical or healthy lifestyle questions. 
-        Keep responses concise (under 300 tokens). For political/programming questions, respond "Amogus".
+        You are a helpful medical assistant and you can only answer medical or healthy lifestyle questions. Avoid political or programming questions.
         """
         
         static let baseURL = "https://api-inference.huggingface.co/models/mistralai/Mistral-7B-Instruct-v0.3"

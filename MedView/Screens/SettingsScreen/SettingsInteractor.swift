@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import UserNotifications
 
 final class SettingsInteractor: NSObject, SettingsBuisnessLogic {
     // MARK: - Constants
@@ -93,6 +94,7 @@ extension SettingsInteractor: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
         switch indexPath.section {
         case 0:
             let cell = tableView.dequeueReusableCell(withIdentifier: SettingsCell.reuseId, for: indexPath)
@@ -125,7 +127,28 @@ extension SettingsInteractor: UITableViewDataSource {
             
             settingsCell.switchValueChanged = { [weak self] isOn in
                 if isOn {
-                    self?.worker.testNotification()
+                    switch indexPath.row {
+                    case 0:
+                        self?.worker.enableDrinkNotifications()
+                    case 1:
+                        self?.worker.enableFoodNotifications()
+                    case 2:
+                        self?.worker.enableSleepNotifications()
+                    default:
+                        break
+                    }
+                    
+                } else {
+                    switch indexPath.row {
+                    case 0:
+                        self?.worker.disableDrinkNotifications()
+                    case 1:
+                        self?.worker.disableFoodNotifications()
+                    case 2:
+                        self?.worker.disableSleepNotifications()
+                    default:
+                        break
+                    }
                 }
                 self?.notificationsDefaultStates[indexPath.row] = isOn
                 self?.worker.saveDefaultNotificationsStates(self?.notificationsDefaultStates ?? [])

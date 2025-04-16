@@ -165,6 +165,7 @@ final class AssistantViewController: UIViewController, AssistantDisplayLogic {
         inputTextView.text = viewModel.placeholderText
         inputTextView.textColor = viewModel.placeholderColor
         inputTextView.font = viewModel.placeholderFont
+        inputTextView.tintColor = .main
         inputTextView.isScrollEnabled = true
         inputTextView.textContainer.maximumNumberOfLines = .zero
         inputTextView.textContainer.lineBreakMode = .byWordWrapping

@@ -20,6 +20,9 @@ final class SettingsWorker {
     
     // MARK: - Properties
     private let defaults = UserDefaults.standard
+    var drinkNotificationsIds: [String] = []
+    var foodNotificationsIds: [String] = []
+    var sleepNotificationsId: String = ""
     
     // MARK: - Initialization
     init() {
@@ -66,21 +69,61 @@ final class SettingsWorker {
         return defaults.array(forKey: Constants.customNotificatonsSwitchStatesKey) as? [Bool] ?? []
     }
     
-    func testNotification() {
+    func enableDrinkNotifications() {
         let content = UNMutableNotificationContent()
-        content.title = "Be healthy"
-        content.body = "And sleep more <3"
+        content.title = "Stay hydrated 🥤"
+        content.body = "It's your reminder to drink water and be healthy!"
         content.sound = .default
+        
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 60, repeats: false)
+        let drinkNotificationId: String = UUID().uuidString
+        let request = UNNotificationRequest(identifier: drinkNotificationId, content: content, trigger: trigger)
+        drinkNotificationsIds.append(drinkNotificationId)
 
-        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 5, repeats: false)
-        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
+        UNUserNotificationCenter.current().add(request)
+    }
+    
+    func disableDrinkNotifications() {
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: drinkNotificationsIds)
+    }
+    
+    func enableFoodNotifications() {
+        let content = UNMutableNotificationContent()
+        content.title = "Dont't starve 🍎"
+        content.body = "It's your reminder to eat food and be healthy!"
+        content.sound = .default
+        
+        let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 70, repeats: true)
+        let foodNotificationId: String = UUID().uuidString
+        let request = UNNotificationRequest(identifier: foodNotificationId, content: content, trigger: trigger)
+        foodNotificationsIds.append(foodNotificationId)
 
-        UNUserNotificationCenter.current().add(request) { error in
-            if let error = error {
-                print("Ошибка при добавлении уведомления: \(error)")
-            } else {
-                print("Уведомление запланировано через \(5) секунд")
-            }
-        }
+        UNUserNotificationCenter.current().add(request)
+    }
+    
+    func disableFoodNotifications() {
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: foodNotificationsIds)
+    }
+    
+    func enableSleepNotifications() {
+        let content = UNMutableNotificationContent()
+        content.title = "It's time to rest 🌙"
+        content.body = "It's your sleep shedule reminder. Have a good night!"
+        content.sound = .default
+        
+        var dateComponents = DateComponents()
+        dateComponents.hour = 23
+        dateComponents.minute = 30
+        
+        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
+        let sleepNotificationId: String = UUID().uuidString
+        let request = UNNotificationRequest(identifier: sleepNotificationId, content: content, trigger: trigger)
+        sleepNotificationsId = sleepNotificationId
+
+        UNUserNotificationCenter.current().add(request)
+    }
+    
+    func disableSleepNotifications() {
+        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [sleepNotificationsId])
     }
 }

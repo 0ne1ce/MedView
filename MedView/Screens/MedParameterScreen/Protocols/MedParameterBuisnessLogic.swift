@@ -8,4 +8,5 @@
 protocol MedParameterBuisnessLogic: AnyObject {
     // MARK: - Functions
     func loadStart(request: MedParameterModels.LoadStart.Request)
+    func saveTextFieldValue(request: MedParameterModels.SaveValue.Request)
 }

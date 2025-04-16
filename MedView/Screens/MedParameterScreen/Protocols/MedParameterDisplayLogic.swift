@@ -8,4 +8,5 @@
 protocol MedParameterDisplayLogic: AnyObject {
     // MARK: - Functions
     func displayStart(viewModel: MedParameterModels.LoadStart.ViewModel)
+    func displayTextFieldValue(viewModel: MedParameterModels.SaveValue.ViewModel)
 }

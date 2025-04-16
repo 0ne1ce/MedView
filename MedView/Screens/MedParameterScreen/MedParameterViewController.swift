@@ -7,21 +7,48 @@
 
 import Foundation
 import UIKit
+import SwiftUI
 
 final class MedParameterViewController: UIViewController, MedParameterDisplayLogic {
     // MARK: - Constants
     private enum Constants {
-        static let dataPoints: [Double] = [80, 80.8, 80.1, 80.5, 80.8, 81.0, 81.3]
+        static let navigationBarHeight: CGFloat = 155
         
-        static let graphOffsetH: CGFloat = 30
-        static let graphOffsetV: CGFloat = 300
+        static let graphOffsetHeight: CGFloat = 300
+        static let graphOffsetTop: CGFloat = 100
+        
+        static let inputWrapHeight: CGFloat = 50
+        static let inputWrapOffsetH: CGFloat = 15
+        static let inputWrapBottomOffset: CGFloat = 10
+        static let inputWrapCornerRadius: CGFloat = 20
+        
+        static let wrapAppearanceAnimationTime: Double = 0.4
+        
+        static let inputTextFieldOffsetLeft: CGFloat = 20
+        static let inputTextFieldOffsetRight: CGFloat = 50
+        static let inputTextFieldRightOffsetAnimated: CGFloat = 50
+        static let inputTextFieldOffsetTop: CGFloat = 7
+        static let inputTextFieldOffsetBottom: CGFloat = 10
+        
+        static let sendButtonWidth: CGFloat = 50
+        static let sendButtonCornerRadius: CGFloat = 20
+        
+        static let animationSize: CGFloat = 40
     }
     
     // MARK: - Properties
     var interactor: MedParameterBuisnessLogic
     var router: MedParameterRouterProtocol
+    var navigationBar: CustomNavigationBarView = CustomNavigationBarView()
+    var hostingController: UIHostingController<ChartView> = UIHostingController(rootView: ChartView(data: []))
     
     let appearance: UINavigationBarAppearance = UINavigationBarAppearance()
+    private var inputWrap: UIView = UIView()
+    private var inputTextField: UITextField = UITextField()
+    lazy var tapGestureRecognizer: UITapGestureRecognizer = {
+        return UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
+    }()
+    var sendButton: UIButton = UIButton(type: .custom)
     
     // MARK: - Initialization
     init(interactor: MedParameterBuisnessLogic, router: MedParameterRouterProtocol) {
@@ -39,6 +66,20 @@ final class MedParameterViewController: UIViewController, MedParameterDisplayLog
     override func viewDidLoad() {
         super.viewDidLoad()
         loadStart()
+        configure()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        UIView.animate(
+            withDuration: Constants.wrapAppearanceAnimationTime,
+            animations: {[self] in
+                wrapAnimated()
+            },
+            completion: { [weak self] _ in
+                self?.sendButton.isEnabled = true
+            }
+        )
     }
     
     // MARK: - Public functions
@@ -50,6 +91,29 @@ final class MedParameterViewController: UIViewController, MedParameterDisplayLog
     func displayStart(viewModel: MedParameterModels.LoadStart.ViewModel) {
         view.backgroundColor = viewModel.backgroundColor
         
+        navigationBar.configure(with: viewModel, true)
+        view.addSubview(navigationBar)
+        
+        navigationBar.pinTop(to: view)
+        navigationBar.setHeight(Constants.navigationBarHeight)
+        navigationBar.pinLeft(to: view)
+        navigationBar.pinRight(to: view)
+        
+        setupChart()
+        configureInputWrap(with: viewModel)
+        configureInputTextField(with: viewModel)
+        configureSendButton(with: viewModel)
+    }
+    
+    func displayTextFieldValue(viewModel: MedParameterModels.SaveValue.ViewModel) {
+        let chartView = ChartView(data: viewModel.data)
+        hostingController.rootView = chartView
+    }
+    
+    // MARK: - Private functions
+    private func configure() {
+        view.addGestureRecognizer(tapGestureRecognizer)
+        tapGestureRecognizer.numberOfTapsRequired = 1
         appearance.configureWithTransparentBackground()
         appearance.shadowColor = .clear
         
@@ -59,4 +123,98 @@ final class MedParameterViewController: UIViewController, MedParameterDisplayLog
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
     }
     
+    private func setupChart() {
+        addChild(hostingController)
+        hostingController.didMove(toParent: self)
+        
+        view.addSubview(hostingController.view)
+        hostingController.view.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            hostingController.view.topAnchor.constraint(equalTo: navigationBar.bottomAnchor, constant: Constants.graphOffsetTop),
+            hostingController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            hostingController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            hostingController.view.heightAnchor.constraint(equalToConstant: Constants.graphOffsetHeight)
+        ])
+    }
+    
+    private func configureInputWrap(with viewModel: MedParameterModels.LoadStart.ViewModel) {
+        view.addSubview(inputWrap)
+        inputWrap.pinLeft(to: view, Constants.inputWrapOffsetH)
+        inputWrap.setWidth(Constants.sendButtonWidth)
+        inputWrap.pinBottom(to: view.keyboardLayoutGuide.topAnchor, Constants.inputWrapBottomOffset)
+        inputWrap.setHeight(Constants.inputWrapHeight)
+        
+        inputWrap.layer.cornerRadius = Constants.inputWrapCornerRadius
+        inputWrap.backgroundColor = viewModel.inputWrapBackgroundColor
+    }
+    
+    private func configureInputTextField(with viewModel: MedParameterModels.LoadStart.ViewModel) {
+        inputWrap.addSubview(inputTextField)
+        inputTextField.pinLeft(to: inputWrap, Constants.inputTextFieldOffsetLeft)
+        inputTextField.pinRight(to: inputWrap, Constants.inputTextFieldOffsetRight)
+        inputTextField.pinTop(to: inputWrap, Constants.inputTextFieldOffsetTop)
+        inputTextField.pinBottom(to: inputWrap, Constants.inputTextFieldOffsetBottom)
+        
+        inputTextField.placeholder = viewModel.placeholderText
+        inputTextField.textColor = .textPrimary
+        inputTextField.tintColor = .main
+        inputTextField.font = viewModel.placeholderFont
+        inputTextField.backgroundColor = viewModel.inputWrapBackgroundColor
+        
+        inputTextField.delegate = self
+    }
+    
+    private func configureSendButton(with viewModel: MedParameterModels.LoadStart.ViewModel) {
+        inputWrap.addSubview(sendButton)
+        sendButton.pinRight(to: inputWrap)
+        sendButton.pinTop(to: inputWrap)
+        sendButton.pinBottom(to: inputWrap)
+        sendButton.setWidth(Constants.sendButtonWidth)
+        
+        sendButton.backgroundColor = viewModel.sendButtonColor
+        sendButton.setImage(UIImage(systemName: "arrow.up.heart"), for: .normal)
+        sendButton.tintColor = viewModel.sendButtonTintColor
+        sendButton.addTarget(self, action: #selector(sendButtonPressed), for: .touchUpInside)
+        sendButton.layer.cornerRadius = Constants.sendButtonCornerRadius
+    }
+    
+    private func wrapAnimated() {
+        inputWrap.pinRight(to: view, Constants.inputWrapOffsetH)
+        
+        self.view.layoutIfNeeded()
+    }
+    
+    private func triggerSelectionFeedback() {
+        let generator = UISelectionFeedbackGenerator()
+        generator.prepare()
+        generator.selectionChanged()
+    }
+    
+    // MARK: - Actions
+    @objc func handleTap(_ sender: UITapGestureRecognizer) {
+        if sender.state == .ended {
+            view.endEditing(true)
+        }
+    }
+    
+    @objc func sendButtonPressed() {
+        triggerSelectionFeedback()
+        guard let value = inputTextField.text else {
+            return
+        }
+        if value == "" {
+            return
+        }
+        let request = MedParameterModels.SaveValue.Request(value: value)
+        inputTextField.text = ""
+        interactor.saveTextFieldValue(request: request)
+    }
+}
+
+// MARK: - UITextFieldDelegate
+extension MedParameterViewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
 }
