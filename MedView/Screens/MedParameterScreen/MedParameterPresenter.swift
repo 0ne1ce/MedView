@@ -29,10 +29,11 @@ final class MedParameterPresenter: MedParameterPresentationLogic {
         let dataChartPoints: [ChartDataPoint] = response.data.map {
             ChartDataPoint(date: $0.date ?? Date(), value: Double($0.value))
         }
+        let navigationParameterTitle = NSMutableAttributedString(string: response.parameter.type.rawValue)
         
         let viewModel = MedParameterModels.LoadStart.ViewModel(
             backgroundColor: .backgroundPrimary,
-            navigationTitle: NSMutableAttributedString("Your parameter"),
+            navigationTitle: navigationParameterTitle,
             settingsImage: UIImage(named: response.settingsImageName),
             navigationTitleFont: Constants.navigationTitleFont,
             textFont: Constants.textFont,
@@ -46,13 +47,17 @@ final class MedParameterPresenter: MedParameterPresentationLogic {
             awaitTitleFont: Constants.awaitFont,
             deleteButtonText: response.deleteButtonText,
             deleteButtonFont: Constants.deleteButtonFont,
+            parameterColor: response.parameter.color,
             data: dataChartPoints
         )
         view?.displayStart(viewModel: viewModel)
     }
     
     func presentTextFieldValue(response: MedParameterModels.SaveValue.Response) {
-        let viewModel = MedParameterModels.SaveValue.ViewModel(data: dataToChartPoints(data: response.data))
+        let viewModel = MedParameterModels.SaveValue.ViewModel(
+            parameterColor: response.parameter.color,
+            data: dataToChartPoints(data: response.data)
+        )
         view?.displayTextFieldValue(viewModel: viewModel)
     }
     

@@ -94,7 +94,7 @@ final class ParametersViewController: UIViewController, ParametersDisplayLogic {
     }
     
     func displayParamter(viewModel: ParametersModels.LoadParameter.ViewModel) {
-        router.showParameter()
+        router.showParameter(viewModel.parameter)
     }
     
     // MARK: - Private functions
@@ -171,7 +171,14 @@ extension ParametersViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         triggerSelectionFeedback()
-        let request = ParametersModels.LoadParameter.Request()
+        
+        guard let cell = tableView.cellForRow(at: indexPath) as? ParameterCell else {
+            return
+        }
+        
+        let parameterTitle = cell.parametersLabel.text ?? ""
+        
+        let request = ParametersModels.LoadParameter.Request(id: indexPath.row, parameterTitle: parameterTitle)
         interactor.loadParameter(request: request)
     }
     

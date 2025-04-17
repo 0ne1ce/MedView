@@ -53,7 +53,11 @@ final class ParametersInteractor: NSObject, ParametersBuisnessLogic {
     }
     
     func loadParameter(request: ParametersModels.LoadParameter.Request) {
-        let response = ParametersModels.LoadParameter.Response()
+        guard let parameterType = MedParameterType(rawValue: request.parameterTitle) else {
+            return
+        }
+        
+        let response = ParametersModels.LoadParameter.Response(id: request.id, parameterType: parameterType)
         presenter.presentParameter(response: response)
     }
     
@@ -94,7 +98,7 @@ extension ParametersInteractor: UITableViewDataSource {
             return cell
         }
             
-        let title = ParametersColorsTitles.allCases[indexPath.row].rawValue
+        let title = MedParameterType.allCases[indexPath.row].rawValue
         guard let image = UIImage(named: title) else {
             return cell
         }

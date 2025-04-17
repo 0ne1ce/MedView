@@ -11,5 +11,5 @@ import UIKit
 protocol ParametersRouterProtocol: AnyObject {
     // MARK: - Functions
     func showSettingsScreen()
-    func showParameter()
+    func showParameter(_ parameter: MedParameter)
 }

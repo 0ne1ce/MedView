@@ -19,13 +19,15 @@ final class MedParameterInteractor: MedParameterBuisnessLogic {
     // MARK: - Properties
     var presenter: MedParameterPresentationLogic
     var worker: MedParameterWorker
+    var medParameter: MedParameter
     
     private var pulseDataPoints: [Pulse] = []
     
     // MARK: - Initialization
-    init(presenter: MedParameterPresentationLogic, worker: MedParameterWorker) {
+    init(presenter: MedParameterPresentationLogic, worker: MedParameterWorker, medParameter: MedParameter) {
         self.presenter = presenter
         self.worker = worker
+        self.medParameter = medParameter
     }
     
     // MARK: - Public functions
@@ -36,6 +38,7 @@ final class MedParameterInteractor: MedParameterBuisnessLogic {
             awaitText: Constants.awaitText,
             settingsImageName: Constants.settingsImageName,
             deleteButtonText: Constants.deleteButtonText,
+            parameter: medParameter,
             data: pulseDataPoints
         )
         presenter.presentStart(response: response)
@@ -48,7 +51,7 @@ final class MedParameterInteractor: MedParameterBuisnessLogic {
         let currentDate = Date()
         worker.savePulse(value: value, date: currentDate)
         pulseDataPoints = worker.loadPulse()
-        let response = MedParameterModels.SaveValue.Response(data: pulseDataPoints)
+        let response = MedParameterModels.SaveValue.Response(parameter: medParameter, data: pulseDataPoints)
         presenter.presentTextFieldValue(response: response)
     }
     

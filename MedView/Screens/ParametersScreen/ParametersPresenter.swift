@@ -19,6 +19,7 @@ final class ParametersPresenter: ParametersPresentationLogic {
     }
     // MARK: - Properties
     weak var view: ParametersDisplayLogic?
+    private var parameterColor: UIColor = .main
     
     // MARK: - Public Fuctions
     func presentStart(response: ParametersModels.LoadStart.Response) {
@@ -41,7 +42,26 @@ final class ParametersPresenter: ParametersPresentationLogic {
     }
     
     func presentParameter(response: ParametersModels.LoadParameter.Response) {
-        let viewModel = ParametersModels.LoadParameter.ViewModel()
+        switch response.parameterType {
+        case .bloodPressure:
+            parameterColor = .bloodPressure
+        case .pulse:
+            parameterColor = .pulse
+        case .saturation:
+            parameterColor = .saturation
+        case .sleepHours:
+            parameterColor = .sleepHours
+        case .stressLevel:
+            parameterColor = .stressLevel
+        case .temperature:
+            parameterColor = .temperature
+        case .weight:
+            parameterColor = .weight
+        case .bloodGlucose:
+            parameterColor = .bloodGlucose
+        }
+        let medParamter = MedParameter(id: response.id, type: response.parameterType, color: parameterColor)
+        let viewModel = ParametersModels.LoadParameter.ViewModel(parameter: medParamter)
         view?.displayParamter(viewModel: viewModel)
     }
 }

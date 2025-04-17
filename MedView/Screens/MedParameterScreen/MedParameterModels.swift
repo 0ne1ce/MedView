@@ -19,6 +19,7 @@ enum MedParameterModels {
             var awaitText: String
             var settingsImageName: String
             var deleteButtonText: String
+            var parameter: MedParameter
             var data: [Pulse]
         }
         
@@ -39,6 +40,7 @@ enum MedParameterModels {
             var awaitTitleFont: UIFont
             var deleteButtonText: String
             var deleteButtonFont: UIFont
+            var parameterColor: UIColor
             var data: [ChartDataPoint]
         }
     }
@@ -49,10 +51,12 @@ enum MedParameterModels {
         }
         
         struct Response {
+            var parameter: MedParameter
             var data: [Pulse]
         }
         
         struct ViewModel {
+            var parameterColor: UIColor
             var data: [ChartDataPoint]
         }
     }

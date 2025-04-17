@@ -26,7 +26,7 @@ final class ParameterCell: UITableViewCell {
     // MARK: - Variables
     static let id = "ParameterCell"
     private let icon: UIImageView = UIImageView()
-    private let parametersLabel: UILabel = UILabel()
+    let parametersLabel: UILabel = UILabel()
     private let wrap: UIView = UIView()
     
     // MARK: - Initialization
@@ -91,5 +91,4 @@ final class ParameterCell: UITableViewCell {
         parametersLabel.pinLeft(to: icon.trailingAnchor, Constants.parametersLabelLeftOffset)
         parametersLabel.pinRight(to: wrap, Constants.parametersLabelRightOffset)
     }
-    
 }

@@ -36,7 +36,7 @@ final class MedParameterViewController: UIViewController, MedParameterDisplayLog
         
         static let animationSize: CGFloat = 40
         
-        static let deleteButtonOffsetBottom: CGFloat = 10
+        static let deleteButtonOffsetBottom: CGFloat = 25
         static let deleteButtonOffsetRight: CGFloat = 10
         static let deleteButtonWidth: CGFloat = 100
         static let deleteButtonHeight: CGFloat = 30
@@ -47,7 +47,7 @@ final class MedParameterViewController: UIViewController, MedParameterDisplayLog
     var interactor: MedParameterBuisnessLogic
     var router: MedParameterRouterProtocol
     var navigationBar: CustomNavigationBarView = CustomNavigationBarView()
-    var hostingController: UIHostingController<ChartView> = UIHostingController(rootView: ChartView(data: []))
+    var hostingController: UIHostingController<ChartView> = UIHostingController(rootView: ChartView(data: [], color: .main))
     
     let appearance: UINavigationBarAppearance = UINavigationBarAppearance()
     private var inputWrap: UIView = UIView()
@@ -125,14 +125,14 @@ final class MedParameterViewController: UIViewController, MedParameterDisplayLog
     func displayTextFieldValue(viewModel: MedParameterModels.SaveValue.ViewModel) {
         awaitLabel.isHidden = true
         deleteButton.isHidden = false
-        let chartView = ChartView(data: viewModel.data)
+        let chartView = ChartView(data: viewModel.data, color: Color(viewModel.parameterColor))
         hostingController.rootView = chartView
     }
     
     func displayAferDeletion(viewModel: MedParameterModels.DeleteData.ViewModel) {
         awaitLabel.isHidden = false
         deleteButton.isHidden = true
-        let chartView = ChartView(data: viewModel.data)
+        let chartView = ChartView(data: viewModel.data, color: .main)
         hostingController.rootView = chartView
         view.layoutIfNeeded()
     }
@@ -155,7 +155,7 @@ final class MedParameterViewController: UIViewController, MedParameterDisplayLog
     }
     
     private func setupChart(with viewModel: MedParameterModels.LoadStart.ViewModel) {
-        let chartView = ChartView(data: viewModel.data)
+        let chartView = ChartView(data: viewModel.data, color: Color(viewModel.parameterColor))
         hostingController.rootView = chartView
         addChild(hostingController)
         hostingController.didMove(toParent: self)

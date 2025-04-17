@@ -48,15 +48,17 @@ enum ParametersModels {
     
     enum LoadParameter {
         struct Request {
-            
+            var id: Int
+            var parameterTitle: String
         }
         
         struct Response {
-            
+            var id: Int
+            var parameterType: MedParameterType
         }
         
         struct ViewModel {
-            
+            var parameter: MedParameter
         }
     }
 }

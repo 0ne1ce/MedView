@@ -10,6 +10,7 @@ import Charts
 
 struct ChartView: View {
     let data: [ChartDataPoint]
+    let color: Color
     var body: some View {
         Chart(data) { point in
             LineMark(
@@ -17,7 +18,7 @@ struct ChartView: View {
                 y: .value("Value", point.value)
             )
             .interpolationMethod(.catmullRom)
-            .foregroundStyle(.main)
+            .foregroundStyle(color)
             .lineStyle(StrokeStyle(lineWidth: 3))
             .symbol(Circle())
             
@@ -26,7 +27,7 @@ struct ChartView: View {
                 y: .value("Value", point.value)
             )
             .interpolationMethod(.catmullRom)
-            .foregroundStyle(Gradient(colors: [.main.opacity(0.4), .clear]))
+            .foregroundStyle(Gradient(colors: [color.opacity(0.35), .clear]))
         }
         .background(.backgroundPrimary)
         .chartYAxis {

@@ -7,11 +7,11 @@
 import UIKit
 
 final class MedParameterAssembly {
-    static func build() -> UIViewController {
+    static func build(with medParameter: MedParameter) -> UIViewController {
         let presenter = MedParameterPresenter()
         let worker = MedParameterWorker()
         
-        let interactor = MedParameterInteractor(presenter: presenter, worker: worker)
+        let interactor = MedParameterInteractor(presenter: presenter, worker: worker, medParameter: medParameter)
         let router = MedParameterRouter()
         
         let view = MedParameterViewController(interactor: interactor, router: router)
