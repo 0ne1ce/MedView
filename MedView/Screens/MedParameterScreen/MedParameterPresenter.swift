@@ -27,7 +27,7 @@ final class MedParameterPresenter: MedParameterPresentationLogic {
     // MARK: - Public functions
     func presentStart(response: MedParameterModels.LoadStart.Response) {
         let dataChartPoints: [ChartDataPoint] = response.data.map {
-            ChartDataPoint(date: $0.date ?? Date(), value: Double($0.value))
+            ChartDataPoint(date: $0.timeStamp, value: Double($0.numericValue))
         }
         let navigationParameterTitle = NSMutableAttributedString(string: response.parameter.type.rawValue)
         
@@ -72,9 +72,9 @@ final class MedParameterPresenter: MedParameterPresentationLogic {
     }
     
     // MARK: - Private functions
-    private func dataToChartPoints(data: [Pulse]) -> [ChartDataPoint] {
+    private func dataToChartPoints(data: [MedParameterData]) -> [ChartDataPoint] {
         let dataChartPoints: [ChartDataPoint] = data.map {
-            ChartDataPoint(date: $0.date ?? Date(), value: Double($0.value))
+            ChartDataPoint(date: $0.timeStamp, value: Double($0.numericValue))
         }
         
         return dataChartPoints

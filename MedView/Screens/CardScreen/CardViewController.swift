@@ -18,6 +18,9 @@ final class CardViewController: UIViewController, CardDisplayLogic {
         static let cardTableRadius: CGFloat = 10
         
         static let heightForRow: CGFloat = 45
+        
+        static let numberOfItems: CGFloat = 3
+        static let separationLineWidth: CGFloat = 1
     }
     
     // MARK: - Properties
@@ -105,8 +108,8 @@ final class CardViewController: UIViewController, CardDisplayLogic {
         
         view.addSubview(cardTable)
         cardTable.pinHorizontal(to: view, Constants.cardTableOffsetHorizontal)
-        cardTable.pinBottom(to: view)
         cardTable.pinTop(to: navigationBar.bottomAnchor, Constants.cardTableOffsetTop)
+        cardTable.setHeight(Constants.numberOfItems * Constants.heightForRow - Constants.separationLineWidth)
         cardTable.layer.cornerRadius = Constants.cardTableRadius
     }
     

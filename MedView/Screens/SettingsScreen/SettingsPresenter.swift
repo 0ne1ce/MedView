@@ -46,7 +46,8 @@ final class SettingsPresenter: SettingsPresentationLogic {
     }
     
     func presentNotification(response: SettingsModels.LoadNotification.Response) {
-        let viewModel = SettingsModels.LoadNotification.ViewModel()
+        let notification = Notification(title: response.notificationTitle)
+        let viewModel = SettingsModels.LoadNotification.ViewModel(notification: notification)
         view?.displayNotification(viewModel: viewModel)
     }
 }

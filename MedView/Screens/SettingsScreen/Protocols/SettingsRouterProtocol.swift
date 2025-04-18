@@ -11,5 +11,5 @@ import UIKit
 protocol SettingsRouterProtocol: AnyObject {
     func showAboutDevScreen()
     func showCardScreen()
-    func showNotificationScreen()
+    func showNotificationScreen(_ notification: Notification)
 }

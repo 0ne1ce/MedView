@@ -20,7 +20,7 @@ enum MedParameterModels {
             var settingsImageName: String
             var deleteButtonText: String
             var parameter: MedParameter
-            var data: [Pulse]
+            var data: [MedParameterData]
         }
         
         struct ViewModel: NavigationTitleRepresentable {
@@ -52,7 +52,7 @@ enum MedParameterModels {
         
         struct Response {
             var parameter: MedParameter
-            var data: [Pulse]
+            var data: [MedParameterData]
         }
         
         struct ViewModel {
@@ -67,7 +67,7 @@ enum MedParameterModels {
         }
         
         struct Response {
-            var data: [Pulse]
+            var data: [MedParameterData]
         }
         
         struct ViewModel {

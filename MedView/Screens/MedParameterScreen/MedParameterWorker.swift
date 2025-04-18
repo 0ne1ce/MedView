@@ -14,22 +14,22 @@ final class MedParameterWorker {
     private let context = CoreDataStack.shared.context
     
     // MARK: - Functions
-    func savePulse(value: Double, date: Date) {
-        let pulseEntry = Pulse(context: context)
-        pulseEntry.value = Int64(value)
-        pulseEntry.date = date
+    func saveParameterData<T: MedParameterData>(type: T.Type, value: Double, date: Date) {
+        let entity = T(context: context)
+        entity.setValue(value, forKey: "value")
+        entity.setValue(date, forKey: "date")
         
         CoreDataStack.shared.saveContext()
     }
     
-    func loadPulse() -> [Pulse] {
-        let request: NSFetchRequest<Pulse> = Pulse.fetchRequest()
+    func loadParameterData<T: MedParameterData>(type: T.Type) -> [T] {
+        let request = NSFetchRequest<T>(entityName: String(describing: type))
         request.sortDescriptors = [NSSortDescriptor(key: "date", ascending: true)]
         return (try? context.fetch(request)) ?? []
     }
     
-    func deletePulseData() {
-        let request: NSFetchRequest<NSFetchRequestResult> = Pulse.fetchRequest()
+    func deleteParameterData<T: MedParameterData>(type: T.Type) {
+        let request = NSFetchRequest<NSFetchRequestResult>(entityName: String(describing: type))
         let deleteRequest = NSBatchDeleteRequest(fetchRequest: request)
         guard (try? context.execute(deleteRequest)) != nil else {
             return

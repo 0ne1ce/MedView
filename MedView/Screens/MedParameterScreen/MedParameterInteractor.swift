@@ -21,7 +21,7 @@ final class MedParameterInteractor: MedParameterBuisnessLogic {
     var worker: MedParameterWorker
     var medParameter: MedParameter
     
-    private var pulseDataPoints: [Pulse] = []
+    private var data: [MedParameterData] = []
     
     // MARK: - Initialization
     init(presenter: MedParameterPresentationLogic, worker: MedParameterWorker, medParameter: MedParameter) {
@@ -32,14 +32,14 @@ final class MedParameterInteractor: MedParameterBuisnessLogic {
     
     // MARK: - Public functions
     func loadStart(request: MedParameterModels.LoadStart.Request) {
-        pulseDataPoints = worker.loadPulse()
+        loadParameterData()
         let response = MedParameterModels.LoadStart.Response(
             placeholderText: Constants.placeholderText,
             awaitText: Constants.awaitText,
             settingsImageName: Constants.settingsImageName,
             deleteButtonText: Constants.deleteButtonText,
             parameter: medParameter,
-            data: pulseDataPoints
+            data: data
         )
         presenter.presentStart(response: response)
     }
@@ -49,21 +49,91 @@ final class MedParameterInteractor: MedParameterBuisnessLogic {
             return
         }
         let currentDate = Date()
-        worker.savePulse(value: value, date: currentDate)
-        pulseDataPoints = worker.loadPulse()
-        let response = MedParameterModels.SaveValue.Response(parameter: medParameter, data: pulseDataPoints)
+        saveParameterData(value: value, currentDate: currentDate)
+        loadParameterData()
+        let response = MedParameterModels.SaveValue.Response(parameter: medParameter, data: data)
         presenter.presentTextFieldValue(response: response)
     }
     
     func deleteData(request: MedParameterModels.DeleteData.Request) {
-        worker.deletePulseData()
-        pulseDataPoints = worker.loadPulse()
-        let response = MedParameterModels.DeleteData.Response(data: pulseDataPoints)
+        deleteParameterData()
+        loadParameterData()
+        let response = MedParameterModels.DeleteData.Response(data: data)
         presenter.presentAfterDeletion(response: response)
     }
     
     func loadSettings(request: MedParameterModels.LoadSettings.Request) {
         let response = MedParameterModels.LoadSettings.Response()
         presenter.presentSettings(response: response)
+    }
+    
+    // MARK: - Private functions
+    private func loadParameterData() {
+        switch medParameter.id {
+        case 0:
+            data = worker.loadParameterData(type: BloodPressure.self)
+        case 1:
+            data = worker.loadParameterData(type: Pulse.self)
+        case 2:
+            data = worker.loadParameterData(type: Saturation.self)
+        case 3:
+            data = worker.loadParameterData(type: SleepHours.self)
+        case 4:
+            data = worker.loadParameterData(type: StressLevel.self)
+        case 5:
+            data = worker.loadParameterData(type: Temperature.self)
+        case 6:
+            data = worker.loadParameterData(type: Weight.self)
+        case 7:
+            data = worker.loadParameterData(type: BloodGlucose.self)
+        default:
+            break
+        }
+    }
+    
+    private func saveParameterData(value: Double, currentDate: Date) {
+        switch medParameter.id {
+        case 0:
+            worker.saveParameterData(type: BloodPressure.self, value: value, date: currentDate)
+        case 1:
+            worker.saveParameterData(type: Pulse.self, value: value, date: currentDate)
+        case 2:
+            worker.saveParameterData(type: Saturation.self, value: value, date: currentDate)
+        case 3:
+            worker.saveParameterData(type: SleepHours.self, value: value, date: currentDate)
+        case 4:
+            worker.saveParameterData(type: StressLevel.self, value: value, date: currentDate)
+        case 5:
+            worker.saveParameterData(type: Temperature.self, value: value, date: currentDate)
+        case 6:
+            worker.saveParameterData(type: Weight.self, value: value, date: currentDate)
+        case 7:
+            worker.saveParameterData(type: BloodGlucose.self, value: value, date: currentDate)
+        default:
+            break
+        }
+    }
+    
+    private func deleteParameterData() {
+        switch medParameter.id {
+        case 0:
+            worker.deleteParameterData(type: BloodPressure.self)
+        case 1:
+            worker.deleteParameterData(type: Pulse.self)
+        case 2:
+            worker.deleteParameterData(type: Saturation.self)
+        case 3:
+            worker.deleteParameterData(type: SleepHours.self)
+        case 4:
+            worker.deleteParameterData(type: StressLevel.self)
+        case 5:
+            worker.deleteParameterData(type: Temperature.self)
+        case 6:
+            worker.deleteParameterData(type: Weight.self)
+        case 7:
+            worker.deleteParameterData(type: BloodGlucose.self)
+        default:
+            break
+        }
     }
 }

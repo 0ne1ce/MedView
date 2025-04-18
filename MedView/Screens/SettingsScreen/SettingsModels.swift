@@ -63,15 +63,15 @@ enum SettingsModels {
     
     enum LoadNotification {
         struct Request {
-            
+            var notificationTitle: String
         }
         
         struct Response {
-            
+            var notificationTitle: String
         }
         
         struct ViewModel {
-            
+            var notification: Notification
         }
     }
 }

@@ -11,23 +11,25 @@ import UIKit
 final class NotificationInteractor: NotificationBuisnessLogic {
     // MARK: - Constants
     private enum Constants {
-        static let cardLabelText: NSMutableAttributedString = NSMutableAttributedString("Notification")
+
     }
     
     // MARK: - Properties
     var presenter: NotificationPresentationLogic
     var worker: NotificationWorker
+    var notification: Notification
     
     // MARK: - Initialization
-    init(presenter: NotificationPresentationLogic, worker: NotificationWorker) {
+    init(presenter: NotificationPresentationLogic, worker: NotificationWorker, notification: Notification) {
         self.presenter = presenter
         self.worker = worker
+        self.notification = notification
     }
     
     // MARK: - Public functions
     func loadStart(request: NotificationModels.LoadStart.Request) {
         let response = NotificationModels.LoadStart.Response(
-            titleText: Constants.cardLabelText
+            titleText: NSMutableAttributedString(string: notification.title)
         )
         presenter.presentStart(response: response)
     }

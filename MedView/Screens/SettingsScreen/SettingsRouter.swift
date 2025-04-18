@@ -23,8 +23,8 @@ final class SettingsRouter: SettingsRouterProtocol {
         view?.navigationController?.pushViewController(cardVC, animated: true)
     }
     
-    func showNotificationScreen() {
-        let notificationVC = NotificationAssembly.build()
+    func showNotificationScreen(_ notification: Notification) {
+        let notificationVC = NotificationAssembly.build(with: notification)
         view?.navigationController?.pushViewController(notificationVC, animated: true)
     }
 }

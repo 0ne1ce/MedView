@@ -22,9 +22,9 @@ final class SettingsInteractor: NSObject, SettingsBuisnessLogic {
         static let numberOfRowsNotificationsDefault: Int = 3
         static let numberOfRowsNotificationsCreation: Int = 1
         static let notificationsDefaultTitles: [String] = [
-            "Drink water notifications",
-            "Eat food notifications",
-            "Sleep notifications"
+            "Stay hydrated",
+            "Eat food",
+            "Sleep schedule"
         ]
     }
     
@@ -65,7 +65,7 @@ final class SettingsInteractor: NSObject, SettingsBuisnessLogic {
     }
     
     func loadNotification(request: SettingsModels.LoadNotification.Request) {
-        let response = SettingsModels.LoadNotification.Response()
+        let response = SettingsModels.LoadNotification.Response(notificationTitle: request.notificationTitle)
         presenter.presentNotification(response: response)
     }
 }

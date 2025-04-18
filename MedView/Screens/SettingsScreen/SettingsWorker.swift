@@ -15,14 +15,15 @@ final class SettingsWorker {
         static let customNotificationsKey: String = "customNotifications"
         static let themeSwitchState: String = "themeSwitchState"
         static let defaultNotificatonsSwitchStatesKey: String = "defaultNotificationsStates"
+        static let drinkNotificationsIdsKey: String = "drinkNotificationsIds"
+        static let foodNotificationsIdsKey: String = "foodNotificationsIds"
+        static let sleepNotificationsIdKey: String = "sleepNotificationsId"
+        
         static let customNotificatonsSwitchStatesKey: String = "defaultNotificationsStates"
     }
     
     // MARK: - Properties
     private let defaults = UserDefaults.standard
-    var drinkNotificationsIds: [String] = []
-    var foodNotificationsIds: [String] = []
-    var sleepNotificationsId: String = ""
     
     // MARK: - Initialization
     init() {
@@ -84,6 +85,7 @@ final class SettingsWorker {
             DateComponents(hour: 21, minute: 30)
         ]
         
+        var drinkNotificationsIds: [String] = []
         for scheduleElement in dailySchedule {
             let trigger = UNCalendarNotificationTrigger(dateMatching: scheduleElement, repeats: true)
             let drinkNotificationId: String = UUID().uuidString
@@ -91,11 +93,14 @@ final class SettingsWorker {
             drinkNotificationsIds.append(drinkNotificationId)
             UNUserNotificationCenter.current().add(request)
         }
+        defaults.set(drinkNotificationsIds, forKey: Constants.drinkNotificationsIdsKey)
     }
     
     func disableDrinkNotifications() {
+        var drinkNotificationsIds = defaults.value(forKey: Constants.drinkNotificationsIdsKey) as? [String] ?? []
         UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: drinkNotificationsIds)
         drinkNotificationsIds.removeAll()
+        defaults.setValue(drinkNotificationsIds, forKey: Constants.drinkNotificationsIdsKey)
     }
     
     func enableFoodNotifications() {
@@ -110,6 +115,7 @@ final class SettingsWorker {
             DateComponents(hour: 18, minute: 0)
         ]
         
+        var foodNotificationsIds: [String] = []
         for scheduleElement in dailySchedule {
             let trigger = UNCalendarNotificationTrigger(dateMatching: scheduleElement, repeats: true)
             let foodNotificationId: String = UUID().uuidString
@@ -117,11 +123,14 @@ final class SettingsWorker {
             foodNotificationsIds.append(foodNotificationId)
             UNUserNotificationCenter.current().add(request)
         }
+        defaults.set(foodNotificationsIds, forKey: Constants.foodNotificationsIdsKey)
     }
     
     func disableFoodNotifications() {
+        var foodNotificationsIds = defaults.value(forKey: Constants.foodNotificationsIdsKey) as? [String] ?? []
         UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: foodNotificationsIds)
         foodNotificationsIds.removeAll()
+        defaults.setValue(foodNotificationsIds, forKey: Constants.foodNotificationsIdsKey)
     }
     
     func enableSleepNotifications() {
@@ -137,13 +146,15 @@ final class SettingsWorker {
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
         let sleepNotificationId: String = UUID().uuidString
         let request = UNNotificationRequest(identifier: sleepNotificationId, content: content, trigger: trigger)
-        sleepNotificationsId = sleepNotificationId
+        defaults.set(sleepNotificationId, forKey: Constants.sleepNotificationsIdKey)
 
         UNUserNotificationCenter.current().add(request)
     }
     
     func disableSleepNotifications() {
+        var sleepNotificationsId = defaults.value(forKey: Constants.sleepNotificationsIdKey) as? String ?? ""
         UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [sleepNotificationsId])
         sleepNotificationsId = ""
+        defaults.set(sleepNotificationsId, forKey: Constants.sleepNotificationsIdKey)
     }
 }

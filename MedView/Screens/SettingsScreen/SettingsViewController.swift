@@ -15,7 +15,7 @@ final class SettingsViewController: UIViewController, SettingsDisplayLogic {
         static let navigationBarHeight: CGFloat = 155
         
         static let buttonTitleWidth: CGFloat = 120
-        static let buttonTitleOffsetLeft: CGFloat = 75
+        static let buttonTitleOffsetLeft: CGFloat = 63
         
         static let buttonOffsetH: CGFloat = 100
         static let buttonHeight: CGFloat = 45
@@ -90,7 +90,7 @@ final class SettingsViewController: UIViewController, SettingsDisplayLogic {
     }
     
     func displayNotification(viewModel: SettingsModels.LoadNotification.ViewModel) {
-        router.showNotificationScreen()
+        router.showNotificationScreen(viewModel.notification)
     }
     
     // MARK: - Private functions
@@ -117,6 +117,7 @@ final class SettingsViewController: UIViewController, SettingsDisplayLogic {
         aboutDevButton.pinBottom(to: view.bottomAnchor, Constants.buttonOffsetBottom)
         
         aboutDevButton.setTitle(viewModel.buttonTitle, for: .normal)
+        aboutDevButton.titleLabel?.textAlignment = .left
         aboutDevButton.titleLabel?.font = viewModel.buttonTitleFont
         aboutDevButton.setTitleColor(viewModel.buttonTitleColor, for: .normal)
         aboutDevButton.backgroundColor = viewModel.buttonColor
@@ -182,18 +183,20 @@ extension SettingsViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        triggerSelectionFeedback()
+        guard let cell = tableView.cellForRow(at: indexPath) as? SettingsCell else {
+            return
+        }
+        let settingsTitle = cell.settingsLabel.text ?? ""
         switch indexPath.section {
         case 0:
-            triggerSelectionFeedback()
             let request = SettingsModels.LoadCard.Request()
             interactor.loadCard(request: request)
         case 2:
-            triggerSelectionFeedback()
-            let request = SettingsModels.LoadNotification.Request()
+            let request = SettingsModels.LoadNotification.Request(notificationTitle: settingsTitle)
             interactor.loadNotification(request: request)
         case 3:
-            triggerSelectionFeedback()
-            let request = SettingsModels.LoadNotification.Request()
+            let request = SettingsModels.LoadNotification.Request(notificationTitle: settingsTitle)
             interactor.loadNotification(request: request)
         default:
             return
