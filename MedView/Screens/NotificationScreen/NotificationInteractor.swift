@@ -18,6 +18,15 @@ final class NotificationInteractor: NSObject, NotificationBuisnessLogic {
     var presenter: NotificationPresentationLogic
     var worker: NotificationWorker
     var notification: Notification
+    var timeStamps: [Timestamp] = [
+        Timestamp(time: "9:00", repeatStatus: false),
+        Timestamp(time: "11:30", repeatStatus: false),
+        Timestamp(time: "14:00", repeatStatus: false),
+        Timestamp(time: "16:30", repeatStatus: false),
+        Timestamp(time: "19:00", repeatStatus: false),
+        Timestamp(time: "21:30", repeatStatus: false)
+        
+    ]
     
     // MARK: - Initialization
     init(presenter: NotificationPresentationLogic, worker: NotificationWorker, notification: Notification) {
@@ -45,16 +54,17 @@ final class NotificationInteractor: NSObject, NotificationBuisnessLogic {
 // MARK: - UITableViewDataSource
 extension NotificationInteractor: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 4
+        return timeStamps.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: TimestampCell.reuseId, for: indexPath)
+        let timestamp = timeStamps[indexPath.row]
         guard let timestampCell = cell as? TimestampCell else {
             return cell
         }
         
-        timestampCell.configure(time: "7:00", status: "On")
+        timestampCell.configure(timestamp: timestamp)
             
         return timestampCell
     }

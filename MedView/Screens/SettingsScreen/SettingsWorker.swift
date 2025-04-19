@@ -135,7 +135,7 @@ final class SettingsWorker {
     
     func enableSleepNotifications() {
         let content = UNMutableNotificationContent()
-        content.title = "It's time to rest 🌙"
+        content.title = "Time to rest 🌙"
         content.body = "It's your sleep shedule reminder. Have a good night!"
         content.sound = .default
         

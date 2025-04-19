@@ -14,11 +14,18 @@ final class TimestampCell: UITableViewCell {
         static let timestampWrapOffsetH: CGFloat = 15
         
         static let timeLabelOffsetLeft: CGFloat = 15
+        static let timeLabelOffsetTop: CGFloat = 5
         static let timeLabelFont: UIFont = .systemFont(ofSize: 45, weight: .light)
+        static let timeLabelHeight: CGFloat = 47
         
         static let subtitleLabelFont: UIFont = .systemFont(ofSize: 16)
+        static let subtitleLabelHeight: CGFloat = 18
         
         static let statusLabelOffsetLeft: CGFloat = 3
+        
+        static let arrowOffsetRight: CGFloat = 10
+        static let arrowOffsetV: CGFloat = 25
+        static let arrowOffsetWidth: CGFloat = 25
     }
     
     // MARK: - Properties
@@ -26,6 +33,7 @@ final class TimestampCell: UITableViewCell {
     private let timeLabel: UILabel = UILabel()
     private let subtitleLabel: UILabel = UILabel()
     private let statusLabel: UILabel = UILabel()
+    private let arrowImageView: UIImageView = UIImageView()
     
     static let reuseId: String = "TimestampCell"
     
@@ -41,9 +49,10 @@ final class TimestampCell: UITableViewCell {
     }
 
     // MARK: - Public functions
-    func configure(time: String, status: String) {
-        timeLabel.text = time
-        statusLabel.text = status
+    func configure(timestamp: Timestamp) {
+        timeLabel.text = timestamp.time
+        statusLabel.text = timestamp.repeatStatus ? "On" : "Off"
+        statusLabel.textColor = timestamp.repeatStatus ? .systemGreen : .systemOrange
     }
     
     // MARK: - Privtae functions
@@ -54,6 +63,7 @@ final class TimestampCell: UITableViewCell {
         configureTimeLabel()
         configureSubtitle()
         configureStatusLabel()
+        configureArrow()
     }
     
     private func configureWrap() {
@@ -68,7 +78,8 @@ final class TimestampCell: UITableViewCell {
     private func configureTimeLabel() {
         wrap.addSubview(timeLabel)
         timeLabel.pinLeft(to: wrap.leadingAnchor, Constants.timeLabelOffsetLeft)
-        timeLabel.pinTop(to: wrap.topAnchor)
+        timeLabel.pinTop(to: wrap.topAnchor, Constants.timeLabelOffsetTop)
+        timeLabel.setHeight(Constants.timeLabelHeight)
         
         timeLabel.font = Constants.timeLabelFont
         timeLabel.textColor = .label
@@ -79,6 +90,7 @@ final class TimestampCell: UITableViewCell {
         wrap.addSubview(subtitleLabel)
         subtitleLabel.pinLeft(to: timeLabel.leadingAnchor)
         subtitleLabel.pinTop(to: timeLabel.bottomAnchor)
+        subtitleLabel.setHeight(Constants.subtitleLabelHeight)
         
         subtitleLabel.font = Constants.subtitleLabelFont
         subtitleLabel.textColor = .secondaryLabel
@@ -90,9 +102,20 @@ final class TimestampCell: UITableViewCell {
         wrap.addSubview(statusLabel)
         statusLabel.pinLeft(to: subtitleLabel.trailingAnchor, Constants.statusLabelOffsetLeft)
         statusLabel.pinTop(to: timeLabel.bottomAnchor)
+        statusLabel.setHeight(Constants.subtitleLabelHeight)
         
         statusLabel.font = Constants.subtitleLabelFont
         statusLabel.textColor = .secondaryLabel
         statusLabel.textAlignment = .left
+    }
+    
+    private func configureArrow() {
+        wrap.addSubview(arrowImageView)
+        arrowImageView.pinRight(to: wrap.trailingAnchor, Constants.arrowOffsetRight)
+        arrowImageView.pinVertical(to: wrap, Constants.arrowOffsetV)
+        arrowImageView.setWidth(Constants.arrowOffsetWidth)
+        
+        arrowImageView.image = UIImage(systemName: "chevron.right")
+        arrowImageView.tintColor = .lightGray
     }
 }

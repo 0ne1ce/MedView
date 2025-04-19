@@ -12,23 +12,36 @@ import MapKit
 final class AddTimeViewController: UIViewController, AddTimeDisplayLogic {
     // MARK: - Constants
     private enum Constants {
-        static let hseMapViewOffsetV: CGFloat = 150
-        static let authorInfoOffsetH: CGFloat = 100
-        static let authorInfoOffsetTop: CGFloat = 20
+        static let timeSetupTableOffsetTop: CGFloat = 75
+        static let timeSetupTableOffsetHorizontal: CGFloat = 10
+        static let timeSetupTableRadius: CGFloat = 15
         
-        static let hseImageHeight: CGFloat = 100
-        static let hseImageOffsetBottom: CGFloat = 20
-        static let hseImageOffsetH: CGFloat = 100
+        static let heightForRow: CGFloat = 45
+        
+        static let numberOfItems: CGFloat = 2
+        static let separationLineWidth: CGFloat = 1
+        
+        static let pickerContainerRadius: CGFloat = 15
+        static let pickerContainerSize: CGFloat = 300
+        
+        static let addButtonHeight: CGFloat = 55
+        static let addButtonOffsetH: CGFloat = 60
+        static let addButtonOffsetBottom: CGFloat = 40
+        static let addButtonRadius: CGFloat = 15
     }
     
     // MARK: - Properties
     var interactor: AddTimeBuisnessLogic
     var router: AddTimeRouterProtocol
-    
-    private let hseMapView: MKMapView = MKMapView()
-    private let authorInfoLabel: UILabel = UILabel()
-    private let hseImageView: UIImageView = UIImageView()
+
     let appearance: UINavigationBarAppearance = UINavigationBarAppearance()
+    var timeSetupTable: UITableView = UITableView()
+    var timePicker = UIDatePicker()
+    var pickerContainerView = UIView()
+    var dimmedView = UIView()
+    var addButton: UIButton = UIButton(type: .system)
+
+    private var selectedTime: Date?
     
     // MARK: - Initialization
     init(interactor: AddTimeBuisnessLogic, router: AddTimeRouterProtocol) {
@@ -57,6 +70,9 @@ final class AddTimeViewController: UIViewController, AddTimeDisplayLogic {
     
     func displayStart(viewModel: AddTimeModels.LoadStart.ViewModel) {
         view.backgroundColor = viewModel.backgroundColor
+        configureTimeSetupTable()
+        configureTimePicker()
+        configureAddButton(with: viewModel)
     }
     
     // MARK: - Private functions
@@ -80,9 +96,85 @@ final class AddTimeViewController: UIViewController, AddTimeDisplayLogic {
         navigationController?.navigationBar.scrollEdgeAppearance = appearance
     }
     
-    // MARK: - Actions
-    @objc private func cancelButtonPressed() {
-        dismiss(animated: true)
+    private func configureTimeSetupTable() {
+        timeSetupTable.register(TimeSetupCell.self, forCellReuseIdentifier: TimeSetupCell.reuseId)
+        timeSetupTable.delegate = self
+        timeSetupTable.dataSource = interactor
+        
+        timeSetupTable.backgroundColor = .clear
+        timeSetupTable.separatorStyle = .singleLine
+        timeSetupTable.allowsSelection = false
+        timeSetupTable.isScrollEnabled = false
+        
+        view.addSubview(timeSetupTable)
+        timeSetupTable.pinHorizontal(to: view, Constants.timeSetupTableOffsetHorizontal)
+        timeSetupTable.pinTop(to: view.topAnchor, Constants.timeSetupTableOffsetTop)
+        timeSetupTable.setHeight(Constants.numberOfItems * Constants.heightForRow - Constants.separationLineWidth)
+        timeSetupTable.layer.cornerRadius = Constants.timeSetupTableRadius
+        
+        timeSetupTable.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 0.1))
+    }
+    
+    private func configureTimePicker() {
+        view.addSubview(pickerContainerView)
+
+        pickerContainerView.pinCenter(to: view)
+        pickerContainerView.setWidth(Constants.pickerContainerSize)
+        pickerContainerView.setHeight(Constants.pickerContainerSize)
+
+        pickerContainerView.backgroundColor = .backgroundPrimary
+        pickerContainerView.layer.cornerRadius = Constants.pickerContainerRadius
+        pickerContainerView.clipsToBounds = true
+        
+        timePicker.datePickerMode = .time
+        timePicker.preferredDatePickerStyle = .wheels
+
+        pickerContainerView.addSubview(timePicker)
+        timePicker.pinHorizontal(to: pickerContainerView)
+        timePicker.pinVertical(to: pickerContainerView)
+
+        timePicker.addTarget(self, action: #selector(dateChanged(_:)), for: .valueChanged)
+    }
+    
+    private func configureAddButton(with viewModel: AddTimeModels.LoadStart.ViewModel) {
+        view.addSubview(addButton)
+        addButton.pinHorizontal(to: view, Constants.addButtonOffsetH)
+        addButton.pinBottom(to: view.bottomAnchor, Constants.addButtonOffsetBottom)
+        addButton.setHeight(Constants.addButtonHeight)
+        
+        addButton.setTitle(viewModel.addButtonText, for: .normal)
+        addButton.titleLabel?.textAlignment = .left
+        addButton.titleLabel?.font = viewModel.addButtonFont
+        addButton.setTitleColor(viewModel.addButtonTextColor, for: .normal)
+        addButton.backgroundColor = viewModel.addButtonColor
+        addButton.layer.cornerRadius = Constants.addButtonRadius
+        
+        addButton.addTarget(self, action: #selector(addButtonPressed), for: .touchUpInside)
     }
 
+    // MARK: - Actions
+    @objc func cancelButtonPressed() {
+        dismiss(animated: true)
+    }
+    
+    @objc func dateChanged(_ sender: UIDatePicker) {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "HH:mm"
+        let timeString = formatter.string(from: sender.date)
+        guard let timeSetupCell = timeSetupTable.cellForRow(at: IndexPath(row: .zero, section: .zero)) as? TimeSetupCell else {
+            return
+        }
+        timeSetupCell.valueTextField.text = timeString
+    }
+    
+    @objc func addButtonPressed() {
+        dismiss(animated: true)
+    }
+}
+
+// MARK: - UITableViewDelegate
+extension AddTimeViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return Constants.heightForRow
+    }
 }

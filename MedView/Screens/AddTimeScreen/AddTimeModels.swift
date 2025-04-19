@@ -16,11 +16,15 @@ enum AddTimeModels {
         }
         
         struct Response {
-            
+            var addButtonText: String
         }
         
         struct ViewModel {
             var backgroundColor: UIColor
+            var addButtonText: String
+            var addButtonColor: UIColor
+            var addButtonTextColor: UIColor
+            var addButtonFont: UIFont
         }
     }
 }
