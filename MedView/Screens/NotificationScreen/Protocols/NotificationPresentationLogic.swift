@@ -11,4 +11,5 @@ import UIKit
 protocol NotificationPresentationLogic: AnyObject {
     // MARK: - Functions
     func presentStart(response: NotificationModels.LoadStart.Response)
+    func presentAddTimeScreen(response: NotificationModels.LoadAddTimeScreen.Response)
 }

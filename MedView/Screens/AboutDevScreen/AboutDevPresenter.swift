@@ -9,7 +9,7 @@ import UIKit
 import Foundation
 import MapKit
 
-final class AbourDevPresenter: AboutDevPresentationLogic {
+final class AboutDevPresenter: AboutDevPresentationLogic {
     // MARK: - Constants
     private enum Constants {
         static let regionDelta: Double = 0.01

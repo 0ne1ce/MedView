@@ -130,7 +130,7 @@ final class ParametersViewController: UIViewController, ParametersDisplayLogic {
     }
     
     private func configureSettingsButtonTarget() {
-        navigationBar.settingsButtonTarget(target: self, action: #selector(settingsButtonPressed))
+        navigationBar.buttonTarget(target: self, action: #selector(settingsButtonPressed))
     }
     
     private func triggerSelectionFeedback() {

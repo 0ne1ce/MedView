@@ -140,7 +140,7 @@ final class AssistantViewController: UIViewController, AssistantDisplayLogic {
     }
     
     private func configureSettingsButtonTarget() {
-        navigationBar.settingsButtonTarget(target: self, action: #selector(settingsButtonPressed))
+        navigationBar.buttonTarget(target: self, action: #selector(settingsButtonPressed))
     }
     
     private func configureInputWrap(with viewModel: AssistantModels.LoadStart.ViewModel) {

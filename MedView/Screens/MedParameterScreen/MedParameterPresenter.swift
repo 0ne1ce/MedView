@@ -41,7 +41,7 @@ final class MedParameterPresenter: MedParameterPresentationLogic {
             placeholderText: response.placeholderText,
             placeholderFont: Constants.placeholderFont,
             placeholderColor: .lightGray,
-            sendButtonColor: .main,
+            sendButtonColor: response.parameter.color,
             sendButtonTintColor: .white,
             awaitText: response.awaitText,
             awaitTitleFont: Constants.awaitFont,

@@ -10,4 +10,5 @@ import UIKit
 
 struct Notification {
     let title: String
+    let customType: Bool
 }

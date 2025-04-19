@@ -16,6 +16,8 @@ enum NotificationModels {
         
         struct Response {
             var titleText: NSMutableAttributedString
+            var customType: Bool
+            var tableTitleText: String
         }
         
         struct ViewModel: NavigationTitleRepresentable {
@@ -23,6 +25,25 @@ enum NotificationModels {
             var settingsImage: UIImage?
             var navigationTitleFont: UIFont
             var navigationTitleColor: UIColor?
+            var customType: Bool
+            var tableTitleText: String
+            var tableTitleColor: UIColor
+            var tableTitleFont: UIFont
+            var tableBackgroundColor: UIColor
+        }
+    }
+    
+    enum LoadAddTimeScreen {
+        struct Request {
+            
+        }
+        
+        struct Response {
+            
+        }
+        
+        struct ViewModel {
+            
         }
     }
 }

@@ -10,7 +10,7 @@ import Foundation
 
 final class AboutDevAssembly {
     static func build() -> UIViewController {
-        let presenter = AbourDevPresenter()
+        let presenter = AboutDevPresenter()
         let worker = AboutDevWorker()
         
         let interactor = AboutDevInteractor(presenter: presenter, worker: worker)

@@ -12,6 +12,10 @@ final class NotificationPresenter: NotificationPresentationLogic {
     // MARK: - Constants
     private enum Constants {
         static let navigationTitleFont: UIFont = UIFont.systemFont(ofSize: 36).bold
+        
+        static let tableTitleFont: UIFont = .systemFont(ofSize: 20, weight: .bold)
+        
+        static let backgroundColor: UIColor = UIColor.backgroundPrimary
     }
     
     // MARK: - Properties
@@ -22,8 +26,18 @@ final class NotificationPresenter: NotificationPresentationLogic {
         let viewModel = NotificationModels.LoadStart.ViewModel(
             navigationTitle: response.titleText,
             navigationTitleFont: Constants.navigationTitleFont,
-            navigationTitleColor: .textPrimary
+            navigationTitleColor: .textPrimary,
+            customType: response.customType,
+            tableTitleText: response.tableTitleText,
+            tableTitleColor: UIColor.parametersTitleLabel,
+            tableTitleFont: Constants.tableTitleFont,
+            tableBackgroundColor: Constants.backgroundColor
         )
         view?.displayStart(viewModel: viewModel)
+    }
+    
+    func presentAddTimeScreen(response: NotificationModels.LoadAddTimeScreen.Response) {
+        let viewModel = NotificationModels.LoadAddTimeScreen.ViewModel()
+        view?.displayAddTimeScreen(viewModel: viewModel)
     }
 }

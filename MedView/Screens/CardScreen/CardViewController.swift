@@ -137,11 +137,6 @@ extension CardViewController: UITableViewDelegate {
 
 // MARK: - UITextFieldDelegate
 extension CardViewController: UITextFieldDelegate {
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        return true
-    }
-    
     func textFieldDidEndEditing(_ textField: UITextField) {
         let request = CardModels.SaveValue.Request(
             parameterTag: textField.tag,

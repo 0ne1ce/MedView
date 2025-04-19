@@ -19,7 +19,7 @@ final class SettingsWorker {
         static let foodNotificationsIdsKey: String = "foodNotificationsIds"
         static let sleepNotificationsIdKey: String = "sleepNotificationsId"
         
-        static let customNotificatonsSwitchStatesKey: String = "defaultNotificationsStates"
+        static let customNotificatonsSwitchStatesKey: String = "customNotificationsStates"
     }
     
     // MARK: - Properties
@@ -90,8 +90,8 @@ final class SettingsWorker {
             let trigger = UNCalendarNotificationTrigger(dateMatching: scheduleElement, repeats: true)
             let drinkNotificationId: String = UUID().uuidString
             let request = UNNotificationRequest(identifier: drinkNotificationId, content: content, trigger: trigger)
-            drinkNotificationsIds.append(drinkNotificationId)
             UNUserNotificationCenter.current().add(request)
+            drinkNotificationsIds.append(drinkNotificationId)
         }
         defaults.set(drinkNotificationsIds, forKey: Constants.drinkNotificationsIdsKey)
     }
@@ -120,8 +120,8 @@ final class SettingsWorker {
             let trigger = UNCalendarNotificationTrigger(dateMatching: scheduleElement, repeats: true)
             let foodNotificationId: String = UUID().uuidString
             let request = UNNotificationRequest(identifier: foodNotificationId, content: content, trigger: trigger)
-            foodNotificationsIds.append(foodNotificationId)
             UNUserNotificationCenter.current().add(request)
+            foodNotificationsIds.append(foodNotificationId)
         }
         defaults.set(foodNotificationsIds, forKey: Constants.foodNotificationsIdsKey)
     }
@@ -146,9 +146,8 @@ final class SettingsWorker {
         let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
         let sleepNotificationId: String = UUID().uuidString
         let request = UNNotificationRequest(identifier: sleepNotificationId, content: content, trigger: trigger)
-        defaults.set(sleepNotificationId, forKey: Constants.sleepNotificationsIdKey)
-
         UNUserNotificationCenter.current().add(request)
+        defaults.set(sleepNotificationId, forKey: Constants.sleepNotificationsIdKey)
     }
     
     func disableSleepNotifications() {

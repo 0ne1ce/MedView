@@ -34,7 +34,9 @@ final class SettingsInteractor: NSObject, SettingsBuisnessLogic {
     
     var themeState: Bool = false
     var notificationsCustomTitles: [String] = []
+    
     var notificationsDefaultStates: [Bool] = []
+    var notificationsCustomStates: [Bool] = []
     
     // MARK: - Initialization
     init(presenter: SettingsPresentationLogic, worker: SettingsWorker) {
@@ -46,6 +48,7 @@ final class SettingsInteractor: NSObject, SettingsBuisnessLogic {
     func loadStart(request: SettingsModels.LoadStart.Request) {
         notificationsCustomTitles = worker.loadCustomNotifications()
         notificationsDefaultStates = worker.loadDefaultNotificationsStates()
+        notificationsCustomStates = worker.loadCustomNotificationsStates()
         themeState = worker.loadThemeState()
         let response = SettingsModels.LoadStart.Response(
             titleText: Constants.settingsLabelText,
@@ -65,8 +68,29 @@ final class SettingsInteractor: NSObject, SettingsBuisnessLogic {
     }
     
     func loadNotification(request: SettingsModels.LoadNotification.Request) {
-        let response = SettingsModels.LoadNotification.Response(notificationTitle: request.notificationTitle)
+        let response = SettingsModels.LoadNotification.Response(
+            notificationTitle: request.notificationTitle,
+            isCustomType: !Constants.notificationsDefaultTitles.contains(request.notificationTitle)
+        )
         presenter.presentNotification(response: response)
+    }
+    
+    func addCustomNotification(request: SettingsModels.AddCustomNotification.Request) {
+        notificationsCustomTitles.append("")
+        notificationsCustomStates.append(false)
+        worker.saveCustomNotifications(notificationsCustomTitles)
+        worker.saveCustomNotificationsStates(notificationsCustomStates)
+        let response = SettingsModels.AddCustomNotification.Response()
+        presenter.presentCustomNotification(response: response)
+    }
+    
+    func deleteCustomNotification(request: SettingsModels.DeleteCustomNotification.Request) {
+        notificationsCustomTitles.remove(at: request.index)
+        notificationsCustomStates.remove(at: request.index)
+        worker.saveCustomNotifications(notificationsCustomTitles)
+        worker.saveCustomNotificationsStates(notificationsCustomStates)
+        let response = SettingsModels.DeleteCustomNotification.Response(index: request.index)
+        presenter.presentNotificationsAfterDeletion(response: response)
     }
 }
 
@@ -154,7 +178,11 @@ extension SettingsInteractor: UITableViewDataSource {
                 self?.worker.saveDefaultNotificationsStates(self?.notificationsDefaultStates ?? [])
             }
             
-            settingsCell.configure(with: Constants.notificationsDefaultTitles[indexPath.row], false, notificationsDefaultStates[indexPath.row])
+            settingsCell.configure(
+                with: Constants.notificationsDefaultTitles[indexPath.row],
+                false,
+                notificationsDefaultStates[indexPath.row]
+            )
             return settingsCell
         case 3:
             let cell = tableView.dequeueReusableCell(withIdentifier: SettingsCell.reuseId, for: indexPath)
@@ -162,7 +190,32 @@ extension SettingsInteractor: UITableViewDataSource {
             guard let settingsCell = cell as? SettingsCell else {
                 return cell
             }
-            settingsCell.configure(with: notificationsCustomTitles[indexPath.row])
+            
+            settingsCell.textFieldValueChanged = { [weak self] updatedText in 
+                if indexPath.row < self?.notificationsCustomTitles.count ?? 0 {
+                    self?.notificationsCustomTitles[indexPath.row] = updatedText
+                    self?.worker.saveCustomNotifications(self?.notificationsCustomTitles ?? [])
+                }
+            }
+            
+            settingsCell.switchValueChanged = { [weak self] isOn in
+                if isOn {
+                    
+                } else {
+
+                }
+                if indexPath.row < self?.notificationsCustomTitles.count ?? 0 {
+                    self?.notificationsCustomStates[indexPath.row] = isOn
+                    self?.worker.saveCustomNotificationsStates(self?.notificationsCustomStates ?? [])
+                }
+            }
+            
+            settingsCell.configure(
+                with: notificationsCustomTitles[indexPath.row],
+                false,
+                notificationsCustomStates[indexPath.row],
+                customNotification: true
+            )
             return settingsCell
         case 4:
             let extraCell = tableView.dequeueReusableCell(withIdentifier: AddNotificationCell.reuseId, for: indexPath)

@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 enum MedParameterType: String, CaseIterable {
-    case bloodPressure = "Blood pressure"
+    case step = "Step activity"
     case pulse = "Pulse"
     case saturation = "Saturation"
     case sleepHours = "Sleep hours"

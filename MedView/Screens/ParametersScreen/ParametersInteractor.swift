@@ -87,6 +87,7 @@ final class ParametersInteractor: NSObject, ParametersBuisnessLogic {
     }
 }
 
+// MARK: - UITableViewDataSource
 extension ParametersInteractor: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return Constants.parameterCellCount
@@ -97,12 +98,43 @@ extension ParametersInteractor: UITableViewDataSource {
         guard let parameterCell = cell as? ParameterCell else {
             return cell
         }
-            
         let title = MedParameterType.allCases[indexPath.row].rawValue
-        guard let image = UIImage(named: title) else {
+        var image: UIImage?
+        var color: UIColor = UIColor()
+        switch indexPath.row {
+        case 0:
+            image = UIImage(systemName: "figure.run")
+            color = .main
+        case 1:
+            image = UIImage(systemName: "waveform.path.ecg")
+            color = .pulse
+        case 2:
+            image = UIImage(systemName: "lungs")
+            color = .saturation
+        case 3:
+            image = UIImage(systemName: "bed.double")
+            color = .sleepHours
+        case 4:
+            image = UIImage(systemName: "apple.meditate")
+            color = .stressLevel
+        case 5:
+            image = UIImage(systemName: "thermometer.variable.and.figure")
+            color = .temperature
+        case 6:
+            image = UIImage(systemName: "scalemass")
+            color = .weight
+        case 7:
+            image = UIImage(systemName: "bubbles.and.sparkles")
+            color = .bloodGlucose
+        default:
+            break
+        }
+        
+        guard let parameterImage = image else {
             return cell
         }
-        parameterCell.configure(with: image, and: title)
+        
+        parameterCell.configure(with: parameterImage, and: title, parameterColor: color)
             
         return parameterCell
     }

@@ -11,4 +11,10 @@ import UIKit
 final class NotificationRouter: NotificationRouterProtocol {
     // MARK: - Properties
     weak var view: UIViewController?
+    
+    // MARK: - Functions
+    func showAddTimeScreen() {
+        let addTimeScreenVC = UINavigationController(rootViewController: AddTimeAssembly.build())
+        view?.present(addTimeScreenVC, animated: true)
+    }
 }

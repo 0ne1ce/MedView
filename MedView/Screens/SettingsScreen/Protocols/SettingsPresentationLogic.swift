@@ -14,4 +14,6 @@ protocol SettingsPresentationLogic: AnyObject {
     func presentAboutDev(response: SettingsModels.LoadAboutDev.Response)
     func presentCard(response: SettingsModels.LoadCard.Response)
     func presentNotification(response: SettingsModels.LoadNotification.Response)
+    func presentCustomNotification(response: SettingsModels.AddCustomNotification.Response)
+    func presentNotificationsAfterDeletion(response: SettingsModels.DeleteCustomNotification.Response)
 }

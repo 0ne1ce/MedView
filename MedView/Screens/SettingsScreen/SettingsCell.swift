@@ -23,6 +23,9 @@ final class SettingsCell: UITableViewCell {
         static let animationName: String = "HealthLoadAnimation"
         static let animationSize: CGFloat = 30
         static let animationOffsetLeft: CGFloat = 10
+        
+        static let placeholderName: String = "Name"
+        static let settingsTextFieldOffsetRight: CGFloat = 100
     }
     
     // MARK: - Properties
@@ -30,13 +33,16 @@ final class SettingsCell: UITableViewCell {
     
     var settingsWrap: UIView = UIView()
     var settingsLabel: UILabel = UILabel()
+    var settingsTextField: UITextField = UITextField()
     var settingsSwitch: UISwitch = UISwitch()
     
     var switchValueChanged: ((Bool) -> Void)?
+    var textFieldValueChanged: ((String) -> Void)?
     
     // MARK: - Initialization
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        settingsTextField.delegate = self
         configureUI()
     }
     
@@ -46,12 +52,29 @@ final class SettingsCell: UITableViewCell {
     }
     
     // MARK: - Public functions
-    public func configure(with title: String, _ isToggleHidden: Bool = false, _ toggleIsOn: Bool = false) {
+    public func configure(with title: String, _ isToggleHidden: Bool = false, _ toggleIsOn: Bool = false, customNotification: Bool = false) {
+        settingsLabel.isHidden = false
+        settingsTextField.isHidden = true
+        settingsSwitch.isHidden = true
+        
+        for subview in settingsWrap.subviews where subview is LottieAnimationView {
+            subview.removeFromSuperview()
+        }
+
         settingsLabel.text = title
+        
         if isToggleHidden {
             configureAnimation()
         } else {
+            settingsSwitch.isHidden = false
             configureToggle(toggleIsOn)
+        }
+
+        if customNotification {
+            settingsLabel.isHidden = true
+            settingsTextField.isHidden = false
+            settingsTextField.text = title
+            configureTextField()
         }
     }
     
@@ -109,8 +132,33 @@ final class SettingsCell: UITableViewCell {
         settingsSwitch.onTintColor = .main
     }
     
+    private func configureTextField() {
+        settingsLabel.isHidden = true
+        settingsWrap.addSubview(settingsTextField)
+        settingsTextField.pinLeft(to: settingsLabel.leadingAnchor)
+        settingsTextField.pinRight(to: settingsSwitch.leadingAnchor, Constants.settingsTextFieldOffsetRight)
+        settingsTextField.pinVertical(to: settingsLabel)
+        
+        settingsTextField.font = settingsLabel.font
+        settingsTextField.placeholder = Constants.placeholderName
+        settingsTextField.tintColor = .main
+        settingsTextField.textColor = .textPrimary
+    }
+    
     // MARK: - Actions
     @objc private func switchPressed(_ sender: UISwitch) {
         switchValueChanged?(sender.isOn)
+    }
+}
+
+// MARK: - UITextFieldDelegate
+extension SettingsCell: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        textFieldValueChanged?(textField.text ?? "")
     }
 }

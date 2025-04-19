@@ -43,8 +43,8 @@ final class ParametersPresenter: ParametersPresentationLogic {
     
     func presentParameter(response: ParametersModels.LoadParameter.Response) {
         switch response.parameterType {
-        case .bloodPressure:
-            parameterColor = .bloodPressure
+        case .step:
+            parameterColor = .main
         case .pulse:
             parameterColor = .pulse
         case .saturation:

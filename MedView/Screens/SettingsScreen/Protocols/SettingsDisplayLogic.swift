@@ -14,4 +14,6 @@ protocol SettingsDisplayLogic: AnyObject {
     func displayAboutDev(viewModel: SettingsModels.LoadAboutDev.ViewModel)
     func displayCard(viewModel: SettingsModels.LoadCard.ViewModel)
     func displayNotification(viewModel: SettingsModels.LoadNotification.ViewModel)
+    func displayCustomNotification(viewModel: SettingsModels.AddCustomNotification.ViewModel)
+    func displayNotificationsAfterDeletion(viewModel: SettingsModels.DeleteCustomNotification.ViewModel)
 }

@@ -106,7 +106,7 @@ final class HelpViewController: UIViewController, HelpDisplayLogic {
     }
     
     private func configureSettingsButtonTarget() {
-        navigationBar.settingsButtonTarget(target: self, action: #selector(settingsButtonPressed))
+        navigationBar.buttonTarget(target: self, action: #selector(settingsButtonPressed))
     }
     
     private func configureOnboardingButton(with viewModel: HelpModels.LoadStart.ViewModel) {

@@ -20,10 +20,12 @@ final class CustomNavigationBarView: UIView {
         static let settingsSymbol: String = "SettingsSymbol"
         
         static let customTitleOffsetRight: CGFloat = -100
+        
+        static let addTimeImage: UIImage? = UIImage(named: "PlusSymbol")
     }
     // MARK: - Variables
     var title: UILabel = UILabel()
-    var settingsButton: UIButton = UIButton(type: .custom)
+    var button: UIButton = UIButton(type: .custom)
     var defaultNavigationTitles: [NSMutableAttributedString] = [
         NSMutableAttributedString("MedView"),
         NSMutableAttributedString("Assistant")
@@ -40,7 +42,7 @@ final class CustomNavigationBarView: UIView {
     }
     
     // MARK: - Public functions
-    func configure(with viewModel: NavigationTitleRepresentable, _ isSettingsButtonHidden: Bool = false) {
+    func configure(with viewModel: NavigationTitleRepresentable, _ isButtonHidden: Bool = false, _ isAddTimeButton: Bool = false) {
         title.attributedText = viewModel.navigationTitle
         if let navigationTitleColor = viewModel.navigationTitleColor {
             title.textColor = navigationTitleColor
@@ -49,9 +51,19 @@ final class CustomNavigationBarView: UIView {
         configureTitle(with: viewModel)
         
         backgroundColor = .cellBackground
-        if isSettingsButtonHidden == false {
-            settingsButton.setImage(viewModel.settingsImage, for: .normal)
+        if isButtonHidden == false {
             configureButton()
+            if isAddTimeButton {
+                button.setImage(Constants.addTimeImage, for: .normal)
+                title.pinRight(to: button.leadingAnchor)
+            } else {
+                button.setImage(viewModel.settingsImage, for: .normal)
+                if defaultNavigationTitles.contains(viewModel.navigationTitle) {
+                    title.pinRight(to: self.centerXAnchor, Constants.navigationBarItemOffset)
+                } else {
+                    title.pinRight(to: self.centerXAnchor, Constants.customTitleOffsetRight)
+                }
+            }
         }
     }
     
@@ -62,28 +74,24 @@ final class CustomNavigationBarView: UIView {
         animatedIcon.pinBottom(to: self, Constants.navigationBarItemOffset)
     }
     
-    public func settingsButtonTarget(target: UIViewController, action: Selector) {
-        settingsButton.addTarget(target, action: action, for: .touchUpInside)
+    public func buttonTarget(target: UIViewController, action: Selector) {
+        button.addTarget(target, action: action, for: .touchUpInside)
     }
+    
     // MARK: - Private functions
     private func configureTitle(with viewModel: NavigationTitleRepresentable) {
         addSubview(title)
         title.pinLeft(to: self.leadingAnchor, Constants.navigationBarItemOffset)
         title.setHeight(Constants.titleLabelHeight)
         title.pinBottom(to: self.bottomAnchor, Constants.navigationBarItemOffset)
-        if defaultNavigationTitles.contains(viewModel.navigationTitle) {
-            title.pinRight(to: self.centerXAnchor, Constants.navigationBarItemOffset)
-        } else {
-            title.pinRight(to: self.centerXAnchor, Constants.customTitleOffsetRight)
-        }
     }
     
     private func configureButton() {
-        addSubview(settingsButton)
-        settingsButton.setWidth(Constants.settingsButtonSize)
-        settingsButton.setHeight(Constants.settingsButtonSize)
-        settingsButton.pinBottom(to: self, Constants.navigationBarItemOffset)
-        settingsButton.pinRight(to: self, Constants.navigationBarItemOffset)
+        addSubview(button)
+        button.setWidth(Constants.settingsButtonSize)
+        button.setHeight(Constants.settingsButtonSize)
+        button.pinBottom(to: self, Constants.navigationBarItemOffset)
+        button.pinRight(to: self, Constants.navigationBarItemOffset)
     }
     
 }

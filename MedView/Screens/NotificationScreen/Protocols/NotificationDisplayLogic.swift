@@ -11,4 +11,5 @@ import UIKit
 protocol NotificationDisplayLogic: AnyObject {
     // MARK: - Functions
     func displayStart(viewModel: NotificationModels.LoadStart.ViewModel)
+    func displayAddTimeScreen(viewModel: NotificationModels.LoadAddTimeScreen.ViewModel)
 }

@@ -46,8 +46,21 @@ final class SettingsPresenter: SettingsPresentationLogic {
     }
     
     func presentNotification(response: SettingsModels.LoadNotification.Response) {
-        let notification = Notification(title: response.notificationTitle)
+        let notification = Notification(
+            title: response.notificationTitle,
+            customType: response.isCustomType
+        )
         let viewModel = SettingsModels.LoadNotification.ViewModel(notification: notification)
         view?.displayNotification(viewModel: viewModel)
+    }
+    
+    func presentCustomNotification(response: SettingsModels.AddCustomNotification.Response) {
+        let viewModel = SettingsModels.AddCustomNotification.ViewModel()
+        view?.displayCustomNotification(viewModel: viewModel)
+    }
+    
+    func presentNotificationsAfterDeletion(response: SettingsModels.DeleteCustomNotification.Response) {
+        let viewModel = SettingsModels.DeleteCustomNotification.ViewModel(index: response.index)
+        view?.displayNotificationsAfterDeletion(viewModel: viewModel)
     }
 }

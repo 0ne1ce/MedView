@@ -68,10 +68,39 @@ enum SettingsModels {
         
         struct Response {
             var notificationTitle: String
+            var isCustomType: Bool
         }
         
         struct ViewModel {
             var notification: Notification
+        }
+    }
+    
+    enum AddCustomNotification {
+        struct Request {
+
+        }
+        
+        struct Response {
+            
+        }
+        
+        struct ViewModel {
+            
+        }
+    }
+    
+    enum DeleteCustomNotification {
+        struct Request {
+            var index: Int
+        }
+        
+        struct Response {
+            var index: Int
+        }
+        
+        struct ViewModel {
+            var index: Int
         }
     }
 }

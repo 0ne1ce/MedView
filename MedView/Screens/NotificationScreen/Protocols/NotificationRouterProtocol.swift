@@ -9,5 +9,5 @@ import Foundation
 import UIKit
 
 protocol NotificationRouterProtocol: AnyObject {
-    
+    func showAddTimeScreen()
 }

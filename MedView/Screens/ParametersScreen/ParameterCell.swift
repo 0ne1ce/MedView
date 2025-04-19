@@ -41,9 +41,10 @@ final class ParameterCell: UITableViewCell {
     }
     
     // MARK: - Public functions
-    public func configure(with image: UIImage, and label: String) {
+    public func configure(with image: UIImage, and label: String, parameterColor: UIColor) {
         self.icon.image = image
         self.parametersLabel.text = label
+        self.icon.tintColor = parameterColor
     }
     // MARK: - Private functions
     private func configureUI() {

@@ -8,7 +8,8 @@
 import Foundation
 import UIKit
 
-protocol NotificationBuisnessLogic: AnyObject {
+protocol NotificationBuisnessLogic: AnyObject, UITableViewDataSource {
     // MARK: - Functions
     func loadStart(request: NotificationModels.LoadStart.Request)
+    func loadAddTimeScreen(request: NotificationModels.LoadAddTimeScreen.Request)
 }
