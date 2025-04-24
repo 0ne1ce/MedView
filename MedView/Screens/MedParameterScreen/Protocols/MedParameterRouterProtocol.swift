@@ -8,4 +8,5 @@
 protocol MedParameterRouterProtocol: AnyObject {
     // MARK: - Functions
     func showSettingsScreen()
+    func showAssistant(with data: [ChartDataPoint], and parameterName: String)
 }

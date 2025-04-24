@@ -132,6 +132,17 @@ final class AssistantViewController: UIViewController, AssistantDisplayLogic {
         }
     }
     
+    func loadUserAdvice(with data: [ChartDataPoint], and parameterName: String) {
+        let userAdviceMessage = "Give me advice about my \(parameterName)"
+        let userMessageRequest = AssistantModels.SendUserMessage.Request(userMessageText: userAdviceMessage, data: data)
+        interactor.sendMessage(request: userMessageRequest)
+        
+        let assistantMessageRequest = AssistantModels.SendAssistantMessage.Request(userMessageText: userAdviceMessage)
+        Task {
+            await interactor.sendAssistantMessage(request: assistantMessageRequest)
+        }
+    }
+    
     // MARK: - Private functions
     private func configure() {
         view.backgroundColor = .backgroundPrimary
@@ -238,7 +249,7 @@ final class AssistantViewController: UIViewController, AssistantDisplayLogic {
         guard let inputTextMessage = inputTextView.text, !inputTextView.text.isEmpty, inputTextView.textColor != .lightGray else {
             return
         }
-        let userMessageRequest = AssistantModels.SendUserMessage.Request(userMessageText: inputTextMessage)
+        let userMessageRequest = AssistantModels.SendUserMessage.Request(userMessageText: inputTextMessage, data: [])
         inputTextView.isEditable = false
         inputTextView.isEditable = true
         interactor.sendMessage(request: userMessageRequest)

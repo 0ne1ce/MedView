@@ -11,4 +11,5 @@ protocol MedParameterBuisnessLogic: AnyObject {
     func saveTextFieldValue(request: MedParameterModels.SaveValue.Request)
     func deleteData(request: MedParameterModels.DeleteData.Request)
     func loadSettings(request: MedParameterModels.LoadSettings.Request)
+    func loadAssistantAdvice(request: MedParameterModels.LoadAssistantAdvice.Request)
 }

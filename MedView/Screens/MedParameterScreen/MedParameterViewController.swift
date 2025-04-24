@@ -41,6 +41,11 @@ final class MedParameterViewController: UIViewController, MedParameterDisplayLog
         static let deleteButtonWidth: CGFloat = 100
         static let deleteButtonHeight: CGFloat = 30
         static let deleteButtonRadius: CGFloat = 10
+        
+        static let adviceButtonHeight: CGFloat = 55
+        static let adviceButtonOffsetH: CGFloat = 60
+        static let adviceButtonOffsetTop: CGFloat = 20
+        static let adviceButtonRadius: CGFloat = 15
     }
     
     // MARK: - Properties
@@ -58,6 +63,7 @@ final class MedParameterViewController: UIViewController, MedParameterDisplayLog
     var sendButton: UIButton = UIButton(type: .custom)
     var deleteButton: UIButton = UIButton(type: .system)
     var awaitLabel: UILabel = UILabel()
+    var adviceButton: UIButton = UIButton(type: .system)
     
     // MARK: - Initialization
     init(interactor: MedParameterBuisnessLogic, router: MedParameterRouterProtocol) {
@@ -115,8 +121,10 @@ final class MedParameterViewController: UIViewController, MedParameterDisplayLog
         configureSendButton(with: viewModel)
         configureDeleteButton(with: viewModel)
         configureAwaitLabel(with: viewModel)
+        configureAdviceButton(with: viewModel)
         if hostingController.rootView.data.isEmpty {
             deleteButton.isHidden = true
+            adviceButton.isHidden = true
         } else {
             awaitLabel.isHidden = true
         }
@@ -125,6 +133,7 @@ final class MedParameterViewController: UIViewController, MedParameterDisplayLog
     func displayTextFieldValue(viewModel: MedParameterModels.SaveValue.ViewModel) {
         awaitLabel.isHidden = true
         deleteButton.isHidden = false
+        adviceButton.isHidden = false
         let chartView = ChartView(data: viewModel.data, color: Color(viewModel.parameterColor))
         hostingController.rootView = chartView
     }
@@ -132,6 +141,7 @@ final class MedParameterViewController: UIViewController, MedParameterDisplayLog
     func displayAferDeletion(viewModel: MedParameterModels.DeleteData.ViewModel) {
         awaitLabel.isHidden = false
         deleteButton.isHidden = true
+        adviceButton.isHidden = true
         let chartView = ChartView(data: viewModel.data, color: .main)
         hostingController.rootView = chartView
         view.layoutIfNeeded()
@@ -139,6 +149,10 @@ final class MedParameterViewController: UIViewController, MedParameterDisplayLog
     
     func displaySettings(viewModel: MedParameterModels.LoadSettings.ViewModel) {
         router.showSettingsScreen()
+    }
+    
+    func displayAssistantAdvice(viewModel: MedParameterModels.LoadAssistantAdvice.ViewModel) {
+        router.showAssistant(with: viewModel.data, and: viewModel.parameterName)
     }
     
     // MARK: - Private functions
@@ -243,6 +257,22 @@ final class MedParameterViewController: UIViewController, MedParameterDisplayLog
         navigationBar.buttonTarget(target: self, action: #selector(settingsButtonPressed))
     }
     
+    private func configureAdviceButton(with viewModel: MedParameterModels.LoadStart.ViewModel) {
+        view.addSubview(adviceButton)
+        adviceButton.pinHorizontal(to: view, Constants.adviceButtonOffsetH)
+        adviceButton.pinTop(to: hostingController.view.bottomAnchor, Constants.adviceButtonOffsetTop)
+        adviceButton.setHeight(Constants.adviceButtonHeight)
+        
+        adviceButton.setTitle(viewModel.adviceButtonText, for: .normal)
+        adviceButton.titleLabel?.textAlignment = .left
+        adviceButton.titleLabel?.font = viewModel.adviceButtonFont
+        adviceButton.setTitleColor(viewModel.adviceButtonTextColor, for: .normal)
+        adviceButton.backgroundColor = viewModel.adviceButtonColor
+        adviceButton.layer.cornerRadius = Constants.adviceButtonRadius
+        
+        adviceButton.addTarget(self, action: #selector(adviceButtonPressed), for: .touchUpInside)
+    }
+    
     private func wrapAnimated() {
         inputWrap.pinRight(to: view, Constants.inputWrapOffsetH)
         
@@ -284,6 +314,11 @@ final class MedParameterViewController: UIViewController, MedParameterDisplayLog
     @objc func settingsButtonPressed() {
         let request = MedParameterModels.LoadSettings.Request()
         interactor.loadSettings(request: request)
+    }
+    
+    @objc func adviceButtonPressed() {
+        let request = MedParameterModels.LoadAssistantAdvice.Request()
+        interactor.loadAssistantAdvice(request: request)
     }
 }
 

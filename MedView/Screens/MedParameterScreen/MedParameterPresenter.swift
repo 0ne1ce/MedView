@@ -19,6 +19,8 @@ final class MedParameterPresenter: MedParameterPresentationLogic {
         static let awaitFont: UIFont = UIFont.systemFont(ofSize: 24).bold
         
         static let deleteButtonFont: UIFont = UIFont.systemFont(ofSize: 18)
+        
+        static let adviceButtonFont: UIFont = .systemFont(ofSize: 18)
     }
     
     // MARK: - Properties
@@ -48,6 +50,10 @@ final class MedParameterPresenter: MedParameterPresentationLogic {
             deleteButtonText: response.deleteButtonText,
             deleteButtonFont: Constants.deleteButtonFont,
             parameterColor: response.parameter.color,
+            adviceButtonText: response.adviceButtonText,
+            adviceButtonColor: response.parameter.color,
+            adviceButtonTextColor: .white,
+            adviceButtonFont: Constants.adviceButtonFont,
             data: dataChartPoints
         )
         view?.displayStart(viewModel: viewModel)
@@ -69,6 +75,14 @@ final class MedParameterPresenter: MedParameterPresentationLogic {
     func presentSettings(response: MedParameterModels.LoadSettings.Response) {
         let viewModel = MedParameterModels.LoadSettings.ViewModel()
         view?.displaySettings(viewModel: viewModel)
+    }
+    
+    func presentAssistantAdvice(response: MedParameterModels.LoadAssistantAdvice.Response) {
+        let viewModel = MedParameterModels.LoadAssistantAdvice.ViewModel(
+            parameterName: response.parameterName,
+            data: dataToChartPoints(data: response.data)
+        )
+        view?.displayAssistantAdvice(viewModel: viewModel)
     }
     
     // MARK: - Private functions

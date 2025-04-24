@@ -10,10 +10,10 @@ import UIKit
 
 final class AssistantAssembly {
     // MARK: - Functions
-    static func build() -> UIViewController {
+    static func build(with data: [ChartDataPoint]) -> UIViewController {
         let presenter = AssistantPresenter()
         let worker = AssistantWorker()
-        let interactor = AssistantInteractor(presenter: presenter, worker: worker)
+        let interactor = AssistantInteractor(presenter: presenter, worker: worker, data: data)
         let router = AssistantRouter()
         let view = AssistantViewController(interactor: interactor, router: router)
         

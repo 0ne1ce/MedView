@@ -11,4 +11,5 @@ protocol MedParameterDisplayLogic: AnyObject {
     func displayTextFieldValue(viewModel: MedParameterModels.SaveValue.ViewModel)
     func displayAferDeletion(viewModel: MedParameterModels.DeleteData.ViewModel)
     func displaySettings(viewModel: MedParameterModels.LoadSettings.ViewModel)
+    func displayAssistantAdvice(viewModel: MedParameterModels.LoadAssistantAdvice.ViewModel)
 }

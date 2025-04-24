@@ -35,14 +35,16 @@ final class AssistantInteractor: NSObject, AssistantBuisnessLogic {
     // MARK: - Properties
     var presenter: AssistantPresentationLogic
     var worker: AssistantWorker
+    var data: [ChartDataPoint]
     
     // MARK: - Variables
     private var messages: [Message] = []
     
     // MARK: - Initialization
-    init(presenter: AssistantPresentationLogic, worker: AssistantWorker) {
+    init(presenter: AssistantPresentationLogic, worker: AssistantWorker, data: [ChartDataPoint]) {
         self.presenter = presenter
         self.worker = worker
+        self.data = data
     }
     
     // MARK: - Functions
@@ -62,16 +64,18 @@ final class AssistantInteractor: NSObject, AssistantBuisnessLogic {
     }
     
     func sendMessage(request: AssistantModels.SendUserMessage.Request) {
+        data = request.data
         messages.append(Message(role: .user, messageText: request.userMessageText))
         let response = AssistantModels.SendUserMessage.Response(placeholderText: Constants.placeholderText)
         presenter.presentUserMessage(response: response)
     }
     
     func sendAssistantMessage(request: AssistantModels.SendAssistantMessage.Request) async {
-        await worker.getResponse(input: request.userMessageText)
+        await worker.getResponse(input: request.userMessageText, data: data)
         if worker.response != "" {
             messages.append(Message(role: .assistant, messageText: worker.response))
         }
+        data.removeAll()
         let response = AssistantModels.SendAssistantMessage.Response()
         presenter.presentAssistantMessage(response: response)
     }

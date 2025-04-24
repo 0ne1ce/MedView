@@ -105,7 +105,7 @@ extension SettingsInteractor: UITableViewDataSource {
         case 0:
             return Constants.numberOfRowsCard
         case 1:
-            return Constants.numberOfRowsTheme
+            return .zero
         case 2:
             return Constants.numberOfRowsNotificationsDefault
         case 3:

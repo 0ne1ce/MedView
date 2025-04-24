@@ -35,7 +35,7 @@ final class TabBarController: UITabBarController, UITabBarControllerDelegate {
     // MARK: - Private functions
     private func configureTabs() {
         let parametersController = UINavigationController(rootViewController: ParametersAssembly.build())
-        let assistantController = UINavigationController(rootViewController: AssistantAssembly.build())
+        let assistantController = UINavigationController(rootViewController: AssistantAssembly.build(with: []))
         let helpController = UINavigationController(rootViewController: HelpAssembly.build())
         
         parametersController.tabBarItem = UITabBarItem(

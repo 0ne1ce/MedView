@@ -14,6 +14,7 @@ final class MedParameterInteractor: MedParameterBuisnessLogic {
         static let awaitText: String = "There is no data yet..."
         static let settingsImageName: String = "SettingsSymbol"
         static let deleteButtonText: String = "Clear"
+        static let adviceButtonText: String = "Get advice"
     }
     
     // MARK: - Properties
@@ -39,6 +40,7 @@ final class MedParameterInteractor: MedParameterBuisnessLogic {
             settingsImageName: Constants.settingsImageName,
             deleteButtonText: Constants.deleteButtonText,
             parameter: medParameter,
+            adviceButtonText: Constants.adviceButtonText,
             data: data
         )
         presenter.presentStart(response: response)
@@ -67,11 +69,19 @@ final class MedParameterInteractor: MedParameterBuisnessLogic {
         presenter.presentSettings(response: response)
     }
     
+    func loadAssistantAdvice(request: MedParameterModels.LoadAssistantAdvice.Request) {
+        let response = MedParameterModels.LoadAssistantAdvice.Response(
+            parameterName: medParameter.type.rawValue,
+            data: data
+        )
+        presenter.presentAssistantAdvice(response: response)
+    }
+    
     // MARK: - Private functions
     private func loadParameterData() {
         switch medParameter.id {
         case 0:
-            data = worker.loadParameterData(type: BloodPressure.self)
+            data = worker.loadParameterData(type: StepActivity.self)
         case 1:
             data = worker.loadParameterData(type: Pulse.self)
         case 2:
@@ -94,7 +104,7 @@ final class MedParameterInteractor: MedParameterBuisnessLogic {
     private func saveParameterData(value: Double, currentDate: Date) {
         switch medParameter.id {
         case 0:
-            worker.saveParameterData(type: BloodPressure.self, value: value, date: currentDate)
+            worker.saveParameterData(type: StepActivity.self, value: value, date: currentDate)
         case 1:
             worker.saveParameterData(type: Pulse.self, value: value, date: currentDate)
         case 2:
@@ -117,7 +127,7 @@ final class MedParameterInteractor: MedParameterBuisnessLogic {
     private func deleteParameterData() {
         switch medParameter.id {
         case 0:
-            worker.deleteParameterData(type: BloodPressure.self)
+            worker.deleteParameterData(type: StepActivity.self)
         case 1:
             worker.deleteParameterData(type: Pulse.self)
         case 2:

@@ -11,4 +11,5 @@ protocol MedParameterPresentationLogic: AnyObject {
     func presentTextFieldValue(response: MedParameterModels.SaveValue.Response)
     func presentAfterDeletion(response: MedParameterModels.DeleteData.Response)
     func presentSettings(response: MedParameterModels.LoadSettings.Response)
+    func presentAssistantAdvice(response: MedParameterModels.LoadAssistantAdvice.Response)
 }

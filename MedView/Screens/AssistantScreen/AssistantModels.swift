@@ -67,6 +67,7 @@ enum AssistantModels {
     enum SendUserMessage {
         struct Request {
             var userMessageText: String
+            var data: [ChartDataPoint]
         }
         
         struct Response {

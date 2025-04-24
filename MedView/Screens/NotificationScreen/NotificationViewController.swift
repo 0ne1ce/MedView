@@ -68,7 +68,7 @@ final class NotificationViewController: UIViewController, NotificationDisplayLog
     }
     
     func displayStart(viewModel: NotificationModels.LoadStart.ViewModel) {
-        navigationBar.configure(with: viewModel, false, viewModel.customType)
+        navigationBar.configure(with: viewModel, false, true)
         view.addSubview(navigationBar)
         configureAddButtonTarget()
         

@@ -7,7 +7,7 @@
 
 import UIKit
 
-extension BloodPressure: MedParameterData {
+extension StepActivity: MedParameterData {
     var numericValue: Double {
         return Double(self.value)
     }

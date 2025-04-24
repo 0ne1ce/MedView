@@ -20,6 +20,7 @@ enum MedParameterModels {
             var settingsImageName: String
             var deleteButtonText: String
             var parameter: MedParameter
+            var adviceButtonText: String
             var data: [MedParameterData]
         }
         
@@ -41,6 +42,10 @@ enum MedParameterModels {
             var deleteButtonText: String
             var deleteButtonFont: UIFont
             var parameterColor: UIColor
+            var adviceButtonText: String
+            var adviceButtonColor: UIColor
+            var adviceButtonTextColor: UIColor
+            var adviceButtonFont: UIFont
             var data: [ChartDataPoint]
         }
     }
@@ -86,6 +91,22 @@ enum MedParameterModels {
         
         struct ViewModel {
             
+        }
+    }
+    
+    enum LoadAssistantAdvice {
+        struct Request {
+            
+        }
+        
+        struct Response {
+            var parameterName: String
+            var data: [MedParameterData]
+        }
+        
+        struct ViewModel {
+            var parameterName: String
+            var data: [ChartDataPoint]
         }
     }
 }
