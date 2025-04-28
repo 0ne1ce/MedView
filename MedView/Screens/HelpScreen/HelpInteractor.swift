@@ -11,20 +11,17 @@ import UIKit
 final class HelpInteractor: NSObject, HelpBuisnessLogic {
     // MARK: - Constants
     private enum Constants {
-        static let questionFirst: String = "What can I do in the Data section?"
-        static let answerFirst: String = "View a list of tracked parameters (e.g., heart rate, blood pressure, temperature, etc.)." + 
-        " Tap on a parameter to open a graph showing its changes over a selected period."
         static let helpLabelText: NSMutableAttributedString = NSMutableAttributedString("FAQ and guide")
         static let settingsImageName: String = "SettingsSymbol"
         static let animationName: String = "HealthLoadAnimation"
         
-        static let numberOfRows: Int = 6
+        static let numberOfRows: Int = 8
         
         static let onboardingButtonText: String = "Quick Start"
         
         static let firstQuestion: String = "What can I do in the Data section?"
         static let firstAnswer: String = """
-        View a list of tracked parameters (e.g., heart rate, blood pressure, temperature, etc.).\n
+        View a list of tracked parameters (e.g., heart rate, step activity, temperature, etc.).\n
         Tap on a parameter to open a graph showing its changes over a selected period.
         """
         
@@ -37,7 +34,14 @@ final class HelpInteractor: NSObject, HelpBuisnessLogic {
         static let thirdQuestion: String = "How do I use the Assistant?"
         static let thirdAnswer: String = """
         Go to the Assistant section and start chatting with the model by asking questions.\n
-        Recommendations are tailored using your entered parameters and data from the Card section (e.g., blood type, allergies, chronic diseases).
+        You could also get helpful advice if you press "Get advice" on screen with your entered data.
+        """
+        
+        static let fourthQuestion: String = "How do I work with notifications?"
+        static let fourthAnswer: String = """
+        Notifications are on Settings screen. You colud press button at the bottom to create a custom notification and then enter a name for it in text field.\n
+        To remove custom notification swipe left.\n
+        If you want to set timestamps - press on notification. Repeat status on timestamp is meaning repetition of this notification after 5 minutes.
         """
     }
     
@@ -50,7 +54,9 @@ final class HelpInteractor: NSObject, HelpBuisnessLogic {
         Constants.secondQuestion,
         Constants.secondAnswer,
         Constants.thirdQuestion,
-        Constants.thirdAnswer
+        Constants.thirdAnswer,
+        Constants.fourthQuestion,
+        Constants.fourthAnswer
     ]
     
     // MARK: - Initialization
@@ -73,6 +79,11 @@ final class HelpInteractor: NSObject, HelpBuisnessLogic {
     func loadSettings(request: HelpModels.LoadSettings.Request) {
         let response = HelpModels.LoadSettings.Response()
         presenter.presentSettings(response: response)
+    }
+    
+    func loadOnboarding(request: HelpModels.LoadOnboarding.Request) {
+        let response = HelpModels.LoadOnboarding.Response()
+        presenter.presentOnboarding(response: response)
     }
 }
 

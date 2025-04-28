@@ -97,6 +97,10 @@ final class ParametersViewController: UIViewController, ParametersDisplayLogic {
         router.showParameter(viewModel.parameter)
     }
     
+    func displayOnboarding(viewModel: ParametersModels.FirstLaunch.ViewModel) {
+        router.showOnboarding()
+    }
+    
     // MARK: - Private functions
     private func configure() {
         view.backgroundColor = Constants.backgroundColor

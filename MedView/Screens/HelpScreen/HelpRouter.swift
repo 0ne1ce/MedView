@@ -18,4 +18,10 @@ final class HelpRouter: HelpRouterProtocol {
         settingsVC.hidesBottomBarWhenPushed = true
         view?.navigationController?.pushViewController(settingsVC, animated: true)
     }
+    
+    func showOnboarding() {
+        let onboardingVC = OnboardingViewController()
+        onboardingVC.hidesBottomBarWhenPushed = true
+        view?.navigationController?.pushViewController(onboardingVC, animated: true)
+    }
 }

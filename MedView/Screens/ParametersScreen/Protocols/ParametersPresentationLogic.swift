@@ -13,4 +13,5 @@ protocol ParametersPresentationLogic: AnyObject {
     func presentStart(response: ParametersModels.LoadStart.Response)
     func presentSettings(response: ParametersModels.LoadSettings.Response)
     func presentParameter(response: ParametersModels.LoadParameter.Response)
+    func presentOnboarding(response: ParametersModels.FirstLaunch.Response)
 }

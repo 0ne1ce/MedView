@@ -12,4 +12,5 @@ protocol HelpDisplayLogic: AnyObject {
     // MARK: - Functions
     func displayStart(viewModel: HelpModels.LoadStart.ViewModel)
     func displaySettings(viewModel: HelpModels.LoadSettings.ViewModel)
+    func displayOnboarding(viewModel: HelpModels.LoadOnboarding.ViewModel)
 }

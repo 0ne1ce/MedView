@@ -49,4 +49,18 @@ enum HelpModels {
             
         }
     }
+    
+    enum LoadOnboarding {
+        struct Request {
+            
+        }
+        
+        struct Response {
+            
+        }
+        
+        struct ViewModel {
+            
+        }
+    }
 }

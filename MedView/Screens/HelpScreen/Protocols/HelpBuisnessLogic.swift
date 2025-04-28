@@ -12,4 +12,5 @@ protocol HelpBuisnessLogic: AnyObject, UITableViewDataSource {
     // MARK: - Functions
     func loadStart(request: HelpModels.LoadStart.Request)
     func loadSettings(request: HelpModels.LoadSettings.Request)
+    func loadOnboarding(request: HelpModels.LoadOnboarding.Request)
 }

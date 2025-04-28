@@ -61,4 +61,18 @@ enum ParametersModels {
             var parameter: MedParameter
         }
     }
+    
+    enum FirstLaunch {
+        struct Request {
+
+        }
+        
+        struct Response {
+
+        }
+        
+        struct ViewModel {
+            
+        }
+    }
 }

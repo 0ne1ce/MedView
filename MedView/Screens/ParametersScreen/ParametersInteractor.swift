@@ -39,6 +39,10 @@ final class ParametersInteractor: NSObject, ParametersBuisnessLogic {
     
     // MARK: - Public functions
     func loadStartData(request: ParametersModels.LoadStart.Request) {
+        if worker.checkFirstLaunch() {
+            let response = ParametersModels.FirstLaunch.Response()
+            presenter.presentOnboarding(response: response)
+        }
         let response = ParametersModels.LoadStart.Response(
             titleText: configuredTitle(),
             tableTitleText: Constants.tableTitleText,

@@ -100,6 +100,10 @@ final class HelpViewController: UIViewController, HelpDisplayLogic {
         router.showSettingsScreen()
     }
     
+    func displayOnboarding(viewModel: HelpModels.LoadOnboarding.ViewModel) {
+        router.showOnboarding()
+    }
+    
     // MARK: - Private functions
     private func configure() {
         view.backgroundColor = .backgroundPrimary
@@ -127,6 +131,7 @@ final class HelpViewController: UIViewController, HelpDisplayLogic {
         onboardingButton.titleLabel?.font = viewModel.onboardingButtonTextFont
         onboardingButton.titleLabel?.textAlignment = .left
         onboardingButton.backgroundColor = viewModel.onboardingButtonColor
+        onboardingButton.addTarget(self, action: #selector(onboardingButtonPressed), for: .touchUpInside)
         
         onboardingButton.layer.cornerRadius = Constants.onboardingButtonRadius
         onboardingButton.layer.shadowColor = viewModel.onboardingButtonBoundsColor.cgColor
@@ -177,6 +182,12 @@ final class HelpViewController: UIViewController, HelpDisplayLogic {
     @objc func settingsButtonPressed() {
         let request = HelpModels.LoadSettings.Request()
         interactor.loadSettings(request: request)
+    }
+    
+    @objc func onboardingButtonPressed() {
+        triggerSelectionFeedback()
+        let request = HelpModels.LoadOnboarding.Request()
+        interactor.loadOnboarding(request: request)
     }
 }
 

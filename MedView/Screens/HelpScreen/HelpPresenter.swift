@@ -41,4 +41,9 @@ final class HelpPresenter: HelpPresentationLogic {
         let viewModel = HelpModels.LoadSettings.ViewModel()
         view?.displaySettings(viewModel: viewModel)
     }
+    
+    func presentOnboarding(response: HelpModels.LoadOnboarding.Response) {
+        let viewModel = HelpModels.LoadOnboarding.ViewModel()
+        view?.displayOnboarding(viewModel: viewModel)
+    }
 }

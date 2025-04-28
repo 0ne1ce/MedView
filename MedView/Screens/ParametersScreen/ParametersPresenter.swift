@@ -64,4 +64,9 @@ final class ParametersPresenter: ParametersPresentationLogic {
         let viewModel = ParametersModels.LoadParameter.ViewModel(parameter: medParamter)
         view?.displayParamter(viewModel: viewModel)
     }
+    
+    func presentOnboarding(response: ParametersModels.FirstLaunch.Response) {
+        let viewModel = ParametersModels.FirstLaunch.ViewModel()
+        view?.displayOnboarding(viewModel: viewModel)
+    }
 }

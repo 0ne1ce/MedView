@@ -12,4 +12,5 @@ protocol ParametersRouterProtocol: AnyObject {
     // MARK: - Functions
     func showSettingsScreen()
     func showParameter(_ parameter: MedParameter)
+    func showOnboarding()
 }
