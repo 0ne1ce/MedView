@@ -80,7 +80,7 @@ enum SettingsModels {
     
     enum AddCustomNotification {
         struct Request {
-
+            var index: Int
         }
         
         struct Response {

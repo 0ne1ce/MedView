@@ -75,7 +75,7 @@ final class SettingsInteractor: NSObject, SettingsBuisnessLogic {
                 notificationType: notficationType
             )
             presenter.presentNotification(response: response)
-        } else {
+        } else {        
             let response = SettingsModels.LoadNotification.Response(
                 id: request.id,
                 notificationTitle: request.notificationTitle,
@@ -90,6 +90,7 @@ final class SettingsInteractor: NSObject, SettingsBuisnessLogic {
         notificationsCustomStates.append(false)
         worker.saveCustomNotifications(notificationsCustomTitles)
         worker.saveCustomNotificationsStates(notificationsCustomStates)
+        worker.createCustomNotification(notificationId: request.index)
         let response = SettingsModels.AddCustomNotification.Response()
         presenter.presentCustomNotification(response: response)
     }
@@ -99,6 +100,7 @@ final class SettingsInteractor: NSObject, SettingsBuisnessLogic {
         notificationsCustomStates.remove(at: request.index)
         worker.saveCustomNotifications(notificationsCustomTitles)
         worker.saveCustomNotificationsStates(notificationsCustomStates)
+        worker.deleteCustomNotification(id: request.index)
         let response = SettingsModels.DeleteCustomNotification.Response(index: request.index)
         presenter.presentNotificationsAfterDeletion(response: response)
     }
@@ -160,7 +162,6 @@ extension SettingsInteractor: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
         switch indexPath.section {
         case 0:
             let cell = tableView.dequeueReusableCell(withIdentifier: SettingsCell.reuseId, for: indexPath)

@@ -14,7 +14,7 @@ final class NotificationWorker {
     private let context = CoreDataStack.shared.context
     
     // MARK: - Functions
-    func saveTimestampsData<T: TimestampData>(type: T.Type, time: String, repeatStatus: Bool) {
+    func saveTimestampData<T: TimestampData>(type: T.Type, time: String, repeatStatus: Bool) {
         let entity = T(context: context)
         entity.setValue(time, forKey: "time")
         entity.setValue(repeatStatus, forKey: "repeatStatus")
@@ -27,7 +27,7 @@ final class NotificationWorker {
         return (try? context.fetch(request)) ?? []
     }
     
-    func deleteTimestampsData<T: TimestampData>(type: T.Type, time: String, repeatStatus: Bool) {
+    func deleteTimestampData<T: TimestampData>(type: T.Type, time: String, repeatStatus: Bool) {
         guard let request = T.fetchRequest() as? NSFetchRequest<T> else {
             print("Failed to create fetch request for \(T.self)")
                     return
@@ -42,6 +42,47 @@ final class NotificationWorker {
             CoreDataStack.shared.saveContext()
         } catch {
             print("Failed to delete timestamp data: \(error)")
+        }
+    }
+    
+    func loadCustomNotification(id: Int) -> CustomNotification? {
+        let request: NSFetchRequest<CustomNotification> = CustomNotification.fetchRequest()
+        request.predicate = NSPredicate(format: "id == %lld", id as CVarArg)
+        return try? context.fetch(request).first
+    }
+    
+    func saveCustomTimestamp(notificationId: Int, time: String, repeatStatus: Bool) {
+        guard let notification = loadCustomNotification(id: notificationId) else { return }
+        
+        let newTimestamp = CustomTimestamp(context: context)
+        newTimestamp.time = time
+        newTimestamp.repeatStatus = repeatStatus
+        newTimestamp.notification = notification
+        
+        CoreDataStack.shared.saveContext()
+    }
+    
+    func loadTimestamps(for notificationId: Int) -> [CustomTimestamp] {
+        guard let notification = loadCustomNotification(id: notificationId),
+              let timestamps = notification.timestamps as? Set<CustomTimestamp> else {
+            return []
+        }
+        return Array(timestamps).sorted { $0.time ?? "" < $1.time ?? "" }
+    }
+    
+    func deleteCustomTimestamp(notificationId: Int, time: String, repeatStatus: Bool) {
+        let request: NSFetchRequest<CustomTimestamp> = CustomTimestamp.fetchRequest()
+        request.predicate = NSPredicate(format: "notification.id == %d AND time == %@ AND repeatStatus == %@",
+                                        notificationId, time, NSNumber(value: repeatStatus))
+        request.fetchLimit = 1
+        
+        do {
+            if let timestamp = try context.fetch(request).first {
+                context.delete(timestamp)
+                CoreDataStack.shared.saveContext()
+            }
+        } catch {
+            print("Failed to delete custom timestamp: \(error)")
         }
     }
 

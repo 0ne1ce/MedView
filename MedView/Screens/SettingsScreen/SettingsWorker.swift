@@ -7,6 +7,7 @@
 
 import Foundation
 import UIKit
+import CoreData
 
 final class SettingsWorker {
     // MARK: - Constants
@@ -31,6 +32,7 @@ final class SettingsWorker {
     // MARK: - Properties
     private let defaults = UserDefaults.standard
     private let notificationWorker = NotificationWorker()
+    private let context = CoreDataStack.shared.context
     
     // MARK: - Initialization
     init() {
@@ -178,6 +180,38 @@ final class SettingsWorker {
             customNotificationsIds.removeAll()
             defaults.setValue(customNotificationsIds, forKey: Constants.customNotificationsIdsKey)
         }
+    }
+    
+    func createCustomNotification(notificationId: Int) {
+        if loadCustomNotification(id: notificationId) != nil {
+            print("Notification with id \(notificationId) already exists.")
+            return
+        }
+        
+        let newNotification = CustomNotification(context: context)
+        newNotification.id = Int64(notificationId)
+        CoreDataStack.shared.saveContext()
+        
+        print("Created notification with id \(notificationId)")
+    }
+
+    func loadCustomNotification(id: Int) -> CustomNotification? {
+        let request: NSFetchRequest<CustomNotification> = CustomNotification.fetchRequest()
+        request.predicate = NSPredicate(format: "id == %lld", id as CVarArg)
+        return try? context.fetch(request).first
+    }
+    
+    func deleteCustomNotification(id: Int) {
+        guard let notification = loadCustomNotification(id: id) else { return }
+        
+        if let timestamps = notification.timestamps as? Set<CustomTimestamp> {
+            for timestamp in timestamps {
+                context.delete(timestamp)
+            }
+        }
+        
+        context.delete(notification)
+        CoreDataStack.shared.saveContext()
     }
     
     // MARK: - Private functions

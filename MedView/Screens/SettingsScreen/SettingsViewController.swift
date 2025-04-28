@@ -26,7 +26,7 @@ final class SettingsViewController: UIViewController, SettingsDisplayLogic {
         
         static let heightForRow: CGFloat = 60
         
-        static let settingsTableOffsetTop: CGFloat = 10
+        static let settingsTableOffsetTop: CGFloat = -5
         
         static let customNotificationsSection: Int = 2
         
@@ -34,8 +34,6 @@ final class SettingsViewController: UIViewController, SettingsDisplayLogic {
         static let tableTitleOffsetH: CGFloat = 15
         static let tableTitleOffsetV: CGFloat = 5
         static let tableTitleHeight: CGFloat = 22
-        
-        static let defaultNotificationsCount: Int = 3
     }
     
     // MARK: - Properties
@@ -241,12 +239,14 @@ extension SettingsViewController: UITableViewDelegate {
             
             let settingsTitle = cell.settingsTextField.text ?? ""
             let request = SettingsModels.LoadNotification.Request(
-                id: indexPath.row + Constants.defaultNotificationsCount,
+                id: indexPath.row,
                 notificationTitle: settingsTitle
             )
             interactor.loadNotification(request: request)
         case 3:
-            let request = SettingsModels.AddCustomNotification.Request()
+            let index = tableView.numberOfRows(inSection: 2)
+            
+            let request = SettingsModels.AddCustomNotification.Request(index: index)
             interactor.addCustomNotification(request: request)
         default:
             return

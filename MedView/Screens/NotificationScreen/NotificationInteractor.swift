@@ -69,11 +69,7 @@ final class NotificationInteractor: NSObject, NotificationBuisnessLogic {
         loadNotificationTimestampsData()
         timeStamps.sort { $0.timestampValue < $1.timestampValue }
         
-        if notification.type == .custom {
-            syncCustomNotifications()
-        } else {
-            syncNotifications()
-        }
+        syncNotifications()
         let response = NotificationModels.AddTimestamp.Response()
         presenter.presentTimestamp(response: response)
     }
@@ -87,11 +83,7 @@ final class NotificationInteractor: NSObject, NotificationBuisnessLogic {
         )
         loadNotificationTimestampsData()
         
-        if notification.type == .custom {
-            syncCustomNotifications()
-        } else {
-            syncNotifications()
-        }
+        syncNotifications()
         let response = NotificationModels.DeleteTimestamp.Response(index: request.index)
         presenter.presentTimestampsAfterDeletion(response: response)
     }
@@ -100,45 +92,41 @@ final class NotificationInteractor: NSObject, NotificationBuisnessLogic {
         let settingsWorker = SettingsWorker()
         let states = settingsWorker.loadDefaultNotificationsStates()
         
-        switch notification.id {
-        case 0:
+        switch notification.type {
+        case .drink:
             if states[0] {
                 settingsWorker.enableNotifications(notificationType: .drink)
             }
-        case 1:
+        case .food:
             if states[1] {
                 settingsWorker.enableNotifications(notificationType: .food)
             }
-        case 2:
+        case .sleep:
             if states[2] {
                 settingsWorker.enableNotifications(notificationType: .sleep)
             }
-        default:
-            break
-        }
-    }
-    
-    func syncCustomNotifications() {
-        let settingsWorker = SettingsWorker()
-        let states = settingsWorker.loadDefaultNotificationsStates()
-        let titles = settingsWorker.loadCustomNotifications()
-        let index = titles.firstIndex(of: notification.title) ?? 0
-        if !states.isEmpty && states[index] {
-            settingsWorker.enableNotifications(notificationType: .custom, customTitle: notification.title)
+        case .custom:
+            let settingsWorker = SettingsWorker()
+            let states = settingsWorker.loadDefaultNotificationsStates()
+            let titles = settingsWorker.loadCustomNotifications()
+            let index = titles.firstIndex(of: notification.title) ?? 0
+            if !states.isEmpty && states[index] {
+                settingsWorker.enableNotifications(notificationType: .custom, customTitle: notification.title)
+            }
         }
     }
     
     // MARK: - Private functions
     private func loadNotificationTimestampsData() {
-        switch notification.id {
-        case 0:
+        switch notification.type {
+        case .drink:
             loadNotificationTimestampsData(type: DrinkTimestamp.self)
-        case 1:
+        case .food:
             loadNotificationTimestampsData(type: FoodTimestamp.self)
-        case 2:
+        case .sleep:
             loadNotificationTimestampsData(type: SleepTimestamp.self)
-        default:
-            loadNotificationTimestampsData(type: CustomTimestamp.self)
+        case .custom:
+            timeStamps = worker.loadTimestamps(for: notification.id)
         }
     }
     
@@ -147,37 +135,41 @@ final class NotificationInteractor: NSObject, NotificationBuisnessLogic {
     }
     
     private func saveNotificationTimestampsData(timestamp: String, repeatStatus: Bool) {
-        switch notification.id {
-        case 0:
+        switch notification.type {
+        case .drink:
             saveNotificationTimestampsData(type: DrinkTimestamp.self, timestamp: timestamp, repeatStatus: repeatStatus)
-        case 1:
+        case .food:
             saveNotificationTimestampsData(type: FoodTimestamp.self, timestamp: timestamp, repeatStatus: repeatStatus)
-        case 2:
+        case .sleep:
             saveNotificationTimestampsData(type: SleepTimestamp.self, timestamp: timestamp, repeatStatus: repeatStatus)
-        default:
-            saveNotificationTimestampsData(type: CustomTimestamp.self, timestamp: timestamp, repeatStatus: repeatStatus)
+        case .custom:
+            worker.saveCustomTimestamp(
+                notificationId: notification.id,
+                time: timestamp,
+                repeatStatus: repeatStatus
+            )
         }
     }
     
     private func saveNotificationTimestampsData<T: TimestampData>(type: T.Type, timestamp: String, repeatStatus: Bool) {
-        worker.saveTimestampsData(type: type, time: timestamp, repeatStatus: repeatStatus)
+        worker.saveTimestampData(type: type, time: timestamp, repeatStatus: repeatStatus)
     }
     
     private func deleteNotificationTimestampsData(timestamp: String, repeatStatus: Bool) {
-        switch notification.id {
-        case 0:
+        switch notification.type {
+        case .drink:
             deleteNotificationTimestampsData(type: DrinkTimestamp.self, timestamp: timestamp, repeatStatus: repeatStatus)
-        case 1:
+        case .food:
             deleteNotificationTimestampsData(type: FoodTimestamp.self, timestamp: timestamp, repeatStatus: repeatStatus)
-        case 2:
+        case .sleep:
             deleteNotificationTimestampsData(type: SleepTimestamp.self, timestamp: timestamp, repeatStatus: repeatStatus)
-        default:
-            deleteNotificationTimestampsData(type: CustomTimestamp.self, timestamp: timestamp, repeatStatus: repeatStatus)
+        case .custom:
+            worker.deleteCustomTimestamp(notificationId: notification.id, time: timestamp, repeatStatus: repeatStatus)
         }
     }
     
     private func deleteNotificationTimestampsData<T: TimestampData>(type: T.Type, timestamp: String, repeatStatus: Bool) {
-        worker.deleteTimestampsData(type: type, time: timestamp, repeatStatus: repeatStatus)
+        worker.deleteTimestampData(type: type, time: timestamp, repeatStatus: repeatStatus)
     }
 }
 

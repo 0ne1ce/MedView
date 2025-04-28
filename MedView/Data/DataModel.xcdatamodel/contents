@@ -4,9 +4,14 @@
         <attribute name="date" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
         <attribute name="value" optional="YES" attributeType="Double" defaultValueString="0" usesScalarValueType="YES"/>
     </entity>
+    <entity name="CustomNotification" representedClassName="CustomNotification" syncable="YES" codeGenerationType="class">
+        <attribute name="id" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <relationship name="timestamps" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="CustomTimestamp" inverseName="notification" inverseEntity="CustomTimestamp"/>
+    </entity>
     <entity name="CustomTimestamp" representedClassName="CustomTimestamp" syncable="YES" codeGenerationType="class">
         <attribute name="repeatStatus" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
         <attribute name="time" optional="YES" attributeType="String"/>
+        <relationship name="notification" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CustomNotification" inverseName="timestamps" inverseEntity="CustomNotification"/>
     </entity>
     <entity name="DrinkTimestamp" representedClassName="DrinkTimestamp" syncable="YES" codeGenerationType="class">
         <attribute name="repeatStatus" optional="YES" attributeType="Boolean" usesScalarValueType="YES"/>
