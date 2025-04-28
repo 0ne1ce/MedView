@@ -58,6 +58,13 @@ final class NotificationInteractor: NSObject, NotificationBuisnessLogic {
             $0.repeatStatusEnabled != request.timestamp.repeatStatus }) {
             timeStamps[index].repeatStatusEnabled = request.timestamp.repeatStatus
         }
+        if let currentTimestamp = request.currentTimestamp,
+           let index = timeStamps.firstIndex(where: { $0.timestampValue == currentTimestamp.time &&
+               $0.repeatStatusEnabled == currentTimestamp.repeatStatus }) {
+            timeStamps[index].timestampValue = request.timestamp.time
+            timeStamps[index].repeatStatusEnabled = request.timestamp.repeatStatus
+        }
+        
         deleteNotificationTimestampsData(
             timestamp: request.timestamp.time,
             repeatStatus: request.timestamp.repeatStatus

@@ -7,7 +7,12 @@
 
 extension FoodTimestamp: TimestampData {
     var timestampValue: String {
-        return self.time ?? ""
+        get { 
+            return self.time ?? ""
+        }
+        set {
+            self.time = newValue
+        }
     }
     
     var repeatStatusEnabled: Bool {

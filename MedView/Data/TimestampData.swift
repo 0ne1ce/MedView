@@ -9,6 +9,6 @@ import UIKit
 import CoreData
 
 protocol TimestampData: NSManagedObject {
-    var timestampValue: String { get }
+    var timestampValue: String { get set }
     var repeatStatusEnabled: Bool { get set }
 }

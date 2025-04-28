@@ -49,6 +49,7 @@ enum NotificationModels {
     
     enum AddTimestamp {
         struct Request {
+            var currentTimestamp: Timestamp?
             var timestamp: Timestamp
         }
         

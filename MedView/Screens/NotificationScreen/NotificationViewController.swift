@@ -83,7 +83,7 @@ final class NotificationViewController: UIViewController, NotificationDisplayLog
     
     func displayAddTimeScreen(viewModel: NotificationModels.LoadAddTimeScreen.ViewModel) {
         router.showAddTimeScreen(currentTimestamp: viewModel.timestamp, timestampAdded: { [weak self] timeStamp in
-            let request = NotificationModels.AddTimestamp.Request(timestamp: timeStamp)
+            let request = NotificationModels.AddTimestamp.Request(currentTimestamp: viewModel.timestamp, timestamp: timeStamp)
             self?.interactor.loadTimestamp(request: request)
         })
     }
