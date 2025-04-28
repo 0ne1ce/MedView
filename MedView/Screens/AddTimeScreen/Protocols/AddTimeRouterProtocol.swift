@@ -7,5 +7,5 @@
 
 protocol AddTimeRouterProtocol: AnyObject {
     // MARK: - Functions
-    
+    func showNotification()
 }

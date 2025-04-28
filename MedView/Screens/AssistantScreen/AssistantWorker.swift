@@ -66,14 +66,12 @@ final class AssistantWorker {
             request.httpBody = jsonData
             
             let (data, _) = try await URLSession.shared.data(for: request)
-            if let debugString = String(data: data, encoding: .utf8) {
-                print("Raw response:\n\(debugString)")
-            }
+
             let decodedResponse = try JSONDecoder().decode(MistralResponse.self, from: data)
 
             if let content = decodedResponse.choices.first?.message.content {
                 self.response = content.trimmingCharacters(in: .whitespacesAndNewlines)
-                print("Response: \(response)")
+                self.response = self.response.replacingOccurrences(of: "**", with: "")
             } else {
                 print("No content in response")
                 response = "Sorry, I couldn't process your request."

@@ -24,19 +24,37 @@ final class AddTimeInteractor: NSObject, AddTimeBuisnessLogic {
     // MARK: - Properties
     var presenter: AddTimePresentationLogic
     var worker: AddTimeWorker
+    var currentTimestamp: Timestamp?
     
     var repeatStatus: Bool = false
     
     // MARK: - Initialization
-    init(presenter: AddTimePresentationLogic, worker: AddTimeWorker) {
+    init(presenter: AddTimePresentationLogic, worker: AddTimeWorker, currentTimestamp: Timestamp?) {
         self.presenter = presenter
         self.worker = worker
+        self.currentTimestamp = currentTimestamp
     }
     
     // MARK: - Public functions
     func loadStart(request: AddTimeModels.LoadStart.Request) {
-        let response = AddTimeModels.LoadStart.Response(addButtonText: Constants.addButtonText)
+        if let timestamp = currentTimestamp {
+            repeatStatus = timestamp.repeatStatus
+        }
+        let response = AddTimeModels.LoadStart.Response(addButtonText: Constants.addButtonText, currentTimestamp: currentTimestamp)
         presenter.presentStart(response: response)
+    }
+    
+    func loadNotification(request: AddTimeModels.LoadNotification.Request) {
+        let response = AddTimeModels.LoadNotification.Response()
+        presenter.presentNotification(response: response)
+    }
+    
+    func loadTimeString(request: AddTimeModels.TimestampCreation.Request) {
+        let response = AddTimeModels.TimestampCreation.Response(
+            timeString: request.timeString,
+            repeatStatus: repeatStatus
+        )
+        presenter.presentTimestamp(response: response)
     }
 }
 
@@ -56,7 +74,13 @@ extension AddTimeInteractor: UITableViewDataSource {
             self?.repeatStatus = isOn
         }
         
-        timeSetupCell.configure(with: Constants.timeSetupParameters[indexPath.row], "", index: indexPath.row, toggleState: repeatStatus)
+        timeSetupCell.configure(
+            with: Constants.timeSetupParameters[indexPath.row],
+            "",
+            index: indexPath.row,
+            toggleState: repeatStatus,
+            currentTimestamp: currentTimestamp
+        )
         return timeSetupCell
     }
 }

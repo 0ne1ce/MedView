@@ -16,7 +16,7 @@ enum NotificationModels {
         
         struct Response {
             var titleText: NSMutableAttributedString
-            var customType: Bool
+            var type: NotificationType
             var tableTitleText: String
         }
         
@@ -25,7 +25,7 @@ enum NotificationModels {
             var settingsImage: UIImage?
             var navigationTitleFont: UIFont
             var navigationTitleColor: UIColor?
-            var customType: Bool
+            var type: NotificationType
             var tableTitleText: String
             var tableTitleColor: UIColor
             var tableTitleFont: UIFont
@@ -35,7 +35,21 @@ enum NotificationModels {
     
     enum LoadAddTimeScreen {
         struct Request {
-            
+            var index: Int?
+        }
+        
+        struct Response {
+            var timestamp: TimestampData?
+        }
+        
+        struct ViewModel {
+            var timestamp: Timestamp?
+        }
+    }
+    
+    enum AddTimestamp {
+        struct Request {
+            var timestamp: Timestamp
         }
         
         struct Response {
@@ -44,6 +58,20 @@ enum NotificationModels {
         
         struct ViewModel {
             
+        }
+    }
+    
+    enum DeleteTimestamp {
+        struct Request {
+            var index: Int
+        }
+        
+        struct Response {
+            var index: Int
+        }
+        
+        struct ViewModel {
+            var index: Int
         }
     }
 }

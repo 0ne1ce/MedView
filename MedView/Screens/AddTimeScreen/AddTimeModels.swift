@@ -17,6 +17,7 @@ enum AddTimeModels {
         
         struct Response {
             var addButtonText: String
+            var currentTimestamp: Timestamp?
         }
         
         struct ViewModel {
@@ -25,6 +26,36 @@ enum AddTimeModels {
             var addButtonColor: UIColor
             var addButtonTextColor: UIColor
             var addButtonFont: UIFont
+            var currentTimestamp: Timestamp?
+        }
+    }
+    
+    enum LoadNotification {
+        struct Request {
+            
+        }
+        
+        struct Response {
+
+        }
+        
+        struct ViewModel {
+
+        }
+    }
+    
+    enum TimestampCreation {
+        struct Request {
+            var timeString: String
+        }
+        
+        struct Response {
+            var timeString: String
+            var repeatStatus: Bool
+        }
+        
+        struct ViewModel {
+            var timestamp: Timestamp
         }
     }
 }

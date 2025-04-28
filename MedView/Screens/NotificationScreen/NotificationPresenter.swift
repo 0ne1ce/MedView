@@ -27,7 +27,7 @@ final class NotificationPresenter: NotificationPresentationLogic {
             navigationTitle: response.titleText,
             navigationTitleFont: Constants.navigationTitleFont,
             navigationTitleColor: .textPrimary,
-            customType: response.customType,
+            type: response.type,
             tableTitleText: response.tableTitleText,
             tableTitleColor: UIColor.parametersTitleLabel,
             tableTitleFont: Constants.tableTitleFont,
@@ -37,7 +37,26 @@ final class NotificationPresenter: NotificationPresentationLogic {
     }
     
     func presentAddTimeScreen(response: NotificationModels.LoadAddTimeScreen.Response) {
-        let viewModel = NotificationModels.LoadAddTimeScreen.ViewModel()
-        view?.displayAddTimeScreen(viewModel: viewModel)
+        if let timestamp = response.timestamp {
+            let convertedTimestamp = Timestamp(
+                time: timestamp.timestampValue,
+                repeatStatus: timestamp.repeatStatusEnabled
+            )
+            let viewModel = NotificationModels.LoadAddTimeScreen.ViewModel(timestamp: convertedTimestamp)
+            view?.displayAddTimeScreen(viewModel: viewModel)
+        } else {
+            let viewModel = NotificationModels.LoadAddTimeScreen.ViewModel()
+            view?.displayAddTimeScreen(viewModel: viewModel)
+        }
+    }
+    
+    func presentTimestamp(response: NotificationModels.AddTimestamp.Response) {
+        let viewModel = NotificationModels.AddTimestamp.ViewModel()
+        view?.displayTimestamp(viewModel: viewModel)
+    }
+    
+    func presentTimestampsAfterDeletion(response: NotificationModels.DeleteTimestamp.Response) {
+        let viewModel = NotificationModels.DeleteTimestamp.ViewModel(index: response.index)
+        view?.displayTimestampsAfterDeletion(viewModel: viewModel)
     }
 }

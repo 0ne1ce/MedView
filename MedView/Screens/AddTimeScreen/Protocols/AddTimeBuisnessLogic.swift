@@ -9,4 +9,6 @@ import UIKit
 protocol AddTimeBuisnessLogic: AnyObject, UITableViewDataSource {
     // MARK: - Functions
     func loadStart(request: AddTimeModels.LoadStart.Request)
+    func loadNotification(request: AddTimeModels.LoadNotification.Request)
+    func loadTimeString(request: AddTimeModels.TimestampCreation.Request)
 }

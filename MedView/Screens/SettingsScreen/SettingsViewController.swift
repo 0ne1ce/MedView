@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 import UserNotifications
 
-final class SettingsViewController: UIViewController, SettingsDisplayLogic {
+final class SettingsViewController: UIViewController, SettingsDisplayLogic {    
     // MARK: - Constants
     private enum Constants {
         static let navigationBarHeight: CGFloat = 155
@@ -28,7 +28,14 @@ final class SettingsViewController: UIViewController, SettingsDisplayLogic {
         
         static let settingsTableOffsetTop: CGFloat = 10
         
-        static let customNotificationsSection: Int = 3
+        static let customNotificationsSection: Int = 2
+        
+        static let tableTitleFont: UIFont = .systemFont(ofSize: 20, weight: .bold)
+        static let tableTitleOffsetH: CGFloat = 15
+        static let tableTitleOffsetV: CGFloat = 5
+        static let tableTitleHeight: CGFloat = 22
+        
+        static let defaultNotificationsCount: Int = 3
     }
     
     // MARK: - Properties
@@ -112,6 +119,14 @@ final class SettingsViewController: UIViewController, SettingsDisplayLogic {
         )
     }
     
+    func displaySyncNotifications(viewModel: SettingsModels.SyncNotifications.ViewModel) {
+        
+    }
+    
+    func displaySyncCustomNotifications(viewModel: SettingsModels.SyncCustomNotifications.ViewModel) {
+        
+    }
+    
     // MARK: - Private functions
     private func configure() {
         view.backgroundColor = .backgroundPrimary
@@ -178,6 +193,14 @@ final class SettingsViewController: UIViewController, SettingsDisplayLogic {
         generator.selectionChanged()
     }
     
+    private func synchronizeNotifications(with viewModel: SettingsModels.LoadStart.ViewModel) {
+        let defaultRequest = SettingsModels.SyncNotifications.Request()
+        interactor.syncNotifications(request: defaultRequest)
+        
+        let customRequest = SettingsModels.SyncCustomNotifications.Request()
+        interactor.syncCustomNotifications(request: customRequest)
+    }
+    
     // MARK: - Actions
     @objc func aboutDevButtonPressed() {
         triggerSelectionFeedback()
@@ -200,29 +223,29 @@ extension SettingsViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         triggerSelectionFeedback()
-        if indexPath.section == 4 {
-            
-        }
         switch indexPath.section {
         case 0:
             let request = SettingsModels.LoadCard.Request()
             interactor.loadCard(request: request)
-        case 2:
+        case 1:
             guard let cell = tableView.cellForRow(at: indexPath) as? SettingsCell else {
                 return
             }
             let settingsTitle = cell.settingsLabel.text ?? ""
-            let request = SettingsModels.LoadNotification.Request(notificationTitle: settingsTitle)
+            let request = SettingsModels.LoadNotification.Request(id: indexPath.row, notificationTitle: settingsTitle)
             interactor.loadNotification(request: request)
-        case 3:
+        case 2:
             guard let cell = tableView.cellForRow(at: indexPath) as? SettingsCell else {
                 return
             }
             
             let settingsTitle = cell.settingsTextField.text ?? ""
-            let request = SettingsModels.LoadNotification.Request(notificationTitle: settingsTitle)
+            let request = SettingsModels.LoadNotification.Request(
+                id: indexPath.row + Constants.defaultNotificationsCount,
+                notificationTitle: settingsTitle
+            )
             interactor.loadNotification(request: request)
-        case 4:
+        case 3:
             let request = SettingsModels.AddCustomNotification.Request()
             interactor.addCustomNotification(request: request)
         default:
@@ -231,7 +254,7 @@ extension SettingsViewController: UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        guard indexPath.section == 3 else {
+        guard indexPath.section == 2 else {
             return nil
         }
         let deleteAction = UIContextualAction(style: .destructive, title: nil) { [weak self] _, _, completionHandler in 
@@ -243,5 +266,44 @@ extension SettingsViewController: UITableViewDelegate {
         deleteAction.image = UIImage(named: "delete")
         
         return UISwipeActionsConfiguration(actions: [deleteAction])
+    }
+    
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let headerView = UIView()
+        headerView.backgroundColor = .clear
+        let titleLabel = UILabel()
+        
+        switch section {
+        case 1:
+            titleLabel.text = "Default notifications"
+        case 2:
+            titleLabel.text = "Custom notifications"
+        default:
+            return headerView
+        }
+        
+        titleLabel.font = Constants.tableTitleFont
+        titleLabel.textColor = UIColor.parametersTitleLabel
+        titleLabel.frame = CGRect(
+            x: Constants.tableTitleOffsetH,
+            y: -Constants.tableTitleOffsetV,
+            width: tableView.frame.width,
+            height: Constants.tableTitleHeight
+        )
+        
+        headerView.addSubview(titleLabel)
+        
+        return headerView
+    }
+
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        switch section {
+        case 1:
+            return Constants.tableTitleHeight
+        case 2:
+            return Constants.tableTitleHeight
+        default:
+            return .zero
+        }
     }
 }

@@ -9,14 +9,18 @@ import UIKit
 import Foundation
 
 final class AddTimeAssembly {
-    static func build() -> UIViewController {
+    static func build(currentTimestamp: Timestamp?, timestampAdded: @escaping (Timestamp) -> Void) -> UIViewController {
         let presenter = AddTimePresenter()
         let worker = AddTimeWorker()
         
-        let interactor = AddTimeInteractor(presenter: presenter, worker: worker)
+        let interactor = AddTimeInteractor(presenter: presenter, worker: worker, currentTimestamp: currentTimestamp)
         let router = AddTimeRouter()
         
-        let view = AddTimeViewController(interactor: interactor, router: router)
+        let view = AddTimeViewController(
+            interactor: interactor,
+            router: router,
+            timestampAdded: timestampAdded
+        )
         
         router.view = view
         presenter.view = view

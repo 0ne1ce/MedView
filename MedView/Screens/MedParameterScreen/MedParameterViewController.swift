@@ -317,6 +317,7 @@ final class MedParameterViewController: UIViewController, MedParameterDisplayLog
     }
     
     @objc func adviceButtonPressed() {
+        triggerSelectionFeedback()
         let request = MedParameterModels.LoadAssistantAdvice.Request()
         interactor.loadAssistantAdvice(request: request)
     }

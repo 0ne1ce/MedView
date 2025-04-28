@@ -57,7 +57,10 @@ final class ParametersInteractor: NSObject, ParametersBuisnessLogic {
             return
         }
         
-        let response = ParametersModels.LoadParameter.Response(id: request.id, parameterType: parameterType)
+        let response = ParametersModels.LoadParameter.Response(
+            id: request.id,
+            parameterType: parameterType
+        )
         presenter.presentParameter(response: response)
     }
     

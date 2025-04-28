@@ -24,7 +24,7 @@ final class HelpViewController: UIViewController, HelpDisplayLogic {
         static let heightForRow: CGFloat = 30
         
         static let onboardingButtonOffsetBottom: CGFloat = 100
-        static let onboardingButtonOffsetH: CGFloat = 115
+        static let onboardingButtonOffsetH: CGFloat = 110
         static let onboardingButtonWidth: CGFloat = 170
         static let onboardingButtonHeight: CGFloat = 45
         static let onboardingButtonRadius: CGFloat = 15

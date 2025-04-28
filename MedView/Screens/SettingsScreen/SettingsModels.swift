@@ -63,12 +63,14 @@ enum SettingsModels {
     
     enum LoadNotification {
         struct Request {
+            var id: Int
             var notificationTitle: String
         }
         
         struct Response {
+            var id: Int
             var notificationTitle: String
-            var isCustomType: Bool
+            var notificationType: NotificationType
         }
         
         struct ViewModel {
@@ -101,6 +103,34 @@ enum SettingsModels {
         
         struct ViewModel {
             var index: Int
+        }
+    }
+    
+    enum SyncNotifications {
+        struct Request {
+
+        }
+        
+        struct Response {
+
+        }
+        
+        struct ViewModel {
+
+        }
+    }
+    
+    enum SyncCustomNotifications {
+        struct Request {
+
+        }
+        
+        struct Response {
+
+        }
+        
+        struct ViewModel {
+
         }
     }
 }

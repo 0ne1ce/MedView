@@ -13,8 +13,9 @@ final class NotificationRouter: NotificationRouterProtocol {
     weak var view: UIViewController?
     
     // MARK: - Functions
-    func showAddTimeScreen() {
-        let addTimeScreenVC = UINavigationController(rootViewController: AddTimeAssembly.build())
-        view?.present(addTimeScreenVC, animated: true)
+    func showAddTimeScreen(currentTimestamp: Timestamp?, timestampAdded: @escaping (Timestamp) -> Void) {
+        let addTimeScreenVC = AddTimeAssembly.build(currentTimestamp: currentTimestamp, timestampAdded: timestampAdded)
+        let addTimeScreenNavVC = UINavigationController(rootViewController: addTimeScreenVC)
+        view?.present(addTimeScreenNavVC, animated: true)
     }
 }

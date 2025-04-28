@@ -12,4 +12,6 @@ protocol NotificationPresentationLogic: AnyObject {
     // MARK: - Functions
     func presentStart(response: NotificationModels.LoadStart.Response)
     func presentAddTimeScreen(response: NotificationModels.LoadAddTimeScreen.Response)
+    func presentTimestamp(response: NotificationModels.AddTimestamp.Response)
+    func presentTimestampsAfterDeletion(response: NotificationModels.DeleteTimestamp.Response)
 }

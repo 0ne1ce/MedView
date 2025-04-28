@@ -9,6 +9,7 @@ import Foundation
 import UIKit
 
 struct Notification {
+    let id: Int
     let title: String
-    let customType: Bool
+    let type: NotificationType
 }

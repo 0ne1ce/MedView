@@ -82,7 +82,21 @@ final class NotificationViewController: UIViewController, NotificationDisplayLog
     }
     
     func displayAddTimeScreen(viewModel: NotificationModels.LoadAddTimeScreen.ViewModel) {
-        router.showAddTimeScreen()
+        router.showAddTimeScreen(currentTimestamp: viewModel.timestamp, timestampAdded: { [weak self] timeStamp in
+            let request = NotificationModels.AddTimestamp.Request(timestamp: timeStamp)
+            self?.interactor.loadTimestamp(request: request)
+        })
+    }
+    
+    func displayTimestamp(viewModel: NotificationModels.AddTimestamp.ViewModel) {
+        timeTable.reloadData()
+    }
+    
+    func displayTimestampsAfterDeletion(viewModel: NotificationModels.DeleteTimestamp.ViewModel) {
+        timeTable.deleteRows(
+            at: [IndexPath(row: viewModel.index, section: .zero)],
+            with: .left
+        )
     }
     
     // MARK: - Private functions
@@ -171,7 +185,7 @@ extension NotificationViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         triggerSelectionFeedback()
         
-        let request = NotificationModels.LoadAddTimeScreen.Request()
+        let request = NotificationModels.LoadAddTimeScreen.Request(index: indexPath.row)
         interactor.loadAddTimeScreen(request: request)
     }
     
@@ -183,5 +197,18 @@ extension NotificationViewController: UITableViewDelegate {
         )
         let animator = TableViewAnimator(animation: animation)
         animator.animate(cell: cell, at: indexPath)
+    }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let deleteAction = UIContextualAction(style: .destructive, title: nil) { [weak self] _, _, completionHandler in 
+            
+            let request = NotificationModels.DeleteTimestamp.Request(index: indexPath.row)
+            self?.interactor.deleteTimestamp(request: request)
+            completionHandler(true)
+        }
+        deleteAction.backgroundColor = .backgroundPrimary
+        deleteAction.image = UIImage(named: "delete")
+        
+        return UISwipeActionsConfiguration(actions: [deleteAction])
     }
 }

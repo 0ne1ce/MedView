@@ -16,4 +16,6 @@ protocol SettingsBuisnessLogic: AnyObject, UITableViewDataSource {
     func loadNotification(request: SettingsModels.LoadNotification.Request)
     func addCustomNotification(request: SettingsModels.AddCustomNotification.Request)
     func deleteCustomNotification(request: SettingsModels.DeleteCustomNotification.Request)
+    func syncNotifications(request: SettingsModels.SyncNotifications.Request)
+    func syncCustomNotifications(request: SettingsModels.SyncCustomNotifications.Request)
 }

@@ -12,4 +12,6 @@ protocol NotificationBuisnessLogic: AnyObject, UITableViewDataSource {
     // MARK: - Functions
     func loadStart(request: NotificationModels.LoadStart.Request)
     func loadAddTimeScreen(request: NotificationModels.LoadAddTimeScreen.Request)
+    func loadTimestamp(request: NotificationModels.AddTimestamp.Request)
+    func deleteTimestamp(request: NotificationModels.DeleteTimestamp.Request)
 }

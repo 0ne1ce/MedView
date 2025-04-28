@@ -13,17 +13,24 @@ final class SettingsWorker {
     private enum Constants {
         static let isSettingsInitialized: String = "isSettingsInitialized"
         static let customNotificationsKey: String = "customNotifications"
-        static let themeSwitchState: String = "themeSwitchState"
         static let defaultNotificatonsSwitchStatesKey: String = "defaultNotificationsStates"
         static let drinkNotificationsIdsKey: String = "drinkNotificationsIds"
         static let foodNotificationsIdsKey: String = "foodNotificationsIds"
-        static let sleepNotificationsIdKey: String = "sleepNotificationsId"
+        static let sleepNotificationsIdsKey: String = "sleepNotificationsIds"
+        static let customNotificationsIdsKey: String = "customNotificationsIds"
         
         static let customNotificatonsSwitchStatesKey: String = "customNotificationsStates"
+        
+        static let timeComponentsCount: Int = 2
+        static let repeatAfterMinutes: Int = 5
+        static let misutesPerHour: Int = 60
+        static let extraHour: Int = 1
+        static let minutesBound: Int = 59
     }
     
     // MARK: - Properties
     private let defaults = UserDefaults.standard
+    private let notificationWorker = NotificationWorker()
     
     // MARK: - Initialization
     init() {
@@ -32,7 +39,6 @@ final class SettingsWorker {
         }
         if !defaults.bool(forKey: Constants.isSettingsInitialized) {
             defaults.set([false, false, false], forKey: Constants.defaultNotificatonsSwitchStatesKey)
-            defaults.set(false, forKey: Constants.themeSwitchState)
             defaults.set(true, forKey: Constants.isSettingsInitialized)
         }
     }
@@ -44,14 +50,6 @@ final class SettingsWorker {
     
     func loadCustomNotifications() -> [String] {
         return defaults.stringArray(forKey: Constants.customNotificationsKey) ?? []
-    }
-    
-    func saveThemeState(_ isDarkThemeState: Bool) {
-        defaults.set(isDarkThemeState, forKey: Constants.themeSwitchState)
-    }
-    
-    func loadThemeState() -> Bool {
-        return defaults.bool(forKey: Constants.themeSwitchState)
     }
     
     func saveDefaultNotificationsStates(_ switchStates: [Bool]) {
@@ -70,90 +68,126 @@ final class SettingsWorker {
         return defaults.array(forKey: Constants.customNotificatonsSwitchStatesKey) as? [Bool] ?? []
     }
     
-    func enableDrinkNotifications() {
+    func enableNotifications(notificationType: NotificationType, customTitle: String? = nil) {
+        disableNotifications(notificationType: notificationType)
         let content = UNMutableNotificationContent()
-        content.title = "Stay hydrated 🥤"
-        content.body = "It's your reminder to drink water and be healthy!"
         content.sound = .default
+        var timestamps: [TimestampData]
         
-        let dailySchedule: [DateComponents] = [
-            DateComponents(hour: 9, minute: 0),
-            DateComponents(hour: 11, minute: 30),
-            DateComponents(hour: 14, minute: 0),
-            DateComponents(hour: 16, minute: 30),
-            DateComponents(hour: 19, minute: 0),
-            DateComponents(hour: 21, minute: 30)
-        ]
-        
-        var drinkNotificationsIds: [String] = []
-        for scheduleElement in dailySchedule {
-            let trigger = UNCalendarNotificationTrigger(dateMatching: scheduleElement, repeats: true)
-            let drinkNotificationId: String = UUID().uuidString
-            let request = UNNotificationRequest(identifier: drinkNotificationId, content: content, trigger: trigger)
-            UNUserNotificationCenter.current().add(request)
-            drinkNotificationsIds.append(drinkNotificationId)
+        switch notificationType {
+        case .drink:
+            content.title = "Stay hydrated 🥤"
+            content.body = "It's your reminder to drink water and be healthy!"
+            timestamps = notificationWorker.loadTimestampsData(type: DrinkTimestamp.self)
+        case .food:
+            content.title = "Dont't starve 🍎"
+            content.body = "It's your reminder to eat food and be healthy!"
+            timestamps = notificationWorker.loadTimestampsData(type: FoodTimestamp.self)
+        case .sleep:
+            content.title = "Time to rest 🌙"
+            content.body = "It's your sleep shedule reminder. Have a good night!"
+            timestamps = notificationWorker.loadTimestampsData(type: SleepTimestamp.self)
+        case .custom:
+            content.title = customTitle ?? "Custom notification"
+            content.body = "It's your custom notification reminder. Stay healthy!"
+            timestamps = notificationWorker.loadTimestampsData(type: CustomTimestamp.self)
         }
-        defaults.set(drinkNotificationsIds, forKey: Constants.drinkNotificationsIdsKey)
-    }
-    
-    func disableDrinkNotifications() {
-        var drinkNotificationsIds = defaults.value(forKey: Constants.drinkNotificationsIdsKey) as? [String] ?? []
-        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: drinkNotificationsIds)
-        drinkNotificationsIds.removeAll()
-        defaults.setValue(drinkNotificationsIds, forKey: Constants.drinkNotificationsIdsKey)
-    }
-    
-    func enableFoodNotifications() {
-        let content = UNMutableNotificationContent()
-        content.title = "Dont't starve 🍎"
-        content.body = "It's your reminder to eat food and be healthy!"
-        content.sound = .default
         
-        let dailySchedule: [DateComponents] = [
-            DateComponents(hour: 9, minute: 30),
-            DateComponents(hour: 13, minute: 0),
-            DateComponents(hour: 18, minute: 0)
-        ]
+        var notificationsIds: [String] = []
         
-        var foodNotificationsIds: [String] = []
-        for scheduleElement in dailySchedule {
-            let trigger = UNCalendarNotificationTrigger(dateMatching: scheduleElement, repeats: true)
-            let foodNotificationId: String = UUID().uuidString
-            let request = UNNotificationRequest(identifier: foodNotificationId, content: content, trigger: trigger)
+        for timestamp in timestamps {
+            let timeComponents = parseTimeString(timestamp.timestampValue)
+            let trigger = UNCalendarNotificationTrigger(
+                dateMatching: timeComponents, 
+                repeats: true
+            )
+            
+            let notificationId = UUID().uuidString
+            let request = UNNotificationRequest(
+                identifier: notificationId, 
+                content: content, 
+                trigger: trigger
+            )
+            
             UNUserNotificationCenter.current().add(request)
-            foodNotificationsIds.append(foodNotificationId)
+            notificationsIds.append(notificationId)
+            
+            if timestamp.repeatStatusEnabled {
+                let newContent = UNMutableNotificationContent()
+                newContent.title = "Repeat: " + content.title
+                newContent.body = content.body
+                newContent.sound = .default
+                
+                var reminderComponents = timeComponents
+                reminderComponents.minute = (reminderComponents.minute ?? .zero) + Constants.repeatAfterMinutes
+                
+                if let minutes = reminderComponents.minute, minutes > Constants.minutesBound {
+                    reminderComponents.minute = minutes - Constants.misutesPerHour
+                    reminderComponents.hour = (reminderComponents.hour ?? .zero) + Constants.extraHour
+                }
+                
+                let reminderTrigger = UNCalendarNotificationTrigger(
+                    dateMatching: reminderComponents, 
+                    repeats: timestamp.repeatStatusEnabled
+                )
+                
+                let reminderNotificationId = UUID().uuidString
+                let reminderRequest = UNNotificationRequest(
+                    identifier: reminderNotificationId, 
+                    content: newContent, 
+                    trigger: reminderTrigger
+                )
+                
+                UNUserNotificationCenter.current().add(reminderRequest)
+                notificationsIds.append(reminderNotificationId)
+            }
         }
-        defaults.set(foodNotificationsIds, forKey: Constants.foodNotificationsIdsKey)
-    }
-    
-    func disableFoodNotifications() {
-        var foodNotificationsIds = defaults.value(forKey: Constants.foodNotificationsIdsKey) as? [String] ?? []
-        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: foodNotificationsIds)
-        foodNotificationsIds.removeAll()
-        defaults.setValue(foodNotificationsIds, forKey: Constants.foodNotificationsIdsKey)
-    }
-    
-    func enableSleepNotifications() {
-        let content = UNMutableNotificationContent()
-        content.title = "Time to rest 🌙"
-        content.body = "It's your sleep shedule reminder. Have a good night!"
-        content.sound = .default
         
-        var dateComponents = DateComponents()
-        dateComponents.hour = 23
-        dateComponents.minute = 30
-        
-        let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
-        let sleepNotificationId: String = UUID().uuidString
-        let request = UNNotificationRequest(identifier: sleepNotificationId, content: content, trigger: trigger)
-        UNUserNotificationCenter.current().add(request)
-        defaults.set(sleepNotificationId, forKey: Constants.sleepNotificationsIdKey)
+        switch notificationType {
+        case .drink:
+            defaults.set(notificationsIds, forKey: Constants.drinkNotificationsIdsKey)
+        case .food:
+            defaults.set(notificationsIds, forKey: Constants.foodNotificationsIdsKey)
+        case .sleep:
+            defaults.set(notificationsIds, forKey: Constants.sleepNotificationsIdsKey)
+        case .custom:
+            defaults.set(notificationsIds, forKey: Constants.customNotificationsIdsKey)
+        }
     }
     
-    func disableSleepNotifications() {
-        var sleepNotificationsId = defaults.value(forKey: Constants.sleepNotificationsIdKey) as? String ?? ""
-        UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [sleepNotificationsId])
-        sleepNotificationsId = ""
-        defaults.set(sleepNotificationsId, forKey: Constants.sleepNotificationsIdKey)
+    func disableNotifications(notificationType: NotificationType) {
+        switch notificationType {
+        case .drink:
+            var drinkNotificationsIds = defaults.value(forKey: Constants.drinkNotificationsIdsKey) as? [String] ?? []
+            UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: drinkNotificationsIds)
+            drinkNotificationsIds.removeAll()
+            defaults.setValue(drinkNotificationsIds, forKey: Constants.drinkNotificationsIdsKey)
+        case .food:
+            var foodNotificationsIds = defaults.value(forKey: Constants.foodNotificationsIdsKey) as? [String] ?? []
+            UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: foodNotificationsIds)
+            foodNotificationsIds.removeAll()
+            defaults.setValue(foodNotificationsIds, forKey: Constants.foodNotificationsIdsKey)
+        case .sleep:
+            var sleepNotificationsIds = defaults.value(forKey: Constants.sleepNotificationsIdsKey) as? [String] ?? []
+            UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: sleepNotificationsIds)
+            sleepNotificationsIds.removeAll()
+            defaults.setValue(sleepNotificationsIds, forKey: Constants.sleepNotificationsIdsKey)
+        case .custom:
+            var customNotificationsIds = defaults.value(forKey: Constants.customNotificationsIdsKey) as? [String] ?? []
+            UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: customNotificationsIds)
+            customNotificationsIds.removeAll()
+            defaults.setValue(customNotificationsIds, forKey: Constants.customNotificationsIdsKey)
+        }
+    }
+    
+    // MARK: - Private functions
+    private func parseTimeString(_ timeString: String) -> DateComponents {
+        let components = timeString.components(separatedBy: ":")
+        guard components.count == Constants.timeComponentsCount,
+              let hour = Int(components[0]),
+              let minute = Int(components[1]) else {
+            return DateComponents(hour: .zero, minute: .zero)
+        }
+        return DateComponents(hour: hour, minute: minute)
     }
 }

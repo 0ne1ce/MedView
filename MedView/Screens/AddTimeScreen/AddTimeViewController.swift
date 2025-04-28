@@ -43,10 +43,13 @@ final class AddTimeViewController: UIViewController, AddTimeDisplayLogic {
 
     private var selectedTime: Date?
     
+    private var timestampAdded: ((Timestamp) -> Void)?
+    
     // MARK: - Initialization
-    init(interactor: AddTimeBuisnessLogic, router: AddTimeRouterProtocol) {
+    init(interactor: AddTimeBuisnessLogic, router: AddTimeRouterProtocol, timestampAdded: @escaping ((Timestamp) -> Void)) {
         self.interactor = interactor
         self.router = router
+        self.timestampAdded = timestampAdded
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -70,9 +73,19 @@ final class AddTimeViewController: UIViewController, AddTimeDisplayLogic {
     
     func displayStart(viewModel: AddTimeModels.LoadStart.ViewModel) {
         view.backgroundColor = viewModel.backgroundColor
+        configureTimePicker(currentTimestamp: viewModel.currentTimestamp)
         configureTimeSetupTable()
-        configureTimePicker()
         configureAddButton(with: viewModel)
+    }
+    
+    func displayTimestamp(viewModel: AddTimeModels.TimestampCreation.ViewModel) {
+        timestampAdded?(viewModel.timestamp)
+        let request = AddTimeModels.LoadNotification.Request()
+        interactor.loadNotification(request: request)
+    }
+    
+    func displayNotification(viewModel: AddTimeModels.LoadNotification.ViewModel) {
+        router.showNotification()
     }
     
     // MARK: - Private functions
@@ -115,7 +128,7 @@ final class AddTimeViewController: UIViewController, AddTimeDisplayLogic {
         timeSetupTable.tableHeaderView = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 0.1))
     }
     
-    private func configureTimePicker() {
+    private func configureTimePicker(currentTimestamp: Timestamp?) {
         view.addSubview(pickerContainerView)
 
         pickerContainerView.pinCenter(to: view)
@@ -128,6 +141,15 @@ final class AddTimeViewController: UIViewController, AddTimeDisplayLogic {
         
         timePicker.datePickerMode = .time
         timePicker.preferredDatePickerStyle = .wheels
+        
+        if let timeString = currentTimestamp?.time {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "HH:mm"
+            let date = formatter.date(from: timeString)
+            timePicker.date = date ?? Date()
+        } else {
+            timePicker.date = Date()
+        }
 
         pickerContainerView.addSubview(timePicker)
         timePicker.pinHorizontal(to: pickerContainerView)
@@ -151,10 +173,17 @@ final class AddTimeViewController: UIViewController, AddTimeDisplayLogic {
         
         addButton.addTarget(self, action: #selector(addButtonPressed), for: .touchUpInside)
     }
+    
+    private func triggerSelectionFeedback() {
+        let generator = UISelectionFeedbackGenerator()
+        generator.prepare()
+        generator.selectionChanged()
+    }
 
     // MARK: - Actions
     @objc func cancelButtonPressed() {
-        dismiss(animated: true)
+        let request = AddTimeModels.LoadNotification.Request()
+        interactor.loadNotification(request: request)
     }
     
     @objc func dateChanged(_ sender: UIDatePicker) {
@@ -168,7 +197,15 @@ final class AddTimeViewController: UIViewController, AddTimeDisplayLogic {
     }
     
     @objc func addButtonPressed() {
-        dismiss(animated: true)
+        triggerSelectionFeedback()
+        guard let timeSetupCell = timeSetupTable.cellForRow(at: IndexPath(row: .zero, section: .zero)) as? TimeSetupCell else {
+            return
+        }
+        guard let newTime = timeSetupCell.valueTextField.text else {
+            return
+        }
+        let addRequest = AddTimeModels.TimestampCreation.Request(timeString: newTime)
+        interactor.loadTimeString(request: addRequest)
     }
 }
 

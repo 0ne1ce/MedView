@@ -16,7 +16,7 @@ final class SettingsInteractor: NSObject, SettingsBuisnessLogic {
         
         static let aboutDevButtonTitle: String = "About dev"
         
-        static let numberOfSections: Int = 5
+        static let numberOfSections: Int = 4
         static let numberOfRowsCard: Int = 1
         static let numberOfRowsTheme: Int = 1
         static let numberOfRowsNotificationsDefault: Int = 3
@@ -49,7 +49,6 @@ final class SettingsInteractor: NSObject, SettingsBuisnessLogic {
         notificationsCustomTitles = worker.loadCustomNotifications()
         notificationsDefaultStates = worker.loadDefaultNotificationsStates()
         notificationsCustomStates = worker.loadCustomNotificationsStates()
-        themeState = worker.loadThemeState()
         let response = SettingsModels.LoadStart.Response(
             titleText: Constants.settingsLabelText,
             buttonTitle: Constants.aboutDevButtonTitle
@@ -68,11 +67,22 @@ final class SettingsInteractor: NSObject, SettingsBuisnessLogic {
     }
     
     func loadNotification(request: SettingsModels.LoadNotification.Request) {
-        let response = SettingsModels.LoadNotification.Response(
-            notificationTitle: request.notificationTitle,
-            isCustomType: !Constants.notificationsDefaultTitles.contains(request.notificationTitle)
-        )
-        presenter.presentNotification(response: response)
+        if let notficationType = NotificationType(rawValue: request.notificationTitle),
+        request.notificationTitle != "Custom" {
+            let response = SettingsModels.LoadNotification.Response(
+                id: request.id,
+                notificationTitle: request.notificationTitle,
+                notificationType: notficationType
+            )
+            presenter.presentNotification(response: response)
+        } else {
+            let response = SettingsModels.LoadNotification.Response(
+                id: request.id,
+                notificationTitle: request.notificationTitle,
+                notificationType: .custom
+            )
+            presenter.presentNotification(response: response)
+        }
     }
     
     func addCustomNotification(request: SettingsModels.AddCustomNotification.Request) {
@@ -92,6 +102,40 @@ final class SettingsInteractor: NSObject, SettingsBuisnessLogic {
         let response = SettingsModels.DeleteCustomNotification.Response(index: request.index)
         presenter.presentNotificationsAfterDeletion(response: response)
     }
+    
+    func syncNotifications(request: SettingsModels.SyncNotifications.Request) {
+        let states = worker.loadDefaultNotificationsStates()
+        
+        for (index, isEnabled) in states.enumerated() where isEnabled {
+            switch index {
+            case 0:
+                worker.disableNotifications(notificationType: .drink)
+                worker.enableNotifications(notificationType: .drink)
+            case 1:
+                worker.disableNotifications(notificationType: .food)
+                worker.enableNotifications(notificationType: .food)
+            case 2:
+                worker.disableNotifications(notificationType: .sleep)
+                worker.enableNotifications(notificationType: .sleep)
+            default: break
+            }
+        }
+        
+        let response = SettingsModels.SyncNotifications.Response()
+        presenter.presentSyncNotifications(response: response)
+    }
+    
+    func syncCustomNotifications(request: SettingsModels.SyncCustomNotifications.Request) {
+        let states = worker.loadCustomNotificationsStates()
+        let titles = worker.loadCustomNotifications()
+        for (index, isEnabled) in states.enumerated() where isEnabled {
+            worker.disableNotifications(notificationType: .custom)
+            worker.enableNotifications(notificationType: .custom, customTitle: titles[index])
+        }
+        
+        let response = SettingsModels.SyncCustomNotifications.Response()
+        presenter.presentSyncCustomNotifications(response: response)
+    }
 }
 
 // MARK: - UITableViewDataSource
@@ -105,12 +149,10 @@ extension SettingsInteractor: UITableViewDataSource {
         case 0:
             return Constants.numberOfRowsCard
         case 1:
-            return .zero
-        case 2:
             return Constants.numberOfRowsNotificationsDefault
-        case 3:
+        case 2:
             return notificationsCustomTitles.count
-        case 4:
+        case 3:
             return Constants.numberOfRowsNotificationsCreation
         default:
             return 0
@@ -136,43 +178,24 @@ extension SettingsInteractor: UITableViewDataSource {
             }
             
             settingsCell.switchValueChanged = { [weak self] isOn in
-                self?.themeState = isOn
-                self?.worker.saveThemeState(self?.themeState ?? false)
-            }
-            
-            settingsCell.configure(with: "Dark theme", false, themeState)
-            return settingsCell
-        case 2:
-            let cell = tableView.dequeueReusableCell(withIdentifier: SettingsCell.reuseId, for: indexPath)
-            
-            guard let settingsCell = cell as? SettingsCell else {
-                return cell
-            }
-            
-            settingsCell.switchValueChanged = { [weak self] isOn in
-                if isOn {
-                    switch indexPath.row {
-                    case 0:
-                        self?.worker.enableDrinkNotifications()
-                    case 1:
-                        self?.worker.enableFoodNotifications()
-                    case 2:
-                        self?.worker.enableSleepNotifications()
-                    default:
-                        break
+                switch indexPath.row {
+                case 0:
+                    self?.worker.disableNotifications(notificationType: .drink)
+                    if isOn { 
+                        self?.worker.enableNotifications(notificationType: .drink)
                     }
-                    
-                } else {
-                    switch indexPath.row {
-                    case 0:
-                        self?.worker.disableDrinkNotifications()
-                    case 1:
-                        self?.worker.disableFoodNotifications()
-                    case 2:
-                        self?.worker.disableSleepNotifications()
-                    default:
-                        break
+                case 1:
+                    self?.worker.disableNotifications(notificationType: .food)
+                    if isOn { 
+                        self?.worker.enableNotifications(notificationType: .food)
                     }
+                case 2:
+                    self?.worker.disableNotifications(notificationType: .sleep)
+                    if isOn { 
+                        self?.worker.enableNotifications(notificationType: .sleep)
+                    }
+                default: 
+                    break
                 }
                 self?.notificationsDefaultStates[indexPath.row] = isOn
                 self?.worker.saveDefaultNotificationsStates(self?.notificationsDefaultStates ?? [])
@@ -184,7 +207,7 @@ extension SettingsInteractor: UITableViewDataSource {
                 notificationsDefaultStates[indexPath.row]
             )
             return settingsCell
-        case 3:
+        case 2:
             let cell = tableView.dequeueReusableCell(withIdentifier: SettingsCell.reuseId, for: indexPath)
             
             guard let settingsCell = cell as? SettingsCell else {
@@ -199,10 +222,12 @@ extension SettingsInteractor: UITableViewDataSource {
             }
             
             settingsCell.switchValueChanged = { [weak self] isOn in
-                if isOn {
-                    
-                } else {
-
+                self?.worker.disableNotifications(notificationType: .custom)
+                if isOn { 
+                    self?.worker.enableNotifications(
+                        notificationType: .custom,
+                        customTitle: settingsCell.settingsTextField.text
+                    )
                 }
                 if indexPath.row < self?.notificationsCustomTitles.count ?? 0 {
                     self?.notificationsCustomStates[indexPath.row] = isOn
@@ -217,7 +242,7 @@ extension SettingsInteractor: UITableViewDataSource {
                 customNotification: true
             )
             return settingsCell
-        case 4:
+        case 3:
             let extraCell = tableView.dequeueReusableCell(withIdentifier: AddNotificationCell.reuseId, for: indexPath)
             
             guard let notificationCell = extraCell as? AddNotificationCell else {

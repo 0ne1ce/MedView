@@ -23,8 +23,20 @@ final class AddTimePresenter: AddTimePresentationLogic {
             addButtonText: response.addButtonText,
             addButtonColor: .main,
             addButtonTextColor: .white,
-            addButtonFont: Constants.addButtonFont
+            addButtonFont: Constants.addButtonFont,
+            currentTimestamp: response.currentTimestamp
         )
         view?.displayStart(viewModel: viewModel)
+    }
+    
+    func presentNotification(response: AddTimeModels.LoadNotification.Response) {
+        let viewModel = AddTimeModels.LoadNotification.ViewModel()
+        view?.displayNotification(viewModel: viewModel)
+    }
+    
+    func presentTimestamp(response: AddTimeModels.TimestampCreation.Response) {
+        let timestamp = Timestamp(time: response.timeString, repeatStatus: response.repeatStatus)
+        let viewModel = AddTimeModels.TimestampCreation.ViewModel(timestamp: timestamp)
+        view?.displayTimestamp(viewModel: viewModel)
     }
 }

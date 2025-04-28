@@ -40,10 +40,11 @@ final class TimeSetupCell: UITableViewCell {
     }
     
     // MARK: - Public functions
-    public func configure(with parameterTitle: String, _ value: String, index: Int, toggleState: Bool) {
+    public func configure(with parameterTitle: String, _ value: String, index: Int, toggleState: Bool,
+                          currentTimestamp: Timestamp?) {
         parameterLabel.text = parameterTitle
         if index == 0 {
-            configureTextField()
+            configureTextField(currentTimestamp: currentTimestamp)
         } else {
             configureToggle(toggleState)
         }
@@ -71,7 +72,7 @@ final class TimeSetupCell: UITableViewCell {
         parameterLabel.text = "Error"
     }
     
-    private func configureTextField() {
+    private func configureTextField(currentTimestamp: Timestamp?) {
         contentView.addSubview(valueTextField)
         
         valueTextField.pinTop(to: contentView.layoutMarginsGuide.topAnchor)
@@ -84,6 +85,15 @@ final class TimeSetupCell: UITableViewCell {
         valueTextField.tintColor = .main
         valueTextField.textColor = .textPrimary
         valueTextField.isUserInteractionEnabled = false
+        
+        if let timestamp = currentTimestamp {
+            valueTextField.text = timestamp.time
+        } else {
+            let formatter = DateFormatter()
+            formatter.dateFormat = "HH:mm"
+            let timeString = formatter.string(from: Date())
+            valueTextField.text = timeString
+        }
     }
     
     private func configureToggle(_ toggleState: Bool) {

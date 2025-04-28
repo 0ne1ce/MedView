@@ -12,7 +12,7 @@ final class CoreDataStack {
     static let shared = CoreDataStack()
     
     lazy var persistentContainer: NSPersistentContainer = {
-        let container = NSPersistentContainer(name: "HealthModel")
+        let container = NSPersistentContainer(name: "DataModel")
         container.loadPersistentStores { _, error in
             if let error = error {
                 print("Unresolved error \(error)")
