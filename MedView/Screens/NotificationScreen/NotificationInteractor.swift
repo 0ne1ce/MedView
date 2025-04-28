@@ -114,7 +114,7 @@ final class NotificationInteractor: NSObject, NotificationBuisnessLogic {
             }
         case .custom:
             let settingsWorker = SettingsWorker()
-            let states = settingsWorker.loadDefaultNotificationsStates()
+            let states = settingsWorker.loadCustomNotificationsStates()
             let titles = settingsWorker.loadCustomNotifications()
             let index = titles.firstIndex(of: notification.title) ?? 0
             if !states.isEmpty && states[index] {

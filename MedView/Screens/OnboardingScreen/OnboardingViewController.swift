@@ -182,7 +182,7 @@ final class OnboardingViewController: UIViewController {
         page.backgroundColor = .backgroundPrimary
         scrollView.addSubview(page)
         let firstMessageBubble = configureMessageView(advice: "Tap on notification and set timestamps.\n"
-                                                      + "You can also create custom your notifications and delete them with left swipe.")
+                                                      + "You can also create your custom notifications and delete them with left swipe.")
         page.addSubview(firstMessageBubble)
         firstMessageBubble.pinTop(to: page, Constants.firstMessageBubbleOffsetTop)
         firstMessageBubble.pinLeft(to: page, Constants.firstMessageBubbleOffsetLeft)
